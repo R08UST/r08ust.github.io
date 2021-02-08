@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/github.min.css">
+
+    <script src="/theme/tipuesearch/jquery.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch_set.min.js"></script>
+    <script src="/tipuesearch_content.js"></script>
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="R08UST's Blog Atom">
+
+
+    <link rel="shortcut icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+
+  
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333">
+
+<meta name="author" content="R08UST" />
+<meta name="description" content="基于CFA(色彩过滤矩阵)的取证" />
+<meta name="keywords" content="Book, Forensics">
+
+
+<meta property="og:site_name" content="R08UST's Blog"/>
+<meta property="og:title" content="数字图像取证 - 基于相机属性的取证 1"/>
+<meta property="og:description" content="基于CFA(色彩过滤矩阵)的取证"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/forensics_2_1.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-07-03 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/r08ust.html">
+<meta property="article:section" content="Digital Image Forensics"/>
+<meta property="article:tag" content="Book"/>
+<meta property="article:tag" content="Forensics"/>
+<meta property="og:image" content="/images/profile/profile.jpg">
+
+  <title>R08UST's Blog &ndash; 数字图像取证 - 基于相机属性的取证 1</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="">
+        <img src="/images/profile/profile.jpg" alt="" title="">
+      </a>
+
+      <h1>
+        <a href=""></a>
+      </h1>
+
+<p>Security & AI Developer</p>
+        <form class="navbar-search" action="/search.html" role="search">
+          <input type="text" name="q" id="tipue_search_input" placeholder="Search...">
+        </form>
+
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/alexandrevicenzi/en" target="_blank">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-github" href="https://github.com/r08ust" target="_blank">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/r08ust" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">Home</a>
+
+      <a href="/index.html">Main</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="/feeds/all.atom.xml">Atom</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="forensics_2_1">数字图像取证 - 基于相机属性的取证 1</h1>
+    <p>
+      Posted on Fri 03 July 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
+
+        &#8226; 1 min read
+    </p>
+  </header>
+
+
+  <div>
+    <h2>CFA</h2>
+<p>在数字图像中，CFA是位于图像传感器之前的一组用于过滤色彩，收集色彩信息的镜片。由于数码相机传感器仅测量光线的明亮程度无法对色彩做出处理，通过CFA为每一个像素赋予其色彩。
+下图是Bayer Array CFA也是最常见的CFA, 使用该CFA导致了实际只有1/3的色彩信息能被cmos保存下来，另外的2/3只能利用插值算法进行填充得来的。那么不同的相机之间由于不同的cmos以及插值算法就会有不同的特征存在。
+<img alt="Bayer array" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Bayer_pattern_on_sensor.svg/220px-Bayer_pattern_on_sensor.svg.png"/></p>
+<p>对于一张Raw图像其每个像素点的RGB构造方式为
+</p>
+<div class="math">$$
+\begin{aligned}
+\tilde{R}(x, y) &amp;= S(x, y) &amp;if S(x, y) = r_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\tilde{G}(x, y) &amp;= S(x, y) &amp;if S(x, y) = g_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\tilde{B}(x, y) &amp;= S(x, y) &amp;if S(x, y) = b_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\end{aligned}
+$$</div>
+<p>
+再结合插值算法，一个RAW图像RGB像素则抽象为
+</p>
+<div class="math">$$
+\begin{aligned}
+R(x, y) = \sum^N_{u, v = -N}h_r(u, v)\tilde{R}(x - u, y -v) \\
+G(x, y) = \sum^N_{u, v = -N}h_r(u, v)\tilde{G}(x - u, y -v) \\
+B(x, y) = \sum^N_{u, v = -N}h_r(u, v)\tilde{B}(x - u, y -v) \\
+\end{aligned}
+$$</div>
+<p>
+其中<span class="math">\(h()\)</span>为不同的插值滤波器，如<span class="math">\(h = (\frac{1}{2}, 1, \frac{1}{2})\)</span> 就是一个双线性插值算法，对其做一个外积就变成了2维的双线性插值算法。</p>
+<p>当然插值算法不仅仅是双线性一种，不同的相机厂商都有不同的插值算法比如基于中位数的，基于梯度的或者基于自适应色彩平面的等等。就是这些不同的滤波方法就导致了不同的色彩下有了特点的统计信息。
+下面我们假设存在这样一种插值算法
+</p>
+<div class="math">$$
+\begin{aligned}
+R(2x + 1, 2y) &amp;= \frac{R(2x + 1, 2y - 1)}{2} + \frac{R(2x + 1, 2y + 1)}{2}\\
+R(2x, 2y + 1) &amp;= \frac{R(2x - 1, 2y + 1)}{2} + \frac{R(2x + 1, 2y + 1)}{2}\\
+R(2x, 2y) &amp;= \frac{R(2x - 1, 2y - 1)}{4} + \frac{R(2x - 1, 2y + 1)}{4} \\
+          &amp;+ \frac{R(2x + 1, 2y - 1)}{4} + \frac{R(2x + 1, 2y + 1)}{4}
+\end{aligned}
+$$</div>
+<p>
+也就是说每一个像素都完美的于其周围的像素相关，反而言之某些非插值的图像中的像素不会于其周围的像素相关。进一步的，如果图像被修改，那么由于不同的插值算法的影响，像素的相关性就会被破坏。
+但是，由于我们并不知道像素于像素之间是否真的相关或像素于像素之间的相关关系（插值方法）所以我们无法直接的利用上方的方法，但是EM算法可以解决我们什么都不知道的问题。
+我们假设f（x）是一组型号，他来自于两组模型，线性插值的m1模型也就是他与其邻居线性相关<span class="math">\(f(x) = \sum^N_{u = -n}\alpha_u f(x + u)\)</span>以及与其邻居不相关的m2模型.</p>
+<h2>基于EM算法检测CFA插值情况</h2>
+<p>下面利用EM算法对两组模型进行验证:
+在E-step, 利用残差求解似然<span class="math">\(\omega\)</span>
+</p>
+<div class="math">$$
+\begin{aligned}
+r_1(x) = f(x) -\sum^N_{u = -N}\alpha_uf(x + u)\\
+w_1(x) = P_r(\alpha | r_1(x)) = \frac{\frac{e^-r^2_1(x)}{\sigma}}{\frac{e^-r^2_1(x)}{\sigma} + \frac{1}{\delta}}
+\end{aligned}
+$$</div>
+<p>
+在M-Step, 利用先前求解出的似然<span class="math">\(\omega\)</span>, 来估计参数<span class="math">\(\alpha\)</span>. 首先我们利用SE求误差
+</p>
+<div class="math">$$
+E(\alpha) = \sum_\alpha \omega_1(x)(f(x)- \sum^N_{u = -N}\alpha_u f(x + u))^2
+$$</div>
+<p>
+随后对误差求梯度并设置梯度为0, 得到
+</p>
+<div class="math">$$
+\alpha = (F^TWF)^{-1}F^TWf
+$$</div>
+<p>
+对于图像而言, 即二维数据的情形我们首先假设
+</p>
+<div class="math">$$
+f(x) = \sum^N_{u, v = -n}\alpha_{u, v} f(x + u, y + v)
+$$</div>
+<p>
+随后求解似然
+</p>
+<div class="math">$$
+\omega_1(x, y) = P_r(\alpha | r_1(x, y)) = \frac{frac{e^{r^2_1(x, y)}{\sigma}}}{frac{e^{r^2_1(x, y)}{\sigma}} + frac{1}{\sigma}}
+$$</div>
+<p>
+计算误差
+</p>
+<div class="math">$$
+E(\alpha) = \sum_{x, y}\omega_1(x, y)(f(x, y) - \sum^N_{u, v = -N}\alpha_{u, v}f(x + u, y + v))^2
+$$</div>
+<p>
+最后求解<span class="math">\(\alpha\)</span>
+</p>
+<div class="math">$$
+\begin{aligned}
+\sum^N_{u, v =-N}\alpha_{u, v}(\sum_{x, y}\omega_1(x, y)f(x + s, y + t)f(x + u, y + v)) = \\
+\sum_{x, y}\omega_1(x, y)f(x + s, y + t)f(x, y) \\
+\end{aligned}
+$$</div>
+<p>利用求解出的a，那么就可以刻画相邻的像素之间的相关概率，见下图，其中左侧是原图，中间是相关概率图，右侧是利用傅里叶变化处理后的概率图
+<img alt="cfa_em" src="/images/DigitalForensics/cfa_em.jpg"/>
+通常经过特定插值算法的图像的傅里叶变换图,都会有明显的傅里叶峰, 在图像中表现为明显的小点. </p>
+<h2>基于CFA定位被修改区域</h2>
+<p>实验使用Nikon D100相机拍摄3张1024x1024的图像, 对其使用3x3的二项式插值算法并下采样至512x512以破坏其CFA插值特征. 随后在对图像模拟CFA插值算法, 并于未插值的"原始"图像进行拼接。利用EM算法对CFA插值相关性进行计算效果如下.
+<img alt="cfa_loc" src="/images/DigitalForensics/cfa_loc.jpg"/></p>
+<h2>参考文献</h2>
+<p>[1] <a href="https://farid.berkeley.edu/downloads/publications/sp05a.pdf">Exposing Digital Forgeries in Color Filter Array Interpolated Images</a></p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/book.html">Book</a>
+      <a href="/tag/forensics.html">Forensics</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="/forensics_1_3.html" title="数字图像取证 - 基于文件格式的取证 3">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
+    <a class="btn float-right" href="/forensics_2_2.html" title="数字图像取证 - 基于相机属性的取证 2">
+      Next Post <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; 2020 </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " R08UST's Blog ",
+  "url" : "",
+  "image": "/images/profile/profile.jpg",
+  "description": ""
+}
+</script>
+
+    <script>
+      $(document).ready(function() {
+        $('#tipue_search_input').tipuesearch();
+      });
+    </script>
+
+</body>
+</html>

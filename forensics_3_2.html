@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/github.min.css">
+
+    <script src="/theme/tipuesearch/jquery.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch_set.min.js"></script>
+    <script src="/tipuesearch_content.js"></script>
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="R08UST's Blog Atom">
+
+
+    <link rel="shortcut icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+
+  
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333">
+
+<meta name="author" content="R08UST" />
+<meta name="description" content="基于SIFT特征与Ransac算法检测图像内复制粘贴" />
+<meta name="keywords" content="Book, Forensics">
+
+
+<meta property="og:site_name" content="R08UST's Blog"/>
+<meta property="og:title" content="数字图像取证 - 基于像素的取证 2"/>
+<meta property="og:description" content="基于SIFT特征与Ransac算法检测图像内复制粘贴"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/forensics_3_2.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2021-02-04 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/r08ust.html">
+<meta property="article:section" content="Digital Image Forensics"/>
+<meta property="article:tag" content="Book"/>
+<meta property="article:tag" content="Forensics"/>
+<meta property="og:image" content="/images/profile/profile.jpg">
+
+  <title>R08UST's Blog &ndash; 数字图像取证 - 基于像素的取证 2</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="">
+        <img src="/images/profile/profile.jpg" alt="" title="">
+      </a>
+
+      <h1>
+        <a href=""></a>
+      </h1>
+
+<p>Security & AI Developer</p>
+        <form class="navbar-search" action="/search.html" role="search">
+          <input type="text" name="q" id="tipue_search_input" placeholder="Search...">
+        </form>
+
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/alexandrevicenzi/en" target="_blank">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-github" href="https://github.com/r08ust" target="_blank">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/r08ust" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">Home</a>
+
+      <a href="/index.html">Main</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="/feeds/all.atom.xml">Atom</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="forensics_3_2">数字图像取证 - 基于像素的取证 2</h1>
+    <p>
+      Posted on Thu 04 February 2021 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
+
+        &#8226; 1 min read
+    </p>
+  </header>
+
+
+  <div>
+    <p>前面介绍的均为一些跨图像的修改, 通过由于不同图像的不同的属性我们将图像修改/取证. 那么对于同一图像内的直接复制策略如何进行检测. 这里介绍基于SIFT特征与Ransac算法检测图像内复制粘贴. (这里有一个猜想, 一般图像复制粘贴的同时会对图像进行缩放裁剪, 结合上一节中重采样检测也许会有较好的效果提升)</p>
+<h2>SIFT特征</h2>
+<p>检测的关键就是使用SIFT特征, 首先简单的介绍什么是SIFT特征: SIFT(<a href="https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf">
+Distinctive Image Features from Scale-Invariant Keypoints</a>)是一种检测局部特征算法, 该算法通过求一幅图中的特征点(interest points, or corner points)及其有关scale 和 orientation 的描述子得到特征并进行图像特征点匹配, 获得了良好效果, SIFT特征不只具有尺度不变性, 即使改变旋转角度, 图像亮度或拍摄视角, 仍然能够得到好的检测效果. 整个算法分为以下几个部分</p>
+<ol>
+<li>尺度空间极值检测</li>
+<li>关键点位置及尺度确定</li>
+<li>关键点方向确定</li>
+<li>特征向量生成</li>
+</ol>
+<p>那么在利用SIFT提取出局部特征之后, 便可以利用一些算法来做特征点的匹配, 也就是说复制出的图像会有相同的特征点. 这里采用随机抽样一致算法(RANSAC)</p>
+<h2>Ransac算法检测图像复制</h2>
+<p>RANSAC算法(<a href="http://www.cs.ait.ac.th/~mdailey/cvreadings/Fischler-RANSAC.pdf">Random Sample Consensus: A Paradigm for Model Fitting with Apphcatlons to Image Analysis and Automated Cartography</a>)的基本假设是样本中包含正确数据(inliers, 可以被模型描述的数据), 也包含异常数据(outliers, 偏离正常范围很远、无法适应数学模型的数据), 即数据集中含有噪声. 这些异常数据可能是由于错误的测量、错误的假设、错误的计算等产生的. 同时RANSAC也假设, 给定一组正确的数据, 存在可以计算出符合这些数据的模型参数的方法. 
+下面简述如何利用RANSAC算法检测直接复制图像类型的篡改. RANSAC是由3步组成：
+1, 选择随即选3组以上的匹配的关键点, <span class="math">\(p_i,\enspace q_i,\enspace i \ge 3\)</span>
+2, 优化<span class="math">\(||p_i - (q_i + t)||^2\)</span>, 其中<span class="math">\(t\)</span>是变换矩阵.
+3, 所有剩余的关键点被分类为内点, 既根据<span class="math">\(||p_i - (q_i + t)||^2\)</span>是否小于设定阈值.
+这样RANSAC算法就能就能将一系列内点归为一类
+如果图像被其他修改过, 那么就可以简单的拓展一下便可以再次利用, 也就是修改loss为<span class="math">\(||p_i - M(q_i + t)||^2\)</span>, 其中<span class="math">\(M\)</span>是一个2*2的变换矩阵. </p>
+<p>最终结果如下<img alt="copy_result" src="/images/DigitalForensics/copy_result.jpg"/></p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/book.html">Book</a>
+      <a href="/tag/forensics.html">Forensics</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="/ios_cccrypt.html" title="IOS逆向 CCCrypt技巧">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; 2020 </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " R08UST's Blog ",
+  "url" : "",
+  "image": "/images/profile/profile.jpg",
+  "description": ""
+}
+</script>
+
+    <script>
+      $(document).ready(function() {
+        $('#tipue_search_input').tipuesearch();
+      });
+    </script>
+
+</body>
+</html>

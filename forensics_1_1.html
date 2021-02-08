@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/github.min.css">
+
+    <script src="/theme/tipuesearch/jquery.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch_set.min.js"></script>
+    <script src="/tipuesearch_content.js"></script>
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="R08UST's Blog Atom">
+
+
+    <link rel="shortcut icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+
+  
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333">
+
+<meta name="author" content="R08UST" />
+<meta name="description" content="介绍Jpeg文件格式及其相关内容" />
+<meta name="keywords" content="Book, Forensics">
+
+
+<meta property="og:site_name" content="R08UST's Blog"/>
+<meta property="og:title" content="数字图像取证 - 基于文件格式的取证 1"/>
+<meta property="og:description" content="介绍Jpeg文件格式及其相关内容"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/forensics_1_1.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-04-10 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/r08ust.html">
+<meta property="article:section" content="Digital Image Forensics"/>
+<meta property="article:tag" content="Book"/>
+<meta property="article:tag" content="Forensics"/>
+<meta property="og:image" content="/images/profile/profile.jpg">
+
+  <title>R08UST's Blog &ndash; 数字图像取证 - 基于文件格式的取证 1</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="">
+        <img src="/images/profile/profile.jpg" alt="" title="">
+      </a>
+
+      <h1>
+        <a href=""></a>
+      </h1>
+
+<p>Security & AI Developer</p>
+        <form class="navbar-search" action="/search.html" role="search">
+          <input type="text" name="q" id="tipue_search_input" placeholder="Search...">
+        </form>
+
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/alexandrevicenzi/en" target="_blank">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-github" href="https://github.com/r08ust" target="_blank">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/r08ust" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">Home</a>
+
+      <a href="/index.html">Main</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="/feeds/all.atom.xml">Atom</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="forensics_1_1">数字图像取证 - 基于文件格式的取证 1</h1>
+    <p>
+      Posted on Fri 10 April 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
+
+        &#8226; 1 min read
+    </p>
+  </header>
+
+
+  <div>
+    <h2>基于文件格式的取证</h2>
+<p>文件格式（或文件类型）是指电脑为了存储信息而使用的对信息的特殊编码方式，是用于识别内部储存的资料。(摘自百度百科)。 那么计算机为了处理这样特定的编码一定存在一些特定的标识符来对该数据进行解释。利于在JPEG文件格式中，为了使JPEG数据能正常的还原成为位图数据（bitmap）， 文件的头中一定存在着某些数据保存了压缩的参数（量化表，傅立叶变换系数等等）。</p>
+<h2>色彩空间</h2>
+<p>色彩空间（英语：Color space）是对色彩的组织方式。借助色彩空间和针对物理设备的测试，可以得到色彩的固定模拟和数字表示。色彩空间可以只通过任意挑选一些颜色来定义，比如像彩通系统就只是把一组特定的颜色作为样本，然后给每个颜色定义名字和代码；也可以是基于严谨的数学定义。</p>
+<p>同时颜色可以从以下属性取衡量：
+1. 亮度(Brightness，value)：指的是感官上区域的明暗。 
+2. 色相(Hue): 指的是色彩的外相，是在不同波长的光照射下，人眼所感觉不同的颜色，如红色、黄色、蓝色等。
+3. 色度(Colorfulness)：指色彩的纯度，也叫彩度，即颜色的鲜艳程度。从广义上说，黑色、白色以及灰色是“色度=0”的颜色。
+4. 明度(Lightness)：同一种颜色在不同的亮度中会产生不同的颜色感。具体来讲就是相对于周边颜色亮度(发白感) 
+5. 色品(Chroma):由色度，明度综合决定
+6. 饱和度(Saturation):由色度以及亮度综合决定</p>
+<p>基本上所有的色彩空间都由上述6个属性组合而来，并且大多都为3元组的形式，比如 Adobe RGB、sRGB，LAB以及一个四元祖色彩空间CMYK, 该色彩空间由Cyan-青，Magenta-洋红，Yellow-黄，blacK-黑。此处缩写使用最后一个字母K而非开头的B，是因为在整体色彩学中已经将B给了RGB的Blue蓝色。</p>
+<h2>JPEG文件格式</h2>
+<p>JPEG是一种有损的文件格式但其也是最常用的图像文件格式。构造一张JPEG图像，一般由以下几个步骤构成
+1. RGB转换为YCbCr空间。众所周知，大多数的图像数据都是以RGB色彩空间存储的 。YCbCr是一三元组色彩空间由Y-明度(Lightness)，Cb-蓝色偏移，Cr-红色偏移构成。YCbCr由于其按照4:1:1的比例进行采样故常用于影像连续处理，或是数字摄影系统中。 利用YCbCr储存色彩可以有效的降低图像的所占比例。
+2. 对每组通道进行8*8的划分，并将每个8*8的数据转换为signed integers。
+3. 对每个8*8的数据块进行二维离散傅里叶变换，以储存其频域信息。<span class="math">\(\omega_k=\frac{2k\pi}{8}\)</span>, <span class="math">\(\omega_l=\frac{2l\pi}{8}\)</span>，c对应每个通道以及<span class="math">\(f_c(m, n)\)</span>对应特定的像素点。
+   </p>
+<div class="math">$$F_c(\omega_c, \omega_l)=\sum^7_{m=0}\sum^7_{n=0}f_c(m, n)cos(\omega_{k}m)cos(\omega_{l}n)$$</div>
+<p>
+4. 对频域信息进行量化压缩。<span class="math">\(q_c\)</span>是对于每个通道都有一个独立的8*8的量化表
+   </p>
+<div class="math">$$\hat{F_c}(\omega_k,\omega_l)=\lfloor\frac{F_c(\omega_k,\omega_l)}{q_c(\omega_k,\omega_l)}\rfloor$$</div>
+<p>
+5. 最后在利用熵编码法(一般都是用霍夫曼编码）对压缩后的评语信息再次进行压缩。</p>
+<p>```dot
+digraph G{
+    rankdir=LR
+    RGB -&gt; YCbCr
+    YCbCr -&gt; 离散傅里叶
+    离散傅里叶 -&gt; 量化压缩
+    量化压缩 -&gt; JEPG
+}</p>
+<p>'''</p>
+<h2>EXIF</h2>
+<p>EXIF(Exchangeable image file format)是专门为数码相机的照片设定的，可以记录数码照片的属性信息和拍摄数据。该数据结构一般嵌入在JEPG，TIFF，RIFF文件格式中。
+下面是EXIF包含的信息(摘自WIKI))</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>信息（举例）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>制造厂商</td>
+<td>Canon</td>
+</tr>
+<tr>
+<td>相机型号</td>
+<td>Canon EOS-1Ds Mark III</td>
+</tr>
+<tr>
+<td>图象方向</td>
+<td>正常（upper-left）</td>
+</tr>
+<tr>
+<td>图象分辨率X</td>
+<td>300</td>
+</tr>
+<tr>
+<td>图象分辨率Y</td>
+<td>300</td>
+</tr>
+<tr>
+<td>分辨率单位</td>
+<td>dpi</td>
+</tr>
+<tr>
+<td>软件</td>
+<td>Adobe Photoshop CS Macintosh</td>
+</tr>
+<tr>
+<td>最后异动时间</td>
+<td>2005:10:06 12:53:19</td>
+</tr>
+<tr>
+<td>YCbCrPositioning</td>
+<td>2</td>
+</tr>
+<tr>
+<td>曝光时间</td>
+<td>0.00800 (1/125) sec</td>
+</tr>
+<tr>
+<td>光圈值</td>
+<td>F22</td>
+</tr>
+<tr>
+<td>拍摄模式</td>
+<td>光圈优先</td>
+</tr>
+<tr>
+<td>ISO感光值</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Exif信息版本</td>
+<td>30,32,32,31</td>
+</tr>
+<tr>
+<td>图象拍摄时间</td>
+<td>2005:09:25 15:00:18</td>
+</tr>
+<tr>
+<td>图象存入时间</td>
+<td>2005:09:25 15:00:18</td>
+</tr>
+<tr>
+<td>曝光补偿（EV+-）</td>
+<td>0</td>
+</tr>
+<tr>
+<td>测光模式</td>
+<td>点测光（Spot）</td>
+</tr>
+<tr>
+<td>闪光灯</td>
+<td>关闭</td>
+</tr>
+<tr>
+<td>镜头实体焦长</td>
+<td>12 mm</td>
+</tr>
+<tr>
+<td>Flashpix版本</td>
+<td>30,31,30,30</td>
+</tr>
+<tr>
+<td>图象色域空间</td>
+<td>sRGB</td>
+</tr>
+<tr>
+<td>图象尺寸X</td>
+<td>5616 pixel</td>
+</tr>
+<tr>
+<td>图象尺寸Y</td>
+<td>3744 pixel</td>
+</tr>
+</tbody>
+</table>
+<h2>取证</h2>
+<p>结合上面叙述的JEPG以及EXIF信息，若给定一组图像想要确定那些图像来源于那一台相机，我们可以抽取出：
+1. 量化表 - 3x8x8共192个数据特征
+2. 图像的长宽 - 2个特征值
+3. 霍夫曼编码 - 15x2x3共90个数据特征
+4. 可选：EXIF信息，一般而言拥有完整的EXIF信息的图像十分容易确定来源
+那么一共284个数据特征，可以用来表示一张图像。随后使用简单的LR模型便可以对一张图像进行分类。</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/book.html">Book</a>
+      <a href="/tag/forensics.html">Forensics</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="/forensics_0.html" title="数字图像取证 - 前言">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
+    <a class="btn float-right" href="/forensics_1_2.html" title="数字图像取证 - 基于文件格式的取证 2">
+      Next Post <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; 2020 </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " R08UST's Blog ",
+  "url" : "",
+  "image": "/images/profile/profile.jpg",
+  "description": ""
+}
+</script>
+
+    <script>
+      $(document).ready(function() {
+        $('#tipue_search_input').tipuesearch();
+      });
+    </script>
+
+</body>
+</html>

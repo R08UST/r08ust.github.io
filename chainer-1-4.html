@@ -1,0 +1,1524 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/github.min.css">
+
+    <script src="/theme/tipuesearch/jquery.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch_set.min.js"></script>
+    <script src="/tipuesearch_content.js"></script>
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="R08UST's Blog Atom">
+
+
+    <link rel="shortcut icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+
+  
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333">
+
+<meta name="author" content="R08UST" />
+<meta name="description" content="编写简单的CNN检测Cifar10" />
+<meta name="keywords" content="MachineLearning">
+
+
+<meta property="og:site_name" content="R08UST's Blog"/>
+<meta property="og:title" content="Chainer教程 1.4 简单的CNN模型"/>
+<meta property="og:description" content="编写简单的CNN检测Cifar10"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/chainer-1-4.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-07-20 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/r08ust.html">
+<meta property="article:section" content="MachineLearning"/>
+<meta property="article:tag" content="MachineLearning"/>
+<meta property="og:image" content="/images/profile/profile.jpg">
+
+  <title>R08UST's Blog &ndash; Chainer教程 1.4 简单的CNN模型</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="">
+        <img src="/images/profile/profile.jpg" alt="" title="">
+      </a>
+
+      <h1>
+        <a href=""></a>
+      </h1>
+
+<p>Security & AI Developer</p>
+        <form class="navbar-search" action="/search.html" role="search">
+          <input type="text" name="q" id="tipue_search_input" placeholder="Search...">
+        </form>
+
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/alexandrevicenzi/en" target="_blank">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-github" href="https://github.com/r08ust" target="_blank">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/r08ust" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">Home</a>
+
+      <a href="/index.html">Main</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="/feeds/all.atom.xml">Atom</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="chainer-1-4">Chainer教程 1.4 简单的CNN模型</h1>
+    <p>
+      Posted on Fri 20 July 2018 in <a href="/category/machinelearning.html">MachineLearning</a>
+
+        &#8226; 1 min read
+    </p>
+  </header>
+
+
+  <div>
+    <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
+.ansibold {
+  font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
+  border-color: #ababab;
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
+}
+@media print {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
+  border: 0;
+  border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+div.output_area .mglyph > img {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 1px 0 1px 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+
+
+
+.rendered_html pre,
+
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css"> .highlight pre  .hll { background-color: #ffffcc }
+ .highlight pre   { background: #f8f8f8; }
+ .highlight pre  .c { color: #408080; font-style: italic } /* Comment */
+ .highlight pre  .err { border: 1px solid #FF0000 } /* Error */
+ .highlight pre  .k { color: #008000; font-weight: bold } /* Keyword */
+ .highlight pre  .o { color: #666666 } /* Operator */
+ .highlight pre  .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+ .highlight pre  .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+ .highlight pre  .cp { color: #BC7A00 } /* Comment.Preproc */
+ .highlight pre  .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+ .highlight pre  .c1 { color: #408080; font-style: italic } /* Comment.Single */
+ .highlight pre  .cs { color: #408080; font-style: italic } /* Comment.Special */
+ .highlight pre  .gd { color: #A00000 } /* Generic.Deleted */
+ .highlight pre  .ge { font-style: italic } /* Generic.Emph */
+ .highlight pre  .gr { color: #FF0000 } /* Generic.Error */
+ .highlight pre  .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+ .highlight pre  .gi { color: #00A000 } /* Generic.Inserted */
+ .highlight pre  .go { color: #888888 } /* Generic.Output */
+ .highlight pre  .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+ .highlight pre  .gs { font-weight: bold } /* Generic.Strong */
+ .highlight pre  .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+ .highlight pre  .gt { color: #0044DD } /* Generic.Traceback */
+ .highlight pre  .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+ .highlight pre  .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+ .highlight pre  .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+ .highlight pre  .kp { color: #008000 } /* Keyword.Pseudo */
+ .highlight pre  .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+ .highlight pre  .kt { color: #B00040 } /* Keyword.Type */
+ .highlight pre  .m { color: #666666 } /* Literal.Number */
+ .highlight pre  .s { color: #BA2121 } /* Literal.String */
+ .highlight pre  .na { color: #7D9029 } /* Name.Attribute */
+ .highlight pre  .nb { color: #008000 } /* Name.Builtin */
+ .highlight pre  .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+ .highlight pre  .no { color: #880000 } /* Name.Constant */
+ .highlight pre  .nd { color: #AA22FF } /* Name.Decorator */
+ .highlight pre  .ni { color: #999999; font-weight: bold } /* Name.Entity */
+ .highlight pre  .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+ .highlight pre  .nf { color: #0000FF } /* Name.Function */
+ .highlight pre  .nl { color: #A0A000 } /* Name.Label */
+ .highlight pre  .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+ .highlight pre  .nt { color: #008000; font-weight: bold } /* Name.Tag */
+ .highlight pre  .nv { color: #19177C } /* Name.Variable */
+ .highlight pre  .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+ .highlight pre  .w { color: #bbbbbb } /* Text.Whitespace */
+ .highlight pre  .mb { color: #666666 } /* Literal.Number.Bin */
+ .highlight pre  .mf { color: #666666 } /* Literal.Number.Float */
+ .highlight pre  .mh { color: #666666 } /* Literal.Number.Hex */
+ .highlight pre  .mi { color: #666666 } /* Literal.Number.Integer */
+ .highlight pre  .mo { color: #666666 } /* Literal.Number.Oct */
+ .highlight pre  .sa { color: #BA2121 } /* Literal.String.Affix */
+ .highlight pre  .sb { color: #BA2121 } /* Literal.String.Backtick */
+ .highlight pre  .sc { color: #BA2121 } /* Literal.String.Char */
+ .highlight pre  .dl { color: #BA2121 } /* Literal.String.Delimiter */
+ .highlight pre  .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+ .highlight pre  .s2 { color: #BA2121 } /* Literal.String.Double */
+ .highlight pre  .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+ .highlight pre  .sh { color: #BA2121 } /* Literal.String.Heredoc */
+ .highlight pre  .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+ .highlight pre  .sx { color: #008000 } /* Literal.String.Other */
+ .highlight pre  .sr { color: #BB6688 } /* Literal.String.Regex */
+ .highlight pre  .s1 { color: #BA2121 } /* Literal.String.Single */
+ .highlight pre  .ss { color: #19177C } /* Literal.String.Symbol */
+ .highlight pre  .bp { color: #008000 } /* Name.Builtin.Pseudo */
+ .highlight pre  .fm { color: #0000FF } /* Name.Function.Magic */
+ .highlight pre  .vc { color: #19177C } /* Name.Variable.Class */
+ .highlight pre  .vg { color: #19177C } /* Name.Variable.Global */
+ .highlight pre  .vi { color: #19177C } /* Name.Variable.Instance */
+ .highlight pre  .vm { color: #19177C } /* Name.Variable.Magic */
+ .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Chainer实现CNN模型">Chainer实现CNN模型<a class="anchor-link" href="#Chainer实现CNN模型">¶</a></h1><p>CNN全称卷积神经网络(Convolution neurual networks)，其只要由两部分卷积(Conv)与池化(Pooling)组成。
+卷积与池化均来源于泛函中的一种数学算子即通过两个函数f和g生成第三个函数的一种数学算子。卷积与池化最大的区别在于卷积需要训练并且卷积的步长为1，池化则不固定。</p>
+<p>这里对步长进行一个小的说明，步长是指滤波器(卷积核)在图像上滑动时一次滑动多少单位的剂量，如下图是一个步长为2的卷积。</p>
+<p><img alt="卷积" src="https://pic2.zhimg.com/v2-a7ecf6026ad52ef15308b75426ab915f_1200x500.jpg"/></p>
+<p>而池化一般设置为与池化核心大小相同的值,保证池化区域互不相交。</p>
+<p>这里再说一个卷积用数学公式的表示方法$f=\omega*x + \beta$, 可以看出整体形式与全连接几乎相同，仅添加了一卷积符号。</p>
+<h2 id="Chainer-自构建CNN模型">Chainer 自构建CNN模型<a class="anchor-link" href="#Chainer-自构建CNN模型">¶</a></h2><p>下面利用一个小的自构建模型对Cifar10数据集进行分类</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [31]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">chainer</span>
+<span class="kn">import</span> <span class="nn">chainer.functions</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">chainer.links</span> <span class="k">as</span> <span class="nn">L</span>
+<span class="kn">import</span> <span class="nn">chainer.datasets</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">chainer.optimizers</span>
+<span class="kn">from</span> <span class="nn">chainer.dataset</span> <span class="kn">import</span> <span class="n">concat_examples</span>
+<span class="kn">from</span> <span class="nn">chainer.cuda</span> <span class="kn">import</span> <span class="n">to_cpu</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">class</span> <span class="nc">simple_bn</span><span class="p">(</span><span class="n">chainer</span><span class="o">.</span><span class="n">Chain</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">simple_bn</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_scope</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">Convolution2D</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">out_channels</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">Convolution2D</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">out_channels</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">Convolution2D</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">out_channels</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span><span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv4</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">Convolution2D</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">out_channels</span><span class="o">=</span><span class="mi">96</span><span class="p">,</span><span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conv5</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">Convolution2D</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">out_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span><span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn3</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn4</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="mi">96</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn5</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="o">=</span><span class="n">L</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">max_pooling_2d</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">max_pooling_2d</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bn3</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">max_pooling_2d</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv4</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bn4</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">max_pooling_2d</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv5</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bn5</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+<span class="c1"># Define a network class</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="p">,</span><span class="n">test</span><span class="o">=</span><span class="n">chainer</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">get_cifar10</span><span class="p">(</span><span class="n">ndim</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># set shape as [n,c,x,y]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'shape:</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="n">train_iter</span><span class="o">=</span><span class="n">chainer</span><span class="o">.</span><span class="n">iterators</span><span class="o">.</span><span class="n">SerialIterator</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">test_iter</span><span class="o">=</span><span class="n">chainer</span><span class="o">.</span><span class="n">iterators</span><span class="o">.</span><span class="n">SerialIterator</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="c1">#get iterator of dataset</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>shape:(3, 32, 32)
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[14]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.image.AxesImage at 0x7f22339d61d0&gt;</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea">
+<img src="data:image/png;base64,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
+"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [22]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">net</span><span class="o">=</span><span class="n">simple_bn</span><span class="p">()</span> <span class="c1">#instantiate a model</span>
+<span class="n">net</span><span class="o">.</span><span class="n">to_gpu</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#Use gpu and  0 is gpu id</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">chainer</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">()</span> <span class="c1">#use default hyperparameters</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">net</span><span class="p">)</span> <span class="c1">#bind optimizer and model</span>
+<span class="n">max_epoch</span><span class="o">=</span><span class="mi">20</span> 
+<span class="c1">#set hyperparameter here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Chainer框架提供两种训练方式。一种为显式的调用循环，另一种即为将循环封装起来。这里主要利用显示的方法进行训练，因为更加利于在训练网络的过程中添加一些值或其他的东西。如果希望了解封装式的训练方式请进入<a href="https://docs.chainer.org/en/stable/examples/mnist.html">trainer</a></p>
+<p>下面是模型的训练过程，需要注意调用concat_examples方法是如果device设置不为None，这数据将会储存与Gpu中。同时该方法会自动把一个batch的数据pad成为统一大小，也就是说如果你原始的image_train中有2组数据大小分别为[3,24,32]以及[3,12,48] 那么所有的数据都会pad成为[3,24,48]的大小</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">while</span> <span class="n">train_iter</span><span class="o">.</span><span class="n">epoch</span><span class="o">&lt;</span><span class="n">max_epoch</span><span class="p">:</span>
+        <span class="n">train_batch</span> <span class="o">=</span> <span class="n">train_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> 
+        <span class="n">image_train</span><span class="p">,</span> <span class="n">target_train</span> <span class="o">=</span> <span class="n">concat_examples</span><span class="p">(</span><span class="n">train_batch</span><span class="p">,</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># concat_examples can split data to x and y. </span>
+        <span class="n">logit_train</span><span class="o">=</span><span class="n">net</span><span class="p">(</span><span class="n">image_train</span><span class="p">)</span> <span class="c1">#forward step</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax_cross_entropy</span><span class="p">(</span><span class="n">logit_train</span><span class="p">,</span> <span class="n">target_train</span><span class="p">)</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">cleargrads</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1">#calculate the gradient</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">train_iter</span><span class="o">.</span><span class="n">is_new_epoch</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'epoch:</span><span class="si">{:02d}</span><span class="s1"> train_loss:</span><span class="si">{:.04f}</span><span class="s1"> '</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">train_iter</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">to_cpu</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">)),),</span> <span class="n">end</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
+            <span class="n">test_losses</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">test_accuracies</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">test_batch</span> <span class="o">=</span> <span class="n">test_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                <span class="n">image_test</span><span class="p">,</span> <span class="n">target_test</span> <span class="o">=</span> <span class="n">concat_examples</span><span class="p">(</span><span class="n">test_batch</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">logit_test</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">image_test</span><span class="p">)</span>
+                <span class="n">loss_test</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax_cross_entropy</span><span class="p">(</span><span class="n">logit_test</span><span class="p">,</span> <span class="n">target_test</span><span class="p">)</span>
+                <span class="n">test_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_cpu</span><span class="p">(</span><span class="n">loss_test</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+                <span class="n">accuracy</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">logit_test</span><span class="p">,</span> <span class="n">target_test</span><span class="p">)</span>
+                <span class="n">accuracy</span><span class="o">.</span><span class="n">to_cpu</span><span class="p">()</span>
+                <span class="n">test_accuracies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">test_iter</span><span class="o">.</span><span class="n">is_new_epoch</span><span class="p">:</span> <span class="c1">#reset test_iter</span>
+                    <span class="n">test_iter</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">test_iter</span><span class="o">.</span><span class="n">current_position</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">test_iter</span><span class="o">.</span><span class="n">is_new_epoch</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">test_iter</span><span class="o">.</span><span class="n">_pushed_position</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">break</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'val_loss:</span><span class="si">{:.04f}</span><span class="s1"> val_accuracy:</span><span class="si">{:.04f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_losses</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_accuracies</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>epoch:05 train_loss:0.0952 val_loss:1.6678 val_accuracy:0.6791
+epoch:06 train_loss:0.1923 val_loss:1.8688 val_accuracy:0.6727
+epoch:07 train_loss:0.3112 val_loss:2.0504 val_accuracy:0.6691
+epoch:08 train_loss:0.2755 val_loss:2.2125 val_accuracy:0.6643
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>如果需要对模型保存以及加载，则需要使用以下代码</p>
+<pre><code>from chainer import serializers
+serializers.save_npz('where to save',net)
+serializers.load_npz('where to load',net)</code></pre>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/machinelearning.html">MachineLearning</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="/chainer-1-3.html" title="Chainer教程 1.2 & 1.3 chainer">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
+    <a class="btn float-right" href="/chainer-1-5.html" title="Chainer教程 1.5 利用预训练模型以及修改预训练模型">
+      Next Post <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; 2020 </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " R08UST's Blog ",
+  "url" : "",
+  "image": "/images/profile/profile.jpg",
+  "description": ""
+}
+</script>
+
+    <script>
+      $(document).ready(function() {
+        $('#tipue_search_input').tipuesearch();
+      });
+    </script>
+
+</body>
+</html>
