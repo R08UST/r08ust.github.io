@@ -137,11 +137,16 @@
 <p>普通条件断点</p>
 <div class="highlight"><pre><span></span><code><span class="err">bre mod -c "$esp == 0xabc" 1</span>
 <span class="err">其中引号包裹住的是判断条件. </span>
-<span class="err">判断条件后更着所选定的断点序号.</span>
+<span class="err">判断条件后跟着所选定的断点序号.</span>
 </code></pre></div>
-<p>内存条件断点</p>
+<p>内存条件断点
+以内存中数据为条件设置断点</p>
 <div class="highlight"><pre><span></span><code><span class="err">bre mod -c "*(char *)($x1) == 0xab" 1</span>
 <span class="err">引号包裹住的表达式可以类型转换为各种形式</span>
+</code></pre></div>
+<p>断点动作
+每次触发断点时, 触发特定的动作</p>
+<div class="highlight"><pre><span></span><code><span class="err">bre  mod -f</span>
 </code></pre></div>
   </div>
   <div class="tag-cloud">
