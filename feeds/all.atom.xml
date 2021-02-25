@@ -1,5 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2021-02-04T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>数字图像取证 - 基于像素的取证 2</title><link href="/forensics_3_2.html" rel="alternate"></link><published>2021-02-04T00:00:00+08:00</published><updated>2021-02-04T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-02-04:/forensics_3_2.html</id><summary type="html">&lt;p&gt;基于SIFT特征与Ransac算法检测图像内复制粘贴&lt;/p&gt;</summary><content type="html">&lt;p&gt;前面介绍的均为一些跨图像的修改, 通过由于不同图像的不同的属性我们将图像修改/取证. 那么对于同一图像内的直接复制策略如何进行检测. 这里介绍基于SIFT特征与Ransac算法检测图像内复制粘贴. (这里有一个猜想, 一般图像复制粘贴的同时会对图像进行缩放裁剪, 结合上一节中重采样检测也许会有较好的效果提升)&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2021-02-25T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>数字图像取证 - 基于像素的取证 3</title><link href="/forensics_3_3.html" rel="alternate"></link><published>2021-02-25T00:00:00+08:00</published><updated>2021-02-25T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-02-25:/forensics_3_3.html</id><summary type="html">&lt;p&gt;基于缩略图(thumbnail)分类不同的相机或图像编辑工具.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;缩略图&lt;/h2&gt;
+&lt;p&gt;在JPEG文件格式中, 会在头部嵌入经过滤波，对比度调整，压缩的缩略图.这 些特定的操作就导致了不同的相机厂商或软件厂商的细微差异。
+设一个原图为&lt;span class="math"&gt;\(f(x, y)\)&lt;/span&gt;，那么一个图像经过下面6步骤进行制作&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;裁剪/填充&lt;/li&gt;
+&lt;li&gt;预滤波&lt;/li&gt;
+&lt;li&gt;降采样&lt;/li&gt;
+&lt;li&gt;对比度&lt;/li&gt;
+&lt;li&gt;亮度调整&lt;/li&gt;
+&lt;li&gt;JEPG压缩&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;裁剪/填充&lt;/h2&gt;
+&lt;p&gt;当缩略图与原图的分辨率比例不相同时, 需要对图像进行裁剪/填充处理. 这一阶段会产生四个参数&lt;span class="math"&gt;\(c_l, c_r, c_t, c_b\)&lt;/span&gt;分别表示左右上下的裁剪/填充系数&lt;/p&gt;
+&lt;h2&gt;抽象预滤波, 降采样, 对比度以及亮度调整&lt;/h2&gt;
+&lt;p&gt;完成裁剪/填充操作后, 后续的四个操作可以将其抽象为一组模型
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+t(x, y) = \alpha(D\{\hat{f}(x, y) * h_1(x, y)\} * h_2(x, y)) + \beta
+$$&lt;/div&gt;
+&lt;p&gt;
+其中&lt;span class="math"&gt;\(t(x, y)\)&lt;/span&gt;是缩略图,&lt;span class="math"&gt;\(D\)&lt;/span&gt;表示降采样操作, &lt;span class="math"&gt;\(h_1\)&lt;/span&gt;为预滤波, &lt;span class="math"&gt;\(h_2\)&lt;/span&gt;为后滤波(可选, 一般用于锐化处理), &lt;span class="math"&gt;\(*\)&lt;/span&gt;为卷积, &lt;span class="math"&gt;\(\alpha, \beta\)&lt;/span&gt;则是对比度系数以及亮度系数.为了简化模型, 做出如下假设  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;预滤波器为圆对称高斯模型, &lt;span class="math"&gt;\(exp(-(x^2 + y^2)/\theta^2), 其中\)&lt;/span&gt;\theta$为宽度.&lt;/li&gt;
+&lt;li&gt;预滤波器是单元和.&lt;/li&gt;
+&lt;li&gt;后滤波器的大小为3x3.&lt;/li&gt;
+&lt;li&gt;后滤波器是对称的, 即&lt;span class="math"&gt;\((h_2(x, y) = h_2(-x, y),h_2(x, y) = h_2(x, -y))\)&lt;/span&gt;. 产生如下形式的滤波器(a b a; b c b; a b a)&lt;/li&gt;
+&lt;li&gt;后滤波器也是单元和, 约束$c = 1 - (4a + 4b)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在以上的约束下, 缩略图模型将会产生11个参数, 2个缩略图尺寸参数, 4个填充/裁剪参数, 1个预滤波参数&lt;span class="math"&gt;\(\theta\)&lt;/span&gt;, 2个后滤波参数&lt;span class="math"&gt;\(a, b\)&lt;/span&gt;以及对比度参数&lt;span class="math"&gt;\(\alpha\)&lt;/span&gt;和亮度参数&lt;span class="math"&gt;\(\beta\)&lt;/span&gt;. 考虑到JPEG图像格式的特有参数128个, 即2个8x8的对亮度以及色彩通道的量化表. 故对于一个Jpeg文件总共可以产生139个参数对其进行描述.&lt;/p&gt;
+&lt;h2&gt;求解剪切/填充参数&lt;/h2&gt;
+&lt;p&gt;缩略图处理流程中剪切/填充的边界正相关于全尺寸图像的分辨率(已知), 但具体的比例仍然需要估算. 首先设定一个初始的符合分辨率比例关系的初始缩略图&lt;span class="math"&gt;\(\hat{f}_0(x, y)\)&lt;/span&gt;. 故初始缩率图可以被建模为
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\hat{t}_0(x, y) = D\{\hat{f}(x, y)\}
+$$&lt;/div&gt;
+&lt;p&gt;
+其中&lt;span class="math"&gt;\(\hat{f}_0(x, y)\)&lt;/span&gt;为原始图像, D为降采样操作, 其比例为&lt;span class="math"&gt;\(max(N_x/n_x, N_y/n_y)\)&lt;/span&gt;, &lt;span class="math"&gt;\((N_x, N_y)\)&lt;/span&gt;以及&lt;span class="math"&gt;\((n_x, n_y)\)&lt;/span&gt;为图像和缩略图的尺寸. 随后初始缩率图经过各项异性(各个维度变换系数不相同)的缩放(scaling)和变换(translation)得到提取出的缩略图&lt;span class="math"&gt;\(t(x, y)\)&lt;/span&gt;
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+t(x, y) = \hat{t}(s_xx + \delta_x, s_yy + \delta_y)
+$$&lt;/div&gt;
+&lt;p&gt;
+其中&lt;span class="math"&gt;\((s_xx, s_yy), (\delta_x, \delta_y)\)&lt;/span&gt;分别为缩放和变换系数.
+在灰度图上基于粗粒度至细粒度的差分匹配算法(coarse-to-fine differential registration)求解上述参数&lt;/p&gt;
+&lt;h2&gt;求解滤波器以及对比度和亮度参数&lt;/h2&gt;
+&lt;p&gt;求解各滤波器以及对比度和亮度参数, 可以通过减少真实图像与预估图像之间的误差进行求解. 即
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+E_1(h_1, h_2) = \sum_{x, y}[t(x, y) - \alpha(D\{\hat{f}(x, y) * h_1(x, y)\} * h_2(x, y)) - \beta]^2
+$$&lt;/div&gt;
+&lt;p&gt;
+但上述公式仅根据预滤波和后滤波得出, 无法求解对比度以及亮度. 故对于亮度与对比度系数, 给定滤波器的参数, 定义误差函数为
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+E_2(\alpha, \beta) = \sum_{x, y}[t(x, y) - \alpha(D\{\hat{t}_h(x, y) + \beta)]^2
+$$&lt;/div&gt;
+&lt;p&gt;
+其中&lt;span class="math"&gt;\(\hat{t}_h(x, y) = D\{\hat{f}(x, y) * h_1(x, y)\} * h_2(x, y))\)&lt;/span&gt;
+利用最小二乘法即可&lt;span class="math"&gt;\(E_2\)&lt;/span&gt;进行求解. 对于&lt;span class="math"&gt;\(E_1\)&lt;/span&gt;则需要使用暴力搜索求解最小值, 或使用Nelder-Mead 最小化算法加速求解过程. 
+在实验中, 作者发现求解&lt;span class="math"&gt;\(E_1\)&lt;/span&gt;时在傅里叶域中效果会更好, 即最小化
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+E_1(h_1, h_2) = \sum_{\omega_x, \omega_y}[||T(\omega_x, \omega_y)|| - ||\hat{T}(\omega_x, \omega_y)||]^2
+$$&lt;/div&gt;
+&lt;p&gt;
+其中&lt;span class="math"&gt;\(T(\cdot)\)&lt;/span&gt;表示傅里叶变换后的真实缩率图&lt;span class="math"&gt;\(t(\cdot)\)&lt;/span&gt;,&lt;span class="math"&gt;\(\hat{T}(\cdot)\)&lt;/span&gt;表示傅里叶变换后的预估缩率图&lt;span class="math"&gt;\(D\{\hat{f}(x, y) * h_1(x, y)\} * h_2(x, y))\)&lt;/span&gt;, &lt;span class="math"&gt;\(||\cdot||\)&lt;/span&gt;表示傅里叶变换的量级. 由于经过&lt;span class="math"&gt;\(
+t(x, y) = \hat{t}(s_xx + \delta_x, s_yy + \delta_y)\)&lt;/span&gt;的初始校准, 低频特征时十分均衡的, 故该损失函数在高频特征上进行计算&lt;/p&gt;
+&lt;p&gt;最后是, 128个量化表系数可以直接从量化表中获取. &lt;/p&gt;
+&lt;h2&gt;参考文档&lt;/h2&gt;
+&lt;p&gt;1.E. Kee and H. Farid. Digital image authentication from thumbnails. In SPIE Symposium on Electronic Imaging, San Jose, CA, 2010.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Digital Image Forensics"></category><category term="Book"></category><category term="Forensics"></category></entry><entry><title>数字图像取证 - 基于像素的取证 2</title><link href="/forensics_3_2.html" rel="alternate"></link><published>2021-02-04T00:00:00+08:00</published><updated>2021-02-04T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-02-04:/forensics_3_2.html</id><summary type="html">&lt;p&gt;基于SIFT特征与Ransac算法检测图像内复制粘贴&lt;/p&gt;</summary><content type="html">&lt;p&gt;前面介绍的均为一些跨图像的修改, 通过由于不同图像的不同的属性我们将图像修改/取证. 那么对于同一图像内的直接复制策略如何进行检测. 这里介绍基于SIFT特征与Ransac算法检测图像内复制粘贴. (这里有一个猜想, 一般图像复制粘贴的同时会对图像进行缩放裁剪, 结合上一节中重采样检测也许会有较好的效果提升)&lt;/p&gt;
 &lt;h2&gt;SIFT特征&lt;/h2&gt;
 &lt;p&gt;检测的关键就是使用SIFT特征, 首先简单的介绍什么是SIFT特征: SIFT(&lt;a href="https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf"&gt;
 Distinctive Image Features from Scale-Invariant Keypoints&lt;/a&gt;)是一种检测局部特征算法, 该算法通过求一幅图中的特征点(interest points, or corner points)及其有关scale 和 orientation 的描述子得到特征并进行图像特征点匹配, 获得了良好效果, SIFT特征不只具有尺度不变性, 即使改变旋转角度, 图像亮度或拍摄视角, 仍然能够得到好的检测效果. 整个算法分为以下几个部分&lt;/p&gt;
