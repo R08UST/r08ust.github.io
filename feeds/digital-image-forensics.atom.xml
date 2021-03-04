@@ -1,5 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - Digital Image Forensics</title><link href="/" rel="alternate"></link><link href="/feeds/digital-image-forensics.atom.xml" rel="self"></link><id>/</id><updated>2021-02-25T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>数字图像取证 - 基于像素的取证 3</title><link href="/forensics_3_3.html" rel="alternate"></link><published>2021-02-25T00:00:00+08:00</published><updated>2021-02-25T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-02-25:/forensics_3_3.html</id><summary type="html">&lt;p&gt;基于缩略图(thumbnail)分类不同的相机或图像编辑工具.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;缩略图&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - Digital Image Forensics</title><link href="/" rel="alternate"></link><link href="/feeds/digital-image-forensics.atom.xml" rel="self"></link><id>/</id><updated>2021-03-02T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>数字图像取证 - 基于统计的取证 4</title><link href="/forensics_4_1.html" rel="alternate"></link><published>2021-03-02T00:00:00+08:00</published><updated>2021-03-02T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-03-02:/forensics_4_1.html</id><summary type="html">&lt;p&gt;CG还是照片? 基于统计学习, 分类CG与照片&lt;/p&gt;</summary><content type="html">&lt;h2&gt;引言&lt;/h2&gt;
+&lt;p&gt;现在软件可以渲染一个非常写实的图像，从而分区CG还是相片已经是一个困难的问题。但是CG图像一般都渲染在一个理想的模型下（光照，几何形状甚至是）, 那么统计量上CG一定与真实的图像存在差异. 下面将介绍一种方法: 利用小波变换得到的其高频以及低频分量进行统计学分析. &lt;/p&gt;
+&lt;h2&gt;正交镜像滤波器&lt;/h2&gt;
+&lt;p&gt;众所周知利用空间位置(spatial position), 方向(orientation)以及尺度(scale)等基本函数(如 小波变换)对图像进行分解后, 可以有效地完成图像压缩, 图像编码, 图像去噪抑或是材质合成等操作. 其主要是由于图像分解暴露出了有效用的统计特征. 下面介绍一种与小波变换紧密相关的滤波器-&lt;a href="https://en.wikipedia.org/wiki/Quadrature_mirror_filter"&gt;正交镜像滤波器&lt;/a&gt;, 其主要结构见下图
+&lt;img alt="wavelet" src="/images/DigitalForensics/wavelet.jpg"/&gt;
+当其作用在一张RGB图像时, 镜像正交编码器会对每一个通道(R, G, B)提取其竖直子带&lt;span class="math"&gt;\(V^c_i(x, y), 水平子带\)&lt;/span&gt;H^c_i(x, y)&lt;span class="math"&gt;\(以及对角子带(subbands)\)&lt;/span&gt;D^c_i(x, y)的特征. 其中&lt;span class="math"&gt;\(c\in{r, g, b}\)&lt;/span&gt;. 更进一步的每子带的系数分布由每个子带的方向, 尺度以及色彩通道的均值, 方差, 偏度以及峰度来描述. &lt;/p&gt;
+&lt;h2&gt;求解跨域高阶相关性信息&lt;/h2&gt;
+&lt;p&gt;仅靠这正交镜像滤波器所获取到的统计量无法完全获取跨域的高阶相关性. 举个例子, 具有一种边缘在固定方向,多个尺度上延申的显著特征的图像. 这样的图像特征将会在多个尺度, 方向以及空间位置上具有显著的能量分布. 故在横向子带上的一个巨大的系数表明其空间中的左右邻居也会有巨大值. 简单来说, 即如果尺度i的系数很大, 那么尺度i+1的系数同样也会很大. 
+为了获取跨域高阶相关性, 这里就需要引入统计学习相关算法. 为便于描述仅考虑绿色通道上的垂直子带&lt;span class="math"&gt;\(V^g_i(x, y)\)&lt;/span&gt;. 一线性预测器在所有可能的空间, 方向, 尺度以及邻居色彩定于如下:
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\begin{aligned}
+|V^g_i(x, y)| &amp;amp;= \omega_1|V^g_i(x - 1, y)| + \omega_2|V^g_i(x + 1, y)| \\
+                &amp;amp;+ \omega_3|V^g_i(x, y - 1)| + \omega_4|V^g_i(x, y + 1)| \\
+                &amp;amp;+ \omega_5|V^g_{i + 1}(x/2, y/2)| + \omega_6|V^g_i(x, y)| \\
+                &amp;amp;+ \omega_7|V^g_{i + }(x/2, y/2)| + \omega_8|V^r_i(x, y)| \\
+                &amp;amp;+ \omega_9|V^r_i(x, y)|\\
+\end{aligned}
+$$&lt;/div&gt;
+&lt;p&gt;
+其中&lt;span class="math"&gt;\(|\cdot|\)&lt;/span&gt;为绝对值函数, &lt;span class="math"&gt;\(\omega_k\)&lt;/span&gt;为标量权重. 上述的线性关系可以被简单的表示为矩阵相乘的形式&lt;span class="math"&gt;\(v = Q\Omega\)&lt;/span&gt;. 权重&lt;span class="math"&gt;\(\omega\)&lt;/span&gt;可以利用最小二乘法进行求解
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\Omega = (Q^TQ)^{-1}Q^Tv
+$$&lt;/div&gt;
+&lt;p&gt;
+一般&lt;span class="math"&gt;\(Q\)&lt;/span&gt;采用&lt;span class="math"&gt;\(9 * 9\)&lt;/span&gt;的矩阵进行运算. 这样可以保证&lt;span class="math"&gt;\(Q^TQ\)&lt;/span&gt;是可逆的. 最后在利用对数损失计算真实值与预测值之间的误差
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+p = log(v) - log(|Q\Omega|)
+$$&lt;/div&gt;
+&lt;p&gt;
+同理对于纵向子带, 对角子带及其不同的色彩通道处理方法类似&lt;/p&gt;
+&lt;h2&gt;实验结果&lt;/h2&gt;
+&lt;p&gt;分类器使用二分类的LDA, 以及SVM进行检测
+数据集则由40000张图像数据, 6000张CG图像组成, 为解决不同图像大小不一的情况, 仅提取图像中心256 * 256的像素. 按照上面的方法提取特征. 最后按照8:2的比例分割数据集.
+使用LDA模型, 测试集上分类准确率为54.6%的照片准确率, 99.2的CG图像. 使用SVM模型, 测试集上分类准确率为66.8%的照片准确率, 98.8%的CG图像.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Digital Image Forensics"></category><category term="Book"></category><category term="Forensics"></category></entry><entry><title>数字图像取证 - 基于像素的取证 3</title><link href="/forensics_3_3.html" rel="alternate"></link><published>2021-02-25T00:00:00+08:00</published><updated>2021-02-25T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-02-25:/forensics_3_3.html</id><summary type="html">&lt;p&gt;基于缩略图(thumbnail)分类不同的相机或图像编辑工具.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;缩略图&lt;/h2&gt;
 &lt;p&gt;在JPEG文件格式中, 会在头部嵌入经过滤波，对比度调整，压缩的缩略图.这 些特定的操作就导致了不同的相机厂商或软件厂商的细微差异。
 设一个原图为&lt;span class="math"&gt;\(f(x, y)\)&lt;/span&gt;，那么一个图像经过下面6步骤进行制作&lt;/p&gt;
 &lt;ol&gt;
