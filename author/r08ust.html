@@ -109,12 +109,40 @@
 
 <article>
   <header>
+    <h2><a href="/lun-wen-bi-ji-zerowall-detecting-zero-day-web-attacks-through-encoder-decoder-recurrent-neural-networks.html#lun-wen-bi-ji-zerowall-detecting-zero-day-web-attacks-through-encoder-decoder-recurrent-neural-networks">论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</a></h2>
+    <p>
+      Posted on Tue 09 March 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+
+
+        &#8226; 1 min read
+    </p>
+  </header>
+  <div>
+      <h2>Introduction</h2>
+<p>Waf(web application firewall)一般通过规则过滤/触发的异常的Web请求. 通过安全研究员对已知攻击特征的提取来构成并拓展特征库. 但基于特征的Waf难以对0Day漏洞进行检测. 故本文提出了一种Encoder-Decoder RNN架构的无监督学习方案对0Day漏洞进行检测.
+本文的核心思想在与将0Day的检测问题转换为翻译质量评定的问题. 简单的来讲即通过训练一个翻译器来将正常web请求A再次翻译为A'. 而当异常的web请求B翻译为B'时, 由于神经网络对B的特征拟合较差故B'的翻译质量也会较差. 以此来判定B是一个异常的web请求</p>
+<h2>Method</h2>
+<p>对于Waf吞吐量的是十分重要的, 完全基于AI检测的waf器吞吐量是一个重大缺陷, 故本文采用waf旁路架构, 基于已有的waf框架过滤异常请求. 神经网络本身不进行过滤处理, 仅用于检测0Day漏洞, 并结合安全人员将已发现的漏洞编写成规则添加进规则库. 下图为系统的架构图
+<img alt="system" src="https://d3i71xaburhd42.cloudfront.net/c01326f394883b0ad0df27870e7b84a427f2fb73/3-Figure2-1.png"/>
+可以看出整个系统架构分为两个部分(实际是三个部分, 即传统的waf框架自身的运行在图中被省略, 当流量未触发waf规则时, 其会被放行).
+在offline periodic retrain部分中, 其分为四个阶段数据积累, 词汇表构建(vocabulary), 词汇解析(token parser)以及训练. 其主要功能就是词汇表构建和训练. 以保证能对新出现的请求进行正常识别.
+在online detection部分中, 其分为六个阶段请求过滤(在图中未体现), 词汇解析, 翻译, 异常检测以及人工调查.  一条请求经过上述六个阶段后 …</p>
+        <br>
+        <a class="btn"
+           href="/lun-wen-bi-ji-zerowall-detecting-zero-day-web-attacks-through-encoder-decoder-recurrent-neural-networks.html#lun-wen-bi-ji-zerowall-detecting-zero-day-web-attacks-through-encoder-decoder-recurrent-neural-networks">
+          Continue reading
+        </a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="/forensics_4_1.html#forensics_4_1">数字图像取证 - 基于统计的取证 4</a></h2>
     <p>
       Posted on Tue 02 March 2021 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -135,7 +163,7 @@
       Posted on Thu 25 February 2021 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -156,7 +184,7 @@
       Posted on Thu 04 February 2021 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -177,7 +205,7 @@
       Posted on Tue 05 January 2021 in <a href="/category/softwaresecurity.html">SoftwareSecurity</a>
 
           &#8226; Tagged with
-              <a href="/tag/ios.html">IOS</a>,              <a href="/tag/softwaresecurity.html">SoftwareSecurity</a>
+              <a href="/tag/ios.html">IOS</a>,              <a href="/tag/softwaresecurity.html">SoftwareSecurity</a>,              <a href="/tag/security.html">Security</a>
         &#8226; 2 min read
     </p>
   </header>
@@ -198,7 +226,7 @@
       Posted on Tue 03 November 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -219,7 +247,7 @@
       Posted on Thu 01 October 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -240,7 +268,7 @@
       Posted on Sat 15 August 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -261,7 +289,7 @@
       Posted on Fri 03 July 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -282,7 +310,7 @@
       Posted on Mon 15 June 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
 
           &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -291,27 +319,6 @@
         <br>
         <a class="btn"
            href="/forensics_1_3.html#forensics_1_3">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="/forensics_1_2.html#forensics_1_2">数字图像取证 -  基于文件格式的取证 2</a></h2>
-    <p>
-      Posted on Fri 01 May 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
-
-          &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>
-        &#8226; 1 min read
-    </p>
-  </header>
-  <div>
-      <p>利用Double Jepg技术，检测图像二次压缩</p>
-        <br>
-        <a class="btn"
-           href="/forensics_1_2.html#forensics_1_2">
           Continue reading
         </a>
   </div>

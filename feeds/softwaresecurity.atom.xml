@@ -188,4 +188,4 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;将上述代码保存后, 利⽤frida对⽬标应⽤进⾏插桩处理, 并调⽤该脚本, 便可以⾃动化处理使⽤该应⽤&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;frida-trace -U -p 14534 -i "CCCrypt"&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="SoftwareSecurity"></category><category term="IOS"></category><category term="SoftwareSecurity"></category></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="SoftwareSecurity"></category><category term="IOS"></category><category term="SoftwareSecurity"></category><category term="Security"></category></entry></feed>
