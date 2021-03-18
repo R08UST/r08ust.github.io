@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - AIForSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/aiforsecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-03-09T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</title><link href="/lun-wen-bi-ji-zerowall-detecting-zero-day-web-attacks-through-encoder-decoder-recurrent-neural-networks.html" rel="alternate"></link><published>2021-03-09T00:00:00+08:00</published><updated>2021-03-09T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-03-09:/lun-wen-bi-ji-zerowall-detecting-zero-day-web-attacks-through-encoder-decoder-recurrent-neural-networks.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - AIForSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/aiforsecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-03-09T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</title><link href="/zerowall.html" rel="alternate"></link><published>2021-03-09T00:00:00+08:00</published><updated>2021-03-09T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-03-09:/zerowall.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Waf(web application firewall)一般通过规则过滤/触发的异常的Web请求. 通过安全研究员对已知攻击特征的提取来构成并拓展特征库. 但基于特征的Waf难以对0Day漏洞进行检测. 故本文提出了一种Encoder-Decoder RNN架构的无监督学习方案对0Day漏洞进行检测.
 本文的核心思想在与将0Day的检测问题转换为翻译质量评定的问题. 简单的来讲即通过训练一个翻译器来将正常web请求A再次翻译为A'. 而当异常的web请求B翻译为B'时, 由于神经网络对B的特征拟合较差故B'的翻译质量也会较差. 以此来判定B是一个异常的web请求&lt;/p&gt;
 &lt;h2&gt;Method&lt;/h2&gt;
@@ -32,7 +32,7 @@
 &lt;li&gt;异常检测: 前面提到本文将异常检测的问题转化为翻译质量测评问题, 在翻译质量评测中通常使用BLEU指标. 本文简单的将1 - BLEU 作为异常的可能性&lt;/li&gt;
 &lt;li&gt;白名单: 即使神经网络不再作为直接的过滤器, 但巨大的网络吞吐量对神经网络仍然无法处理, 故本文将已经处理过的请求Hash处理后保存下来, 以此进行过滤.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;实验&lt;/h2&gt;
+&lt;h2&gt;Experiments&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;数据: 持续收集了8天的企业的网络流量&lt;ol&gt;
 &lt;li&gt;训练集与测试集: 将8天的流量两两分为7分, 头一天的作为训练集, 余下的作为测试集&lt;/li&gt;
@@ -42,12 +42,12 @@
 &lt;/li&gt;
 &lt;li&gt;设备&lt;ol&gt;
 &lt;li&gt;CPU: Intel(R) Xeon(R) Gold 6148 CPU2.40GHz ∗ 2&lt;/li&gt;
-&lt;li&gt;RAM: 512GB RAM
-&lt;img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/c01326f394883b0ad0df27870e7b84a427f2fb73/250px/7-TableIV-1.png"/&gt;
-&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/c01326f394883b0ad0df27870e7b84a427f2fb73/250px/9-Figure6-1.png"/&gt;&lt;/li&gt;
+&lt;li&gt;RAM: 512GB RAM&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;结论&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/c01326f394883b0ad0df27870e7b84a427f2fb73/250px/7-TableIV-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/c01326f394883b0ad0df27870e7b84a427f2fb73/250px/9-Figure6-1.png"/&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;本文贡献在于将异常检测问题转换为机器翻译质量评测问题, 以及白名单机制减少无效推理过程(感觉这一步依然可以进行优化). 
 但也存在一些问题1. 无法防御数据投毒, 虽然文中作者解释waf会对这个进行处理, 但实际上waf不会对新类型数据进行过滤. 2. 相对来说数据量较少. 3. 文中没有提到对潜在的0day进行过滤, 虽然文中提出在大量正常样本的情况下, 少量的异常样本影响不大. 但正如前段时间爆出的qq邮箱会将某特定字段翻译为一段地址一样. 很难确定这一点没有影响. 很可能会导致一些漏报.  &lt;/p&gt;</content><category term="AIForSecurity"></category></entry></feed>
