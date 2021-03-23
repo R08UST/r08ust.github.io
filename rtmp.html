@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/github.min.css">
+
+    <script src="/theme/tipuesearch/jquery.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch_set.min.js"></script>
+    <script src="/tipuesearch_content.js"></script>
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="R08UST's Blog Atom">
+
+
+    <link rel="shortcut icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8EL1GE1H84"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8EL1GE1H84');
+</script>
+<!-- End of Global site tag (gtag.js) - Google Analytics -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333">
+
+<meta name="author" content="R08UST" />
+<meta name="description" content="introduction RTMP协议全称为Adobe&#39;s Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息 Definitions 这里对协议中一些特有的术语进行说明: - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身. - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组. - Chunk Stream: Chunk在网络通信中的逻辑通道. - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. Overview 上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. Chunk …" />
+<meta name="keywords" content="">
+
+
+<meta property="og:site_name" content="R08UST's Blog"/>
+<meta property="og:title" content="协议分析与还原 RTMP协议"/>
+<meta property="og:description" content="introduction RTMP协议全称为Adobe&#39;s Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息 Definitions 这里对协议中一些特有的术语进行说明: - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身. - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组. - Chunk Stream: Chunk在网络通信中的逻辑通道. - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. Overview 上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. Chunk …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/rtmp.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2021-03-23 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/r08ust.html">
+<meta property="article:section" content="Protocol"/>
+<meta property="og:image" content="/images/profile/profile.jpg">
+
+  <title>R08UST's Blog &ndash; 协议分析与还原 RTMP协议</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="">
+        <img src="/images/profile/profile.jpg" alt="" title="">
+      </a>
+
+      <h1>
+        <a href=""></a>
+      </h1>
+
+<p>Security & AI Developer</p>
+        <form class="navbar-search" action="/search.html" role="search">
+          <input type="text" name="q" id="tipue_search_input" placeholder="Search...">
+        </form>
+
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/%E5%AE%B6%E7%90%AA-%E8%92%8B-171328175/" target="_blank">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-github" href="https://github.com/r08ust" target="_blank">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">Home</a>
+
+      <a href="/index.html">MainPage</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="/feeds/all.atom.xml">Atom</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="rtmp">协议分析与还原 RTMP协议</h1>
+    <p>
+      Posted on Tue 23 March 2021 in <a href="/category/protocol.html">Protocol</a>
+
+        &#8226; 2 min read
+    </p>
+  </header>
+
+
+  <div>
+    <h2>introduction</h2>
+<p>RTMP协议全称为Adobe's Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息</p>
+<h2>Definitions</h2>
+<p>这里对协议中一些特有的术语进行说明:
+    - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身.
+    - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组.
+    - Chunk Stream: Chunk在网络通信中的逻辑通道.
+    - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. 
+    - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. </p>
+<h2>Overview</h2>
+<p><img alt="Overview" src="https://www.globaldots.com/hubfs/Imported_Blog_Media/RTMPPacket.png"/></p>
+<p>上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. </p>
+<h2>Chunk Stream</h2>
+<p>Chunk Stream 在术语说明中容易被认为其是消息的分片, 但实际上Chunk Stream 还除了包括消息分片外, 还可以作为一条"消息"独立使用(控制报文, 握手报文, 这些报文本身并不含有Message).</p>
+<h3>Handshake</h3>
+<p>一个RTMP协议开始于握手(握手就是典型的不含有Message的报文), 其分为三个阶段C0/S0, C1/S1, C2/S2. 其中C表示客户端, S表示服务, 每个阶段的客户端和服务端的握手报文结构相同. RTMP握手流程如下
+<img alt="handshake" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/handshake_graph.png"/>
+每个阶段的报文结构如下C0/S0
+<img alt="CS0" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/c0_or_s0.png"/>
+这里的一个字节的数据用于标记本次通讯所使用的版本号, 目前有0, 1, 2, 3 四个版本, 但目前仅3为有效版本. 
+<img alt="CS1" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/c1_or_s1.png"/>
+C1和S1数据包长度固定为1536字节
+<img alt="CS2" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/c2_or_s2.png"/>
+其长度也固定为1536字节, 其中Time为C1/S1中的时间. 随机数回应(Random Echo)这一字段包含接收到C1/S1阶段的随机数. </p>
+<h3>Chunking</h3>
+<p>握手完成后，网络链接会复用一个或多个分块流，每个分块流承载来自同一个消息流的一类消息。每一个Chunk的格式如下图所示:
+<img alt="chunk" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk_format.png"/>
+Basic Header: 1-3个字节, 该长度取决于Chunk Stream ID. Chunk Stream ID是一个变长的字段. 其有三种结构, 如下图所示. 当2-7bit数据为0, Basic Header长度为2字节, 2-7bit数据为1时Basic Header长度为3字节. 其余情况Basic Header长度为1字节. 
+<img alt="BasicHeader0" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-bh1.png"/>
+csid取值范围2-63
+<img alt="BasicHeader1" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-bh2.png"/>
+csid取值范围64-319
+<img alt="BasicHeader2" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-bh3.png"/>
+csid范围64-63399
+注:这里的csid-64, 意为这8/16个字节的二进制数在加上64为真实的csid. 例如 ID为365时, 2-7bit为1, 余下的16bit为301. </p>
+<p>Message Header: 11/7/3/0个字节, 该长度取决于Basic Header中指定的fmt字段. fmt有4种取值0, 1, 2, 3. 当fmt为0, Message Header结构如下图
+<img alt="fmt0" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-mh-0.png"/>
+0号类型的header占11个字节, 必须用于一个块流的开头以及时间戳后退的情况
+<img alt="fmt1" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-mh-1.png"/>
+1号类型的header占7个字节, 用于开头块流的后续消息(变长的消息载荷, 如视频)
+<img alt="fmt2" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-mh-2.png"/>
+2号类型的header占3个字节, 用于开头块流的后续消息(定长的消息载荷, 如部分音频或数据格式)</p>
+<p>对于3号类型的header, 其占0个字节即没有Message Header, 用于装载后续的分片.</p>
+<p>Extended Timestamp: 3个字节, 但是一个可选的字段
+当Timestamp delta大于0xFFFFFF时, 该字段就会出现, 用来共同表示32位的时间戳.
+Chuck Data: 有效载荷</p>
+<h2>Message Stream</h2>
+<p>一条报文可以被分为Chunk Stream部分和Message Stream部分, 上一节中描述了Chunk Stream部分的字段. 本节讲解Message Stream部分的字段. Message Stream部分的格式如下图. 注: 下图的字段布局并不是真实的字段布局, 并且出现的Payload Length和TimeStamp字段是公共字段同时属于Chunk Message和Stream Message. 准确的字段布局见Overview中的图像.
+<img alt="MessageStream" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/message-header.png"/></p>
+<h3>Message Type</h3>
+<p>Message Type 有Chunk header中的Message Type ID字段确定. </p>
+<p>当Message Type ID为1, 2, 3, 5, 6时, 其代表的都为控制消息. 
+|Message Type ID|效用|
+|--|--|
+|1|用来控制最大块的大小, 大小为32bit, 第0位恒定位0. 默认情况下Chunck的大小为128字节, 该报文可以将Chunk的大小设置为1-1677215(1 - 0xFFFFFFF). 但改控制消息的取值为31位二进制数.|
+|2|用来终止消息, 大小为32bit, 内容为要终止的Chunk Stream ID. |
+|3|用来确认消息, 大小为32bit, 内容为当前时间接受到的字节数总数.|
+|5|用来确认Windows大小, 大小为32bit, 内容为windows的大小. 接收端在接收到windows大小后必须发送确认消息(Message Type ID为3)|
+|6|用来设置对等带宽, 大小为40bit, 内容为32bit的windows大小和8bit的限制类型. 接收端收到消息后，通过将已发送但尚未被确认的数据总数限制为该消息指定的windows大小，来实现限制输出带宽的目的。 限制消息有3中类型, 0 - hard: 接受端的输出带宽限制为windows大小.1 - soft: 接收端的输出带宽限制为接收到的和当前的windows中较小的一方. 2 - Dynamic: 若上一条为Hard, 则本条也为hard. 否则本条无效.|</p>
+<p>当Message Type ID为4时作为用户控制消息. 该消息携带事件类型和事件数据两部分.
+其格式如下图
+<img alt="MTID4" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/ucm-4.png"/>
+其支持7种事件:</p>
+<table>
+<thead>
+<tr>
+<th>事件类型 &amp; Event Type</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>流开始 = 0</td>
+<td>服务端发送该事件, 用来通知客户端一个流已经可以用来通讯了. 默认情况下,     该事件是在收到客户端连接指令并成功处理后发送的第一个事件. 事件的数据使用4个字节来表示可用的流的ID</td>
+</tr>
+<tr>
+<td>流结束 = 1</td>
+<td>服务端发送该事件, 用来通知客户端其在流中请求的回放数据已经结束了. 如果没有额外的指令, 将不会再发送任何数据, 而客户端会丢弃之后从该流接收到的消息. 事件数据使用4个字节来表示回放完成的流的ID</td>
+</tr>
+<tr>
+<td>流枯竭 = 2</td>
+<td>服务端发送该事件, 用来通知客户端流中已经没有更多的数据了. 如果服务端在一定时间后没有探测到更多数据, 它就可以通知所有订阅该流的客户端, 流已经枯竭. 事件数据用4个字节来表示枯竭的流的ID</td>
+</tr>
+<tr>
+<td>设置缓冲区大小 = 3</td>
+<td>客户端发送该事件, 用来告知服务端用来缓存流中数据的缓冲区大小(单位毫秒). 该事件在服务端开始处理流数据之前发送. 事件数据中, 前4个字节用来表示流ID, 之后的4个字节用来表示缓冲区大小（单位毫秒).</td>
+</tr>
+<tr>
+<td>流已录制 = 4</td>
+<td>服务端发送该事件, 用来通知客户端指定流是一个录制流. 事件数据用4个字节表示录制流的ID</td>
+</tr>
+<tr>
+<td>ping请求 = 6</td>
+<td>服务端发送该事件, 用来探测客户端是否处于可达状态. 事件数据是一个4字节的时间戳, 表示服务端分发该事件时的服务器本地时间. 客户端收到后用ping响应回复服务端</td>
+</tr>
+<tr>
+<td>ping响应 = 7</td>
+<td>客户端用该事件回复服务端的ping请求, 事件数据为收到的ping请求中携带的4字节的时间戳.</td>
+</tr>
+</tbody>
+</table>
+<p>当Message Type ID为15/18时作为数据消息. 15表示AMF3编码, 18表示AMF0编码. 通过该消息发送元数据和其他用户数据元数据包括数据(音频、视频)的创建时间、时长、主题等详细信息</p>
+<p>当Message Type ID为16/19时作为共享对象消息. 16表示AMF3编码, 19表示AMF0编码. 注: 共享对象是一个在多个客户端、示例之间进行同步的Flash对象(键值对集合). Flash已经废弃这里不再描述</p>
+<p>当Message Type ID为20/17时作为指令消息. 17表示AMF3编码, 20表示AMF0编码. 发送这些消息来完成连接、创建流、发布、播放、暂停等操作</p>
+<p>当Message Type ID为22作为组合消. 其格式如下
+<img alt="MTID22" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/aggregate-message-22.png"/></p>
+<p><strong>当Message Type ID为8, 表示音频消息</strong></p>
+<p><strong>当Message Type ID为9, 表示视频消息</strong></p>
+<h2>Message Payload</h2>
+<p>Message Payload本身并不是RTMP协议标准种的内容, 但作为还原的一部分. 这里额外写入.</p>
+<h3>Message Payload Control</h3>
+<p>Control字段占1个字节, 其由2个4bit数据组成. 前4bit表示是哪一类型的数据, 后4bit表示其控制消息. </p>
+<h4>Audio</h4>
+<table>
+<thead>
+<tr>
+<th>前4bit</th>
+<th>中2bit</th>
+<th>中1bit</th>
+<th>后1bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>音频格式</td>
+<td>采样率</td>
+<td>音频大小</td>
+<td>音频类型</td>
+</tr>
+<tr>
+<td>0 = Linear PCM, 大顶端</td>
+<td>0 =5.5Khz</td>
+<td>0 = snd8bit</td>
+<td>0 = sndMono</td>
+</tr>
+<tr>
+<td>1 = ADPCM</td>
+<td>1 = 11Khz</td>
+<td>1 = snd16bit</td>
+<td>1 = sndStereo</td>
+</tr>
+<tr>
+<td>2 = MP3</td>
+<td>2 = 22Khz</td>
+<td>2 = snd16bit</td>
+<td></td>
+</tr>
+<tr>
+<td>3 = Linear PCM, 小顶端</td>
+<td>3 = 44Khz</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4 = Nellymoser 16khz mono</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5 = Nellymoser 8khz mono</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6 = Nellymoser</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7 = G.711 A-law logarithmic PCM</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8 = G.711 mu-law logarithmic PCM</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9 = Reserved</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10 = AAC</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11 = Speex</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14 = MP3 8Khz</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15 = Device-Specific sound</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4>Video</h4>
+<table>
+<thead>
+<tr>
+<th>前4bit</th>
+<th>后4bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>帧类型</td>
+<td>编码ID</td>
+</tr>
+<tr>
+<td>1 = 关键帧, AVC</td>
+<td>1 = JPEG</td>
+</tr>
+<tr>
+<td>2 = 内部帧, AVC</td>
+<td>2 = H263</td>
+</tr>
+<tr>
+<td>3 = 一次性的内部帧, 仅H263</td>
+<td>3 = ScreenVideo</td>
+</tr>
+<tr>
+<td>4 = 生产的关键帧, 仅服务端可用</td>
+<td>4 = On2 VP6</td>
+</tr>
+<tr>
+<td>5 = 视频信息 控制帧</td>
+<td>5 = 带Alpha通道的On2 VP6</td>
+</tr>
+<tr>
+<td></td>
+<td>6 = Screen Video 2</td>
+</tr>
+<tr>
+<td></td>
+<td>7 = AVC(H264)</td>
+</tr>
+</tbody>
+</table>
+<h2>结语</h2>
+<p>本文档主要用于协议还原, RTMP协议的详细过程并未准确描述. Payload中的Control 类型亦为描述完整. 若有兴趣看完全部文档请参见<a href="https://wwwimages2.adobe.com/content/dam/acom/en/devnet/rtmp/pdf/rtmp_specification_1.0.pdf">RTMP官方文档</a>以及<a href="https://www.adobe.com/content/dam/acom/en/devnet/flv/video_file_format_spec_v10.pdf">FLV官方文档</a>.  FLV文档中细致描述了Payload Control的类型.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="/zerowall.html" title="论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; 2020 </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " R08UST's Blog ",
+  "url" : "",
+  "image": "/images/profile/profile.jpg",
+  "description": ""
+}
+</script>
+
+    <script>
+      $(document).ready(function() {
+        $('#tipue_search_input').tipuesearch();
+      });
+    </script>
+
+</body>
+</html>

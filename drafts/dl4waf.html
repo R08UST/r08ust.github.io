@@ -66,7 +66,7 @@
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="/drafts/dl4waf.html"/>
 <meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2021-03-09 00:00:00+08:00"/>
+<meta property="article:published_time" content="2021-03-20 00:00:00+08:00"/>
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="/author/r08ust.html">
 <meta property="article:section" content="AIForSecurity"/>
@@ -126,7 +126,7 @@
       
     <h1 id="dl4waf">论文笔记集 DeepLearning for Web Attack Detection</h1>
     <p>
-      Posted on Tue 09 March 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+      Posted on Sat 20 March 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
         &#8226; 1 min read
     </p>
@@ -149,13 +149,17 @@
 <h3>结论</h3>
 <p>基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求, 在网络攻击中POST等其他提交数据的请求同样是十分危险的. 实验环节, 仅在一个较小的数据集上进行了处理,同时实验细节的讲述也比较含糊.
 当然本文也提出了一些比较有意思的观点: 本文认为将一个URL请求视为时间序列, 字符的顺序位置都会对异常检测有所帮助, 比如"id=1/<em>union</em>/union/<em>select</em>/select+1,2,3/*i" 很明显是一个sql注入, 因为ID一般都接受一个数字符号. 但对于这一点作者并未详细论证, 直接使用了RNN对这一"特征"进行了统一建模. 如果对这一点进行深入研究, 将其作为辅助特征再次插入特征集合, 应该会有很好的效果</p>
-<h2><a href="https://www.semanticscholar.org/paper/Web-application-firewall-using-character-level-Ito-Iyatomi/36e309d7f8112c5d9ee619ad0e93d74ca6c97412">Web Application Firewall using Character-level Convolutional Neural Network</a></h2>
+<h2><a href="https://iyatomi-lab.info/sites/default/files/user/CSPA2018%20Proceedings_ito.pdf">Web Application Firewall using Character-level Convolutional Neural Network</a></h2>
 <p>本文基于CLCNN(Character Level CNN)对异常的HTTP请求进行识别. 首先将原始的HTTP请求使用URL Decode, 随后将解码后的URL请求用0填充指1000bytes的长度/裁剪至1000. 随后利用词嵌入将其表示为128维的向量, 最后利用一维卷积和全连接输出其异常概率. 见图四</p>
 <p><img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/36e309d7f8112c5d9ee619ad0e93d74ca6c97412/2-Figure2-1.png"/></p>
 <p>实验环节, 本文使用<a href="https://www.isi.csic.es/dataset/">HTTP CISC数据集</a>进行测试, 其结果如图五所示</p>
 <p><img alt="图五" src="https://d3i71xaburhd42.cloudfront.net/36e309d7f8112c5d9ee619ad0e93d74ca6c97412/4-TableIII-1.png"/></p>
 <h3>结论</h3>
 <p>与上一篇文章相同基于有监督的机器学习对异常请求进行处理, 其主要问题也与上一篇问题类似. 相对而言这篇论文比较重要的一点是每条请求使用该模型处理只需要2.4ms. 处理速度对于Wad这一问题是很重要的, 但其他文章都很少提及这一点.</p>
+<h2><a href="https://netman.aiops.org/~peidan/ANM2019/13.Security/ReadingLists/2017ICONIP_CNN.pdf">A Deep Learning Method to Detect WebAttacks Using a Specially Designed CNN</a></h2>
+<p>本文与Web Application Firewall using Character-level Convolutional Neural Network一文类似, 都使用CLCNN网络结构处理HTTP Request. 但细节上本文, 将URL Request进行了分词处理, 随后将经过词嵌入的各个词向量进行卷积以及拼接, 最后交由MLP进行输出处理. 见图六</p>
+<p><img alt="图六" src="https://media.springernature.com/lw785/springer-static/image/chp%3A10.1007%2F978-3-319-70139-4_84/MediaObjects/459893_1_En_84_Fig4_HTML.gif"/></p>
+<p>实验方面, 数据集任然采用十分常见的CSIC 2010数据集, 按照7:0.5:2.5的比例划分数据集. 最后的Accuracy达到了百分之96.49</p>
 <h2><a href=""></a></h2>
   </div>
   <div class="tag-cloud">

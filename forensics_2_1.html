@@ -56,13 +56,13 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="基于CFA(色彩过滤矩阵)的取证" />
+<meta name="description" content="CFA 在数字图像中，CFA是位于图像传感器之前的一组用于过滤色彩，收集色彩信息的镜片。由于数码相机传感器仅测量光线的明亮程度无法对色彩做出处理，通过CFA为每一个像素赋予其色彩。 下图是Bayer Array CFA也是最常见的CFA, 使用该CFA导致了实际只有1/3的色彩信息能被cmos保存下来，另外的2/3只能利用插值算法进行填充得来的。那么不同的相机之间由于不同的cmos以及插值算法就会有不同的特征存在。 对于一张Raw图像其每个像素点的RGB构造方式为 $$ \begin{aligned} \tilde{R}(x, y) &amp;= S(x, y) &amp;if S(x, y) = r_{x, y} \\ &amp;= 0 &amp;otherwise\\ \tilde{G}(x, y) &amp;= S(x, y) &amp;if S(x, y) = g_{x, y} \\ &amp;= 0 &amp;otherwise\\ \tilde …" />
 <meta name="keywords" content="Book, Forensics, Security, ComputerVision">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
 <meta property="og:title" content="数字图像取证 - 基于相机属性的取证 1"/>
-<meta property="og:description" content="基于CFA(色彩过滤矩阵)的取证"/>
+<meta property="og:description" content="CFA 在数字图像中，CFA是位于图像传感器之前的一组用于过滤色彩，收集色彩信息的镜片。由于数码相机传感器仅测量光线的明亮程度无法对色彩做出处理，通过CFA为每一个像素赋予其色彩。 下图是Bayer Array CFA也是最常见的CFA, 使用该CFA导致了实际只有1/3的色彩信息能被cmos保存下来，另外的2/3只能利用插值算法进行填充得来的。那么不同的相机之间由于不同的cmos以及插值算法就会有不同的特征存在。 对于一张Raw图像其每个像素点的RGB构造方式为 $$ \begin{aligned} \tilde{R}(x, y) &amp;= S(x, y) &amp;if S(x, y) = r_{x, y} \\ &amp;= 0 &amp;otherwise\\ \tilde{G}(x, y) &amp;= S(x, y) &amp;if S(x, y) = g_{x, y} \\ &amp;= 0 &amp;otherwise\\ \tilde …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="/forensics_2_1.html"/>
 <meta property="og:type" content="article"/>

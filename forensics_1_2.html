@@ -56,13 +56,13 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="利用Double Jepg技术，检测图像二次压缩" />
+<meta name="description" content="二次量化(double quantization, double JPEG)¶前面提到, JEPG是将位图(bit map)进行转制后利用量化操作$q_a(u) = \lfloor{\frac{u}{a}}\rfloor$, 而这一操作明显是一种有损操作. 那么当对任意图像进行修改之时, 还原回得位图必定不完全等于原始得位图, 随后得又一次压缩更会带来一定得损失以及一种特征. 这种特征可以令安全人员检测出该JPEG文件是否进行过二次编辑. 二次量化是指对JEPG文件进行还原时, 量化还原$q^{-1}_a(u) = \lfloor\frac{u}{a}\rfloor\times a$ 后再一次对图像进行量化, 故该行为可以被写为$q_{ab}(u) =\lfloor \lfloor{\frac{u}{a}}\rfloor\frac{a}{b}\rfloor$ 下面用一组[0, 127]的正态分布数据来进行模拟实验。" />
 <meta name="keywords" content="Book, Forensics, Security, ComputerVision">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
 <meta property="og:title" content="数字图像取证 - 基于文件格式的取证 2"/>
-<meta property="og:description" content="利用Double Jepg技术，检测图像二次压缩"/>
+<meta property="og:description" content="二次量化(double quantization, double JPEG)¶前面提到, JEPG是将位图(bit map)进行转制后利用量化操作$q_a(u) = \lfloor{\frac{u}{a}}\rfloor$, 而这一操作明显是一种有损操作. 那么当对任意图像进行修改之时, 还原回得位图必定不完全等于原始得位图, 随后得又一次压缩更会带来一定得损失以及一种特征. 这种特征可以令安全人员检测出该JPEG文件是否进行过二次编辑. 二次量化是指对JEPG文件进行还原时, 量化还原$q^{-1}_a(u) = \lfloor\frac{u}{a}\rfloor\times a$ 后再一次对图像进行量化, 故该行为可以被写为$q_{ab}(u) =\lfloor \lfloor{\frac{u}{a}}\rfloor\frac{a}{b}\rfloor$ 下面用一组[0, 127]的正态分布数据来进行模拟实验。"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="/forensics_1_2.html"/>
 <meta property="og:type" content="article"/>
@@ -1249,7 +1249,7 @@ h6:hover .anchor-link {
  .highlight pre  .vg { color: #19177C } /* Name.Variable.Global */
  .highlight pre  .vi { color: #19177C } /* Name.Variable.Instance */
  .highlight pre  .vm { color: #19177C } /* Name.Variable.Magic */
- .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+ .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */</style><body><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="二次量化(double-quantization,-double-JPEG)">二次量化(double quantization, double JPEG)<a class="anchor-link" href="#二次量化(double-quantization,-double-JPEG)">¶</a></h2><p>前面提到, JEPG是将位图(bit map)进行转制后利用量化操作$q_a(u) = \lfloor{\frac{u}{a}}\rfloor$, 而这一操作明显是一种有损操作. 那么当对任意图像进行修改之时, 还原回得位图必定不完全等于原始得位图, 随后得又一次压缩更会带来一定得损失以及一种特征. 这种特征可以令安全人员检测出该JPEG文件是否进行过二次编辑.</p>
@@ -1497,6 +1497,7 @@ $$
 </div>
 </div>
 </div>
+</body>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';

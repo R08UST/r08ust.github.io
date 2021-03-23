@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - Protocol</title><link href="/" rel="alternate"></link><link href="/feeds/protocol.atom.xml" rel="self"></link><id>/</id><updated>2021-03-23T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>协议分析与还原 RTMP协议</title><link href="/rtmp.html" rel="alternate"></link><published>2021-03-23T00:00:00+08:00</published><updated>2021-03-23T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-03-23:/rtmp.html</id><summary type="html">&lt;h2&gt;introduction&lt;/h2&gt;
+&lt;p&gt;RTMP协议全称为Adobe's Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息&lt;/p&gt;
+&lt;h2&gt;Definitions&lt;/h2&gt;
+&lt;p&gt;这里对协议中一些特有的术语进行说明:
+    - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身.
+    - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组.
+    - Chunk Stream: Chunk在网络通信中的逻辑通道.
+    - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. 
+    - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. &lt;/p&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Overview" src="https://www.globaldots.com/hubfs/Imported_Blog_Media/RTMPPacket.png"/&gt;&lt;/p&gt;
+&lt;p&gt;上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. &lt;/p&gt;
+&lt;h2&gt;Chunk …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;introduction&lt;/h2&gt;
+&lt;p&gt;RTMP协议全称为Adobe's Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息&lt;/p&gt;
+&lt;h2&gt;Definitions&lt;/h2&gt;
+&lt;p&gt;这里对协议中一些特有的术语进行说明:
+    - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身.
+    - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组.
+    - Chunk Stream: Chunk在网络通信中的逻辑通道.
+    - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. 
+    - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. &lt;/p&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Overview" src="https://www.globaldots.com/hubfs/Imported_Blog_Media/RTMPPacket.png"/&gt;&lt;/p&gt;
+&lt;p&gt;上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. &lt;/p&gt;
+&lt;h2&gt;Chunk Stream&lt;/h2&gt;
+&lt;p&gt;Chunk Stream 在术语说明中容易被认为其是消息的分片, 但实际上Chunk Stream 还除了包括消息分片外, 还可以作为一条"消息"独立使用(控制报文, 握手报文, 这些报文本身并不含有Message).&lt;/p&gt;
+&lt;h3&gt;Handshake&lt;/h3&gt;
+&lt;p&gt;一个RTMP协议开始于握手(握手就是典型的不含有Message的报文), 其分为三个阶段C0/S0, C1/S1, C2/S2. 其中C表示客户端, S表示服务, 每个阶段的客户端和服务端的握手报文结构相同. RTMP握手流程如下
+&lt;img alt="handshake" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/handshake_graph.png"/&gt;
+每个阶段的报文结构如下C0/S0
+&lt;img alt="CS0" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/c0_or_s0.png"/&gt;
+这里的一个字节的数据用于标记本次通讯所使用的版本号, 目前有0, 1, 2, 3 四个版本, 但目前仅3为有效版本. 
+&lt;img alt="CS1" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/c1_or_s1.png"/&gt;
+C1和S1数据包长度固定为1536字节
+&lt;img alt="CS2" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/c2_or_s2.png"/&gt;
+其长度也固定为1536字节, 其中Time为C1/S1中的时间. 随机数回应(Random Echo)这一字段包含接收到C1/S1阶段的随机数. &lt;/p&gt;
+&lt;h3&gt;Chunking&lt;/h3&gt;
+&lt;p&gt;握手完成后，网络链接会复用一个或多个分块流，每个分块流承载来自同一个消息流的一类消息。每一个Chunk的格式如下图所示:
+&lt;img alt="chunk" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk_format.png"/&gt;
+Basic Header: 1-3个字节, 该长度取决于Chunk Stream ID. Chunk Stream ID是一个变长的字段. 其有三种结构, 如下图所示. 当2-7bit数据为0, Basic Header长度为2字节, 2-7bit数据为1时Basic Header长度为3字节. 其余情况Basic Header长度为1字节. 
+&lt;img alt="BasicHeader0" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-bh1.png"/&gt;
+csid取值范围2-63
+&lt;img alt="BasicHeader1" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-bh2.png"/&gt;
+csid取值范围64-319
+&lt;img alt="BasicHeader2" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-bh3.png"/&gt;
+csid范围64-63399
+注:这里的csid-64, 意为这8/16个字节的二进制数在加上64为真实的csid. 例如 ID为365时, 2-7bit为1, 余下的16bit为301. &lt;/p&gt;
+&lt;p&gt;Message Header: 11/7/3/0个字节, 该长度取决于Basic Header中指定的fmt字段. fmt有4种取值0, 1, 2, 3. 当fmt为0, Message Header结构如下图
+&lt;img alt="fmt0" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-mh-0.png"/&gt;
+0号类型的header占11个字节, 必须用于一个块流的开头以及时间戳后退的情况
+&lt;img alt="fmt1" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-mh-1.png"/&gt;
+1号类型的header占7个字节, 用于开头块流的后续消息(变长的消息载荷, 如视频)
+&lt;img alt="fmt2" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/chunk-mh-2.png"/&gt;
+2号类型的header占3个字节, 用于开头块流的后续消息(定长的消息载荷, 如部分音频或数据格式)&lt;/p&gt;
+&lt;p&gt;对于3号类型的header, 其占0个字节即没有Message Header, 用于装载后续的分片.&lt;/p&gt;
+&lt;p&gt;Extended Timestamp: 3个字节, 但是一个可选的字段
+当Timestamp delta大于0xFFFFFF时, 该字段就会出现, 用来共同表示32位的时间戳.
+Chuck Data: 有效载荷&lt;/p&gt;
+&lt;h2&gt;Message Stream&lt;/h2&gt;
+&lt;p&gt;一条报文可以被分为Chunk Stream部分和Message Stream部分, 上一节中描述了Chunk Stream部分的字段. 本节讲解Message Stream部分的字段. Message Stream部分的格式如下图. 注: 下图的字段布局并不是真实的字段布局, 并且出现的Payload Length和TimeStamp字段是公共字段同时属于Chunk Message和Stream Message. 准确的字段布局见Overview中的图像.
+&lt;img alt="MessageStream" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/message-header.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;Message Type&lt;/h3&gt;
+&lt;p&gt;Message Type 有Chunk header中的Message Type ID字段确定. &lt;/p&gt;
+&lt;p&gt;当Message Type ID为1, 2, 3, 5, 6时, 其代表的都为控制消息. 
+|Message Type ID|效用|
+|--|--|
+|1|用来控制最大块的大小, 大小为32bit, 第0位恒定位0. 默认情况下Chunck的大小为128字节, 该报文可以将Chunk的大小设置为1-1677215(1 - 0xFFFFFFF). 但改控制消息的取值为31位二进制数.|
+|2|用来终止消息, 大小为32bit, 内容为要终止的Chunk Stream ID. |
+|3|用来确认消息, 大小为32bit, 内容为当前时间接受到的字节数总数.|
+|5|用来确认Windows大小, 大小为32bit, 内容为windows的大小. 接收端在接收到windows大小后必须发送确认消息(Message Type ID为3)|
+|6|用来设置对等带宽, 大小为40bit, 内容为32bit的windows大小和8bit的限制类型. 接收端收到消息后，通过将已发送但尚未被确认的数据总数限制为该消息指定的windows大小，来实现限制输出带宽的目的。 限制消息有3中类型, 0 - hard: 接受端的输出带宽限制为windows大小.1 - soft: 接收端的输出带宽限制为接收到的和当前的windows中较小的一方. 2 - Dynamic: 若上一条为Hard, 则本条也为hard. 否则本条无效.|&lt;/p&gt;
+&lt;p&gt;当Message Type ID为4时作为用户控制消息. 该消息携带事件类型和事件数据两部分.
+其格式如下图
+&lt;img alt="MTID4" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/ucm-4.png"/&gt;
+其支持7种事件:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;事件类型 &amp;amp; Event Type&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;流开始 = 0&lt;/td&gt;
+&lt;td&gt;服务端发送该事件, 用来通知客户端一个流已经可以用来通讯了. 默认情况下,     该事件是在收到客户端连接指令并成功处理后发送的第一个事件. 事件的数据使用4个字节来表示可用的流的ID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;流结束 = 1&lt;/td&gt;
+&lt;td&gt;服务端发送该事件, 用来通知客户端其在流中请求的回放数据已经结束了. 如果没有额外的指令, 将不会再发送任何数据, 而客户端会丢弃之后从该流接收到的消息. 事件数据使用4个字节来表示回放完成的流的ID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;流枯竭 = 2&lt;/td&gt;
+&lt;td&gt;服务端发送该事件, 用来通知客户端流中已经没有更多的数据了. 如果服务端在一定时间后没有探测到更多数据, 它就可以通知所有订阅该流的客户端, 流已经枯竭. 事件数据用4个字节来表示枯竭的流的ID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;设置缓冲区大小 = 3&lt;/td&gt;
+&lt;td&gt;客户端发送该事件, 用来告知服务端用来缓存流中数据的缓冲区大小(单位毫秒). 该事件在服务端开始处理流数据之前发送. 事件数据中, 前4个字节用来表示流ID, 之后的4个字节用来表示缓冲区大小（单位毫秒).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;流已录制 = 4&lt;/td&gt;
+&lt;td&gt;服务端发送该事件, 用来通知客户端指定流是一个录制流. 事件数据用4个字节表示录制流的ID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ping请求 = 6&lt;/td&gt;
+&lt;td&gt;服务端发送该事件, 用来探测客户端是否处于可达状态. 事件数据是一个4字节的时间戳, 表示服务端分发该事件时的服务器本地时间. 客户端收到后用ping响应回复服务端&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ping响应 = 7&lt;/td&gt;
+&lt;td&gt;客户端用该事件回复服务端的ping请求, 事件数据为收到的ping请求中携带的4字节的时间戳.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;当Message Type ID为15/18时作为数据消息. 15表示AMF3编码, 18表示AMF0编码. 通过该消息发送元数据和其他用户数据元数据包括数据(音频、视频)的创建时间、时长、主题等详细信息&lt;/p&gt;
+&lt;p&gt;当Message Type ID为16/19时作为共享对象消息. 16表示AMF3编码, 19表示AMF0编码. 注: 共享对象是一个在多个客户端、示例之间进行同步的Flash对象(键值对集合). Flash已经废弃这里不再描述&lt;/p&gt;
+&lt;p&gt;当Message Type ID为20/17时作为指令消息. 17表示AMF3编码, 20表示AMF0编码. 发送这些消息来完成连接、创建流、发布、播放、暂停等操作&lt;/p&gt;
+&lt;p&gt;当Message Type ID为22作为组合消. 其格式如下
+&lt;img alt="MTID22" src="https://chenlichao.gitbooks.io/rtmp-zh_cn/content/assets/aggregate-message-22.png"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;当Message Type ID为8, 表示音频消息&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;当Message Type ID为9, 表示视频消息&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;Message Payload&lt;/h2&gt;
+&lt;p&gt;Message Payload本身并不是RTMP协议标准种的内容, 但作为还原的一部分. 这里额外写入.&lt;/p&gt;
+&lt;h3&gt;Message Payload Control&lt;/h3&gt;
+&lt;p&gt;Control字段占1个字节, 其由2个4bit数据组成. 前4bit表示是哪一类型的数据, 后4bit表示其控制消息. &lt;/p&gt;
+&lt;h4&gt;Audio&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;前4bit&lt;/th&gt;
+&lt;th&gt;中2bit&lt;/th&gt;
+&lt;th&gt;中1bit&lt;/th&gt;
+&lt;th&gt;后1bit&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;音频格式&lt;/td&gt;
+&lt;td&gt;采样率&lt;/td&gt;
+&lt;td&gt;音频大小&lt;/td&gt;
+&lt;td&gt;音频类型&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0 = Linear PCM, 大顶端&lt;/td&gt;
+&lt;td&gt;0 =5.5Khz&lt;/td&gt;
+&lt;td&gt;0 = snd8bit&lt;/td&gt;
+&lt;td&gt;0 = sndMono&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1 = ADPCM&lt;/td&gt;
+&lt;td&gt;1 = 11Khz&lt;/td&gt;
+&lt;td&gt;1 = snd16bit&lt;/td&gt;
+&lt;td&gt;1 = sndStereo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2 = MP3&lt;/td&gt;
+&lt;td&gt;2 = 22Khz&lt;/td&gt;
+&lt;td&gt;2 = snd16bit&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3 = Linear PCM, 小顶端&lt;/td&gt;
+&lt;td&gt;3 = 44Khz&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4 = Nellymoser 16khz mono&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5 = Nellymoser 8khz mono&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6 = Nellymoser&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;7 = G.711 A-law logarithmic PCM&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;8 = G.711 mu-law logarithmic PCM&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;9 = Reserved&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;10 = AAC&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;11 = Speex&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;14 = MP3 8Khz&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;15 = Device-Specific sound&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;Video&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;前4bit&lt;/th&gt;
+&lt;th&gt;后4bit&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;帧类型&lt;/td&gt;
+&lt;td&gt;编码ID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1 = 关键帧, AVC&lt;/td&gt;
+&lt;td&gt;1 = JPEG&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2 = 内部帧, AVC&lt;/td&gt;
+&lt;td&gt;2 = H263&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3 = 一次性的内部帧, 仅H263&lt;/td&gt;
+&lt;td&gt;3 = ScreenVideo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4 = 生产的关键帧, 仅服务端可用&lt;/td&gt;
+&lt;td&gt;4 = On2 VP6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5 = 视频信息 控制帧&lt;/td&gt;
+&lt;td&gt;5 = 带Alpha通道的On2 VP6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;6 = Screen Video 2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;7 = AVC(H264)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;结语&lt;/h2&gt;
+&lt;p&gt;本文档主要用于协议还原, RTMP协议的详细过程并未准确描述. Payload中的Control 类型亦为描述完整. 若有兴趣看完全部文档请参见&lt;a href="https://wwwimages2.adobe.com/content/dam/acom/en/devnet/rtmp/pdf/rtmp_specification_1.0.pdf"&gt;RTMP官方文档&lt;/a&gt;以及&lt;a href="https://www.adobe.com/content/dam/acom/en/devnet/flv/video_file_format_spec_v10.pdf"&gt;FLV官方文档&lt;/a&gt;.  FLV文档中细致描述了Payload Control的类型.&lt;/p&gt;</content><category term="Protocol"></category></entry></feed>

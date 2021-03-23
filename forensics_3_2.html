@@ -56,13 +56,13 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="基于SIFT特征与Ransac算法检测图像内复制粘贴" />
+<meta name="description" content="前面介绍的均为一些跨图像的修改, 通过由于不同图像的不同的属性我们将图像修改/取证. 那么对于同一图像内的直接复制策略如何进行检测. 这里介绍基于SIFT特征与Ransac算法检测图像内复制粘贴. (这里有一个猜想, 一般图像复制粘贴的同时会对图像进行缩放裁剪, 结合上一节中重采样检测也许会有较好的效果提升) SIFT特征 检测的关键就是使用SIFT特征, 首先简单的介绍什么是SIFT特征: SIFT( Distinctive Image Features from Scale-Invariant Keypoints)是一种检测局部特征算法, 该算法通过求一幅图中的特征点(interest points, or corner points)及其有关scale 和 orientation 的描述子得到特征并进行图像特征点匹配, 获得了良好效果, SIFT特征不只具有尺度不变性, 即使改变旋转角度, 图像亮度或拍摄视角, 仍然能够得到好的检测效果. 整个算法分为以下几个部分 尺度空间极值检测 关键点位置及尺度确定 关键点方向确定 特征向量生成 那么在利用SIFT提取出局部特征之后, 便可以利用一些算法来做特征点的匹配, 也就是说复制出的图像会有相同的特征点. 这里采用随机抽样一致算法(RANSAC) Ransac算法检测图像复制 RANSAC算法(Random Sample Consensus: A …" />
 <meta name="keywords" content="Book, Forensics, Security, ComputerVision">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
 <meta property="og:title" content="数字图像取证 - 基于像素的取证 2"/>
-<meta property="og:description" content="基于SIFT特征与Ransac算法检测图像内复制粘贴"/>
+<meta property="og:description" content="前面介绍的均为一些跨图像的修改, 通过由于不同图像的不同的属性我们将图像修改/取证. 那么对于同一图像内的直接复制策略如何进行检测. 这里介绍基于SIFT特征与Ransac算法检测图像内复制粘贴. (这里有一个猜想, 一般图像复制粘贴的同时会对图像进行缩放裁剪, 结合上一节中重采样检测也许会有较好的效果提升) SIFT特征 检测的关键就是使用SIFT特征, 首先简单的介绍什么是SIFT特征: SIFT( Distinctive Image Features from Scale-Invariant Keypoints)是一种检测局部特征算法, 该算法通过求一幅图中的特征点(interest points, or corner points)及其有关scale 和 orientation 的描述子得到特征并进行图像特征点匹配, 获得了良好效果, SIFT特征不只具有尺度不变性, 即使改变旋转角度, 图像亮度或拍摄视角, 仍然能够得到好的检测效果. 整个算法分为以下几个部分 尺度空间极值检测 关键点位置及尺度确定 关键点方向确定 特征向量生成 那么在利用SIFT提取出局部特征之后, 便可以利用一些算法来做特征点的匹配, 也就是说复制出的图像会有相同的特征点. 这里采用随机抽样一致算法(RANSAC) Ransac算法检测图像复制 RANSAC算法(Random Sample Consensus: A …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="/forensics_3_2.html"/>
 <meta property="og:type" content="article"/>

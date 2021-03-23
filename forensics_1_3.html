@@ -56,13 +56,13 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="定位2次量化区域" />
+<meta name="description" content="JPEG Ghost 上一节中Double JPEG方法可以检测图像是否被二次压缩过。本节内容将定位出具体被二次压缩过的区域。这一技术被称为JPEG Ghost。 前面介绍过一组RAW data存储为JPEG文件格式首先需要进行傅里叶变换随后便进行量化操作。那么假设有一组经由傅里叶变换后的值\(c_1\)按照\(q_1\)进行量化。随后进行还原并按照\(c_2\)进行量化得到\(q_2\)。如果\(q_1=0\)（也就是不进行二次量化操作）或\(q_1=q_2\)时\(c_1\)与\(c_2\)之间的损失一定是最小的。同时\(c_1\)与\(c_2\)之间的损失也会随着\(q_1\)或\(q_2\)的增大而增大。根据这样一个特点未经过二次压缩的图像应是一组基本单调上升但在某一点突然下降至0的数据。而经过二次量化的图像则是会出现2个或以上的下降点。如下图 故本例子中第二次量化的等级为23。 Localization 上面提及了JPEG Ghost的概念以及部分表现，这里对这一方法进行详细描述。首先定义JPEG Ghost中的损失 $$ d …" />
 <meta name="keywords" content="Book, Forensics, Security, ComputerVision">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
 <meta property="og:title" content="数字图像取证 - 基于文件格式的取证 3"/>
-<meta property="og:description" content="定位2次量化区域"/>
+<meta property="og:description" content="JPEG Ghost 上一节中Double JPEG方法可以检测图像是否被二次压缩过。本节内容将定位出具体被二次压缩过的区域。这一技术被称为JPEG Ghost。 前面介绍过一组RAW data存储为JPEG文件格式首先需要进行傅里叶变换随后便进行量化操作。那么假设有一组经由傅里叶变换后的值\(c_1\)按照\(q_1\)进行量化。随后进行还原并按照\(c_2\)进行量化得到\(q_2\)。如果\(q_1=0\)（也就是不进行二次量化操作）或\(q_1=q_2\)时\(c_1\)与\(c_2\)之间的损失一定是最小的。同时\(c_1\)与\(c_2\)之间的损失也会随着\(q_1\)或\(q_2\)的增大而增大。根据这样一个特点未经过二次压缩的图像应是一组基本单调上升但在某一点突然下降至0的数据。而经过二次量化的图像则是会出现2个或以上的下降点。如下图 故本例子中第二次量化的等级为23。 Localization 上面提及了JPEG Ghost的概念以及部分表现，这里对这一方法进行详细描述。首先定义JPEG Ghost中的损失 $$ d …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="/forensics_1_3.html"/>
 <meta property="og:type" content="article"/>

@@ -128,7 +128,12 @@
     </p>
   </header>
   <div>
-      <p>CG还是照片? 基于统计学习, 分类CG与照片</p>
+      <h2>引言</h2>
+<p>现在软件可以渲染一个非常写实的图像，从而分区CG还是相片已经是一个困难的问题。但是CG图像一般都渲染在一个理想的模型下（光照，几何形状甚至是）, 那么统计量上CG一定与真实的图像存在差异. 下面将介绍一种方法: 利用小波变换得到的其高频以及低频分量进行统计学分析. </p>
+<h2>正交镜像滤波器</h2>
+<p>众所周知利用空间位置(spatial position), 方向(orientation)以及尺度(scale)等基本函数(如 小波变换)对图像进行分解后, 可以有效地完成图像压缩, 图像编码, 图像去噪抑或是材质合成等操作. 其主要是由于图像分解暴露出了有效用的统计特征. 下面介绍一种与小波变换紧密相关的滤波器-<a href="https://en.wikipedia.org/wiki/Quadrature_mirror_filter">正交镜像滤波器</a>, 其主要结构见下图
+<img alt="wavelet" src="/images/DigitalForensics/wavelet.jpg"/>
+当其作用在一张RGB图像时, 镜像正交编码器会对每一个通道(R, G, B)提取其竖直子带<span class="math">\(V^c_i(x, y), 水平子带\)</span>H^c_i(x, y)<span class="math">\(以及对角子带(subbands)\)</span>D^c_i(x, y)的特征 …</p>
         <br>
         <a class="btn"
            href="/forensics_4_1.html#forensics_4_1">
@@ -149,7 +154,24 @@
     </p>
   </header>
   <div>
-      <p>基于缩略图(thumbnail)分类不同的相机或图像编辑工具.</p>
+      <h2>缩略图</h2>
+<p>在JPEG文件格式中, 会在头部嵌入经过滤波，对比度调整，压缩的缩略图.这 些特定的操作就导致了不同的相机厂商或软件厂商的细微差异。
+设一个原图为<span class="math">\(f(x, y)\)</span>，那么一个图像经过下面6步骤进行制作</p>
+<ol>
+<li>裁剪/填充</li>
+<li>预滤波</li>
+<li>降采样</li>
+<li>对比度</li>
+<li>亮度调整</li>
+<li>JEPG压缩</li>
+</ol>
+<h2>裁剪/填充</h2>
+<p>当缩略图与原图的分辨率比例不相同时, 需要对图像进行裁剪/填充处理. 这一阶段会产生四个参数<span class="math">\(c_l, c_r, c_t, c_b\)</span>分别表示左右上下的裁剪/填充系数</p>
+<h2>抽象预滤波, 降采样, 对比度以及亮度调整</h2>
+<p>完成裁剪/填充操作后, 后续的四个操作可以将其抽象为一组模型
+</p>
+<div class="math">$$
+t(x, y) = \alpha(D\{\hat{f}(x, y) * h_1(x, y)\} * h_2 …</div>
         <br>
         <a class="btn"
            href="/forensics_3_3.html#forensics_3_3">
@@ -170,7 +192,19 @@
     </p>
   </header>
   <div>
-      <p>基于SIFT特征与Ransac算法检测图像内复制粘贴</p>
+      <p>前面介绍的均为一些跨图像的修改, 通过由于不同图像的不同的属性我们将图像修改/取证. 那么对于同一图像内的直接复制策略如何进行检测. 这里介绍基于SIFT特征与Ransac算法检测图像内复制粘贴. (这里有一个猜想, 一般图像复制粘贴的同时会对图像进行缩放裁剪, 结合上一节中重采样检测也许会有较好的效果提升)</p>
+<h2>SIFT特征</h2>
+<p>检测的关键就是使用SIFT特征, 首先简单的介绍什么是SIFT特征: SIFT(<a href="https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf">
+Distinctive Image Features from Scale-Invariant Keypoints</a>)是一种检测局部特征算法, 该算法通过求一幅图中的特征点(interest points, or corner points)及其有关scale 和 orientation 的描述子得到特征并进行图像特征点匹配, 获得了良好效果, SIFT特征不只具有尺度不变性, 即使改变旋转角度, 图像亮度或拍摄视角, 仍然能够得到好的检测效果. 整个算法分为以下几个部分</p>
+<ol>
+<li>尺度空间极值检测</li>
+<li>关键点位置及尺度确定</li>
+<li>关键点方向确定</li>
+<li>特征向量生成</li>
+</ol>
+<p>那么在利用SIFT提取出局部特征之后, 便可以利用一些算法来做特征点的匹配, 也就是说复制出的图像会有相同的特征点. 这里采用随机抽样一致算法(RANSAC)</p>
+<h2>Ransac算法检测图像复制</h2>
+<p>RANSAC算法(<a href="http://www.cs.ait.ac.th/~mdailey/cvreadings/Fischler-RANSAC.pdf">Random Sample Consensus: A …</a></p>
         <br>
         <a class="btn"
            href="/forensics_3_2.html#forensics_3_2">
@@ -191,7 +225,24 @@
     </p>
   </header>
   <div>
-      <p>利用CCCrypt快速获取加密信息</p>
+      <h2>CCCrypt原型接口</h2>
+<p>由于IOS/OSX相对闭源, 故⼤多数算法都是使⽤ObejectiveC 封装的⼀套Crypto库. 该库拥有⼀套统⼀的调⽤ ⼊⼝ CCCrypt. 其具体定义如下</p>
+<div class="highlight"><pre><span></span><code><span class="n">CCCryptorStatus</span> <span class="n">CCCrypt</span><span class="p">(</span> <span class="n">CCOperation</span> <span class="n">op</span><span class="p">,</span> 
+<span class="n">CCAlgorithm</span> <span class="n">alg</span><span class="p">,</span> 
+<span class="n">CCOptions</span> <span class="k">options</span><span class="p">,</span> 
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="k">key</span><span class="p">,</span> 
+<span class="n">size_t</span> <span class="n">keyLength</span><span class="p">,</span> 
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">iv</span><span class="p">,</span> 
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">dataIn</span><span class="p">,</span> 
+<span class="n">size_t</span> <span class="n">dataInLength</span><span class="p">,</span> 
+<span class="n">void</span> <span class="o">*</span><span class="n">dataOut</span><span class="p">,</span>
+<span class="n">size_t</span> <span class="n">dataOutAvailable</span><span class="p">,</span> 
+<span class="n">size_t</span> <span class="o">*</span><span class="n">dataOutMoved</span><span class="p">)</span>
+
+<span class="o">#</span> <span class="err">参数意义</span>
+<span class="n">op</span><span class="err">：</span><span class="n">kCCEncrypt</span><span class="p">(</span><span class="err">加密</span><span class="p">)</span><span class="o">/</span> <span class="n">kCCDecrypt</span><span class="p">(</span><span class="err">解密</span><span class="p">)</span>
+<span class="n">alg</span><span class="err">：加密算法</span> 
+<span class="k">options</span><span class="err">：加密 …</span></code></pre></div>
         <br>
         <a class="btn"
            href="/ios_cccrypt.html#ios_cccrypt">
@@ -212,7 +263,11 @@
     </p>
   </header>
   <div>
-      <p>利用重采样的性质进行取证</p>
+      <h2>重采样</h2>
+<p>多数的图像篡改都需要如下步骤：裁剪缩放, 旋转以及拉伸. 上述的操作都需要对图像重采样才可以. 经过这种重采样是基本不可见的，但是这里介绍一种特殊的相关性计算算法. 假设具有<span class="math">\(m\)</span>个采样点的1-D离散采样信号<span class="math">\(f(x, y)\)</span>, 如图(a). 对其进行重采样时, 无论基于系数<span class="math">\(\frac{p}{q}\)</span>将其重采样至n个样本时都需要经过以下三个步骤:</p>
+<ol>
+<li>上采样: 新建一个有<span class="math">\(pm\)</span>个采样的信号<span class="math">\(f_u(x)\)</span>, 其中<span class="math">\(f_u(px) = f(x), x = 1, 2, ..., m, 反之 $f_u(x) = 0\)</span>. 如图(b)</li>
+<li>插值: 一个低通过滤卷积信号<span class="math">\(f_i(x) = f_i(x) = f_u(x …</span></li></ol>
         <br>
         <a class="btn"
            href="/forensics_3_1.html#forensics_3_1">
@@ -233,7 +288,10 @@
     </p>
   </header>
   <div>
-      <p>基于PRNU(photo-response non-uniformity noise)检测图像修改</p>
+      <h2>PRNU</h2>
+<p>相机可以简单的建模为<span class="math">\(I(x, y) = I_0(x, y) + \gamma I_0(x, y)K(x, y) + N(x, y)\)</span>，其中为<span class="math">\(I_0\)</span>无噪声的图像，<span class="math">\(y\)</span>是叠加系数，<span class="math">\(N\)</span>是其他噪声因素（灰尘，曝光时间过长等等），<span class="math">\(K\)</span>就是本节中的相机噪声，更具体的指的是photo-response non-uniformity noise（PRNU）为光子（Cmos接受量）与电子（Cmos自有量）的相互干扰产生的一种具有特点性质的噪声。</p>
+<h2>PRNU提取</h2>
+<p>PRNU的提取比较简单, 首先提取总噪声<span class="math">\(W_k(x, y) = I_k(x, y) - \hat{I_k}(x …</span></p>
         <br>
         <a class="btn"
            href="/forensics_2_3.html#forensics_2_3">
@@ -254,7 +312,14 @@
     </p>
   </header>
   <div>
-      <p>基于CA(Chromatic Aberration, 色彩相差)图像取证</p>
+      <h2>CA</h2>
+<p>理想状态下光线透过滤镜聚焦到传感器上，传感器将光子转储为颜色信息并保存。然而实际上不存在一种滤镜能够完美的将所有波长的光聚焦于传感器上，从而导致导致高光区域与低光区域出现带有颜色的边缘。这一现象被称为CA或色差或紫边（摄影）。由于相机以及镜头的不同，篡改图像的过程中，就会出现色差问题不一致的问题，那么利用这一特性就可以校验图像是否被篡改。首先介绍一下为何会出现色差现象
+有折射定律: 1. 折射光线位于入射面内. 2. <span class="math">\(n\sin I = n' \sin I'\)</span> 
+注: <span class="math">\(I\)</span>表示入射角, <span class="math">\(I'\)</span> 表示折射角,n表示折射率. 以及短波（蓝色）折射率高，长波（红色）折射率低. 
+根据折射定律由于不同的波长在同一种介质中的折射率不同就会出现如下的情况
+<img alt="ref_wave" src="https://pic2.zhimg.com/80/v2-3523ecf46e9a1445f775aae4229851b1_720w.jpg"/></p>
+<h2>建模CA向量</h2>
+<p>根据折射定律<span class="math">\(nsin(\theta) = n_r\sin(\theta_r)\)</span> 以及 <span class="math">\(nsin(\theta) = n_b\sin(\theta_b)\)</span>得出<span class="math">\(n_r …</span></p>
         <br>
         <a class="btn"
            href="/forensics_2_2.html#forensics_2_2">
@@ -275,7 +340,19 @@
     </p>
   </header>
   <div>
-      <p>基于CFA(色彩过滤矩阵)的取证</p>
+      <h2>CFA</h2>
+<p>在数字图像中，CFA是位于图像传感器之前的一组用于过滤色彩，收集色彩信息的镜片。由于数码相机传感器仅测量光线的明亮程度无法对色彩做出处理，通过CFA为每一个像素赋予其色彩。
+下图是Bayer Array CFA也是最常见的CFA, 使用该CFA导致了实际只有1/3的色彩信息能被cmos保存下来，另外的2/3只能利用插值算法进行填充得来的。那么不同的相机之间由于不同的cmos以及插值算法就会有不同的特征存在。
+<img alt="Bayer array" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Bayer_pattern_on_sensor.svg/220px-Bayer_pattern_on_sensor.svg.png"/></p>
+<p>对于一张Raw图像其每个像素点的RGB构造方式为
+</p>
+<div class="math">$$
+\begin{aligned}
+\tilde{R}(x, y) &amp;= S(x, y) &amp;if S(x, y) = r_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\tilde{G}(x, y) &amp;= S(x, y) &amp;if S(x, y) = g_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\tilde …</div>
         <br>
         <a class="btn"
            href="/forensics_2_1.html#forensics_2_1">
@@ -296,7 +373,17 @@
     </p>
   </header>
   <div>
-      <p>定位2次量化区域</p>
+      <h1>JPEG Ghost</h1>
+<p>上一节中Double JPEG方法可以检测图像是否被二次压缩过。本节内容将定位出具体被二次压缩过的区域。这一技术被称为JPEG Ghost。</p>
+<p>前面介绍过一组RAW data存储为JPEG文件格式首先需要进行傅里叶变换随后便进行量化操作。那么假设有一组经由傅里叶变换后的值<span class="math">\(c_1\)</span>按照<span class="math">\(q_1\)</span>进行量化。随后进行还原并按照<span class="math">\(c_2\)</span>进行量化得到<span class="math">\(q_2\)</span>。如果<span class="math">\(q_1=0\)</span>（也就是不进行二次量化操作）或<span class="math">\(q_1=q_2\)</span>时<span class="math">\(c_1\)</span>与<span class="math">\(c_2\)</span>之间的损失一定是最小的。同时<span class="math">\(c_1\)</span>与<span class="math">\(c_2\)</span>之间的损失也会随着<span class="math">\(q_1\)</span>或<span class="math">\(q_2\)</span>的增大而增大。根据这样一个特点未经过二次压缩的图像应是一组基本单调上升但在某一点突然下降至0的数据。而经过二次量化的图像则是会出现2个或以上的下降点。如下图
+<img alt="未经过二次量化的图像" src="/images/DigitalForensics/jpeg_ghost_safe.jpg"/>
+<img alt="经过二次量化的图像" src="/images/DigitalForensics/jpeg_ghost_tampered.jpg"/>
+故本例子中第二次量化的等级为23。</p>
+<h2>Localization</h2>
+<p>上面提及了JPEG Ghost的概念以及部分表现，这里对这一方法进行详细描述。首先定义JPEG Ghost中的损失
+</p>
+<div class="math">$$
+d …</div>
         <br>
         <a class="btn"
            href="/forensics_1_3.html#forensics_1_3">
@@ -317,7 +404,18 @@
     </p>
   </header>
   <div>
-      <p>利用Double Jepg技术，检测图像二次压缩</p>
+      <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="二次量化(double-quantization,-double-JPEG)">&#20108;&#27425;&#37327;&#21270;(double quantization, double JPEG)<a class="anchor-link" href="#二次量化(double-quantization,-double-JPEG)">&#182;</a></h2><p>前面提到, JEPG是将位图(bit map)进行转制后利用量化操作$q_a(u) = \lfloor{\frac{u}{a}}\rfloor$, 而这一操作明显是一种有损操作. 那么当对任意图像进行修改之时, 还原回得位图必定不完全等于原始得位图, 随后得又一次压缩更会带来一定得损失以及一种特征. 这种特征可以令安全人员检测出该JPEG文件是否进行过二次编辑.</p>
+<p>二次量化是指对JEPG文件进行还原时, 量化还原$q^{-1}_a(u) = \lfloor\frac{u}{a}\rfloor\times a$ 后再一次对图像进行量化, 故该行为可以被写为$q_{ab}(u) =\lfloor \lfloor{\frac{u}{a}}\rfloor\frac{a}{b}\rfloor$</p>
+<p>下面用一组[0, 127]的正态分布数据来进行模拟实验。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
         <br>
         <a class="btn"
            href="/forensics_1_2.html#forensics_1_2">

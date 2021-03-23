@@ -65,7 +65,7 @@
 <meta property="og:url" content=""/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
-  <title>R08UST's Blog &ndash; Tag ComputerVision</title>
+  <title>R08UST's Blog &ndash; Category Protocol</title>
 
 </head>
 <body class="light-theme">
@@ -118,41 +118,37 @@
 
 <article>
   <header>
-    <h2><a href="/forensics_0.html#forensics_0">数字图像取证 - 前言</a></h2>
+    <h2><a href="/rtmp.html#rtmp">协议分析与还原 RTMP协议</a></h2>
     <p>
-      Posted on Sat 07 March 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
+      Posted on Tue 23 March 2021 in <a href="/category/protocol.html">Protocol</a>
 
-          &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
-        &#8226; 1 min read
+
+        &#8226; 2 min read
     </p>
   </header>
   <div>
-      <h2>前言</h2>
-<p>这个系列是对之前的一部分工作的结果的升华。虽然标题名为 Digital Forensics 的笔记， 但实际上该系列实际是对该书的翻译工作(包括个人理解的添加， 部分不重要言语的删除， 以及其他辅助资料的补充)。 Digital Forenscis Dartmouth大学的<a href="https://farid.berkeley.edu/">farid</a>教授出版(现以在UCB任职)。全书共10章， 从文件格式到光学系统，基本覆盖了比较经典的数字取证的方法。 </p>
-<h2>图像篡改的历史</h2>
-<p>图像篡改并非现代技术(Photoshop等电子化工具)，实际上仅仅在涅普斯创造相机的十年之后，图像篡改技术便出现了。 下面实际上就是一张实例，由于观念的不同斯大林将其政委从其合照中抹去。
-<img alt="commissar" src="/images/DigitalForensics/commissary.jpg"/></p>
-<p>左侧是被修改的图像，右侧是原始图像。</p>
-<p>在Photoshop软件出现之前， 人们实际上也是利用Photoshop对胶片图像进行冲洗，调整抑或是篡改，当然这里的photoshop学名叫做暗房。而前面的Photoshop学名应该叫做电子暗房。 如果想要在胶片图像上完成对一个事物则至少需要3个步骤(不包括正常洗胶片的操作)</p>
-<ol>
-<li>底片剪拼：用黑卡纸裁成相应形状，在相纸相应部位作遮挡；之后再遮住其他部分，单独将需要补晒的内容进行第二次晒印曝光。对应在Photoshop中则是将目标图像复制改图像的图层之上。</li>
-<li>多次曝光：实际上这就是调整对比度的操作。 </li>
-<li>调整边缘：调虚焦距，或者适当抖动遮盖纸。 对应至Photoshop这则是羽化边缘的操作。</li>
-</ol>
-<p>所以无论是老照片抑或是新的照片，都存在篡改的情况，后面我们将要介绍各种数字取证的方法 …</p>
+      <h2>introduction</h2>
+<p>RTMP协议全称为Adobe's Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息</p>
+<h2>Definitions</h2>
+<p>这里对协议中一些特有的术语进行说明:
+    - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身.
+    - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组.
+    - Chunk Stream: Chunk在网络通信中的逻辑通道.
+    - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. 
+    - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. </p>
+<h2>Overview</h2>
+<p><img alt="Overview" src="https://www.globaldots.com/hubfs/Imported_Blog_Media/RTMPPacket.png"/></p>
+<p>上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. </p>
+<h2>Chunk …</h2>
         <br>
         <a class="btn"
-           href="/forensics_0.html#forensics_0">
+           href="/rtmp.html#rtmp">
           Continue reading
         </a>
   </div>
 </article>
 
   <div class="pagination">
-    <a class="btn float-right" href="/tag/computervision.html">
-      Newer Posts <i class="fa fa-angle-right"></i>
-    </a>
   </div>
 
 

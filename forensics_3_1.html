@@ -56,13 +56,13 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="利用重采样的性质进行取证" />
+<meta name="description" content="重采样 多数的图像篡改都需要如下步骤：裁剪缩放, 旋转以及拉伸. 上述的操作都需要对图像重采样才可以. 经过这种重采样是基本不可见的，但是这里介绍一种特殊的相关性计算算法. 假设具有\(m\)个采样点的1-D离散采样信号\(f(x, y)\), 如图(a). 对其进行重采样时, 无论基于系数\(\frac{p}{q}\)将其重采样至n个样本时都需要经过以下三个步骤: 上采样: 新建一个有\(pm\)个采样的信号\(f_u(x)\), 其中\(f_u(px) = f(x), x = 1, 2, ..., m, 反之 $f_u(x) = 0\). 如图(b) 插值: 一个低通过滤卷积信号\(f_i(x) = f_i(x) = f_u(x …" />
 <meta name="keywords" content="Book, Forensics, Security, ComputerVision">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
 <meta property="og:title" content="数字图像取证 - 基于像素的取证 1"/>
-<meta property="og:description" content="利用重采样的性质进行取证"/>
+<meta property="og:description" content="重采样 多数的图像篡改都需要如下步骤：裁剪缩放, 旋转以及拉伸. 上述的操作都需要对图像重采样才可以. 经过这种重采样是基本不可见的，但是这里介绍一种特殊的相关性计算算法. 假设具有\(m\)个采样点的1-D离散采样信号\(f(x, y)\), 如图(a). 对其进行重采样时, 无论基于系数\(\frac{p}{q}\)将其重采样至n个样本时都需要经过以下三个步骤: 上采样: 新建一个有\(pm\)个采样的信号\(f_u(x)\), 其中\(f_u(px) = f(x), x = 1, 2, ..., m, 反之 $f_u(x) = 0\). 如图(b) 插值: 一个低通过滤卷积信号\(f_i(x) = f_i(x) = f_u(x …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="/forensics_3_1.html"/>
 <meta property="og:type" content="article"/>

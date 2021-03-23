@@ -128,7 +128,24 @@
     </p>
   </header>
   <div>
-      <p>利用CCCrypt快速获取加密信息</p>
+      <h2>CCCrypt原型接口</h2>
+<p>由于IOS/OSX相对闭源, 故⼤多数算法都是使⽤ObejectiveC 封装的⼀套Crypto库. 该库拥有⼀套统⼀的调⽤ ⼊⼝ CCCrypt. 其具体定义如下</p>
+<div class="highlight"><pre><span></span><code><span class="n">CCCryptorStatus</span> <span class="n">CCCrypt</span><span class="p">(</span> <span class="n">CCOperation</span> <span class="n">op</span><span class="p">,</span> 
+<span class="n">CCAlgorithm</span> <span class="n">alg</span><span class="p">,</span> 
+<span class="n">CCOptions</span> <span class="k">options</span><span class="p">,</span> 
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="k">key</span><span class="p">,</span> 
+<span class="n">size_t</span> <span class="n">keyLength</span><span class="p">,</span> 
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">iv</span><span class="p">,</span> 
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">dataIn</span><span class="p">,</span> 
+<span class="n">size_t</span> <span class="n">dataInLength</span><span class="p">,</span> 
+<span class="n">void</span> <span class="o">*</span><span class="n">dataOut</span><span class="p">,</span>
+<span class="n">size_t</span> <span class="n">dataOutAvailable</span><span class="p">,</span> 
+<span class="n">size_t</span> <span class="o">*</span><span class="n">dataOutMoved</span><span class="p">)</span>
+
+<span class="o">#</span> <span class="err">参数意义</span>
+<span class="n">op</span><span class="err">：</span><span class="n">kCCEncrypt</span><span class="p">(</span><span class="err">加密</span><span class="p">)</span><span class="o">/</span> <span class="n">kCCDecrypt</span><span class="p">(</span><span class="err">解密</span><span class="p">)</span>
+<span class="n">alg</span><span class="err">：加密算法</span> 
+<span class="k">options</span><span class="err">：加密 …</span></code></pre></div>
         <br>
         <a class="btn"
            href="/ios_cccrypt.html#ios_cccrypt">

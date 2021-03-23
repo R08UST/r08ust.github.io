@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - SoftwareSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/softwaresecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-01-05T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>IOS逆向 CCCrypt技巧</title><link href="/ios_cccrypt.html" rel="alternate"></link><published>2021-01-05T00:00:00+08:00</published><updated>2021-01-05T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-01-05:/ios_cccrypt.html</id><summary type="html">&lt;p&gt;利用CCCrypt快速获取加密信息&lt;/p&gt;</summary><content type="html">&lt;h2&gt;CCCrypt原型接口&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - SoftwareSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/softwaresecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-01-05T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>IOS逆向 CCCrypt技巧</title><link href="/ios_cccrypt.html" rel="alternate"></link><published>2021-01-05T00:00:00+08:00</published><updated>2021-01-05T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-01-05:/ios_cccrypt.html</id><summary type="html">&lt;h2&gt;CCCrypt原型接口&lt;/h2&gt;
+&lt;p&gt;由于IOS/OSX相对闭源, 故⼤多数算法都是使⽤ObejectiveC 封装的⼀套Crypto库. 该库拥有⼀套统⼀的调⽤ ⼊⼝ CCCrypt. 其具体定义如下&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;CCCryptorStatus&lt;/span&gt; &lt;span class="n"&gt;CCCrypt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;CCOperation&lt;/span&gt; &lt;span class="n"&gt;op&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;CCAlgorithm&lt;/span&gt; &lt;span class="n"&gt;alg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;CCOptions&lt;/span&gt; &lt;span class="k"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;const&lt;/span&gt; &lt;span class="n"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;keyLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;const&lt;/span&gt; &lt;span class="n"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;iv&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;const&lt;/span&gt; &lt;span class="n"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;dataIn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;dataInLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;dataOut&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;dataOutAvailable&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;span class="n"&gt;size_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;dataOutMoved&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="err"&gt;参数意义&lt;/span&gt;
+&lt;span class="n"&gt;op&lt;/span&gt;&lt;span class="err"&gt;：&lt;/span&gt;&lt;span class="n"&gt;kCCEncrypt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;加密&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;kCCDecrypt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;解密&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;alg&lt;/span&gt;&lt;span class="err"&gt;：加密算法&lt;/span&gt; 
+&lt;span class="k"&gt;options&lt;/span&gt;&lt;span class="err"&gt;：加密 …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;CCCrypt原型接口&lt;/h2&gt;
 &lt;p&gt;由于IOS/OSX相对闭源, 故⼤多数算法都是使⽤ObejectiveC 封装的⼀套Crypto库. 该库拥有⼀套统⼀的调⽤ ⼊⼝ CCCrypt. 其具体定义如下&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;CCCryptorStatus&lt;/span&gt; &lt;span class="n"&gt;CCCrypt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;CCOperation&lt;/span&gt; &lt;span class="n"&gt;op&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
 &lt;span class="n"&gt;CCAlgorithm&lt;/span&gt; &lt;span class="n"&gt;alg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
