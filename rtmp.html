@@ -57,7 +57,7 @@
 
 <meta name="author" content="R08UST" />
 <meta name="description" content="introduction RTMP协议全称为Adobe&#39;s Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息 Definitions 这里对协议中一些特有的术语进行说明: - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身. - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组. - Chunk Stream: Chunk在网络通信中的逻辑通道. - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. Overview 上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. Chunk …" />
-<meta name="keywords" content="">
+<meta name="keywords" content="Protocol, Security">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
@@ -70,6 +70,8 @@
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="/author/r08ust.html">
 <meta property="article:section" content="Protocol"/>
+<meta property="article:tag" content="Protocol"/>
+<meta property="article:tag" content="Security"/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
   <title>R08UST's Blog &ndash; 协议分析与还原 RTMP协议</title>
@@ -397,6 +399,8 @@ Chuck Data: 有效载荷</p>
   </div>
   <div class="tag-cloud">
     <p>
+      <a href="/tag/protocol.html">Protocol</a>
+      <a href="/tag/security.html">Security</a>
     </p>
   </div>
 
@@ -405,6 +409,9 @@ Chuck Data: 有效载荷</p>
     <a class="btn float-left" href="/zerowall.html" title="论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks">
       <i class="fa fa-angle-left"></i> Previous Post
     </a>
+    <a class="btn float-right" href="/tiresias.html" title="论文笔记 An adaptive system for detecting malicious queries in web attacks">
+      Next Post <i class="fa fa-angle-right"></i>
+    </a>
   </div>
 
 
@@ -412,7 +419,7 @@ Chuck Data: 有效载荷</p>
 </article>
 
     <footer>
-<p>&copy; 2020 </p>
+<p>&copy; 2021 </p>
 <p>
 Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>

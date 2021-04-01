@@ -118,11 +118,44 @@
 
 <article>
   <header>
+    <h2><a href="/tiresias.html#tiresias">论文笔记 An adaptive system for detecting malicious queries in web attacks</a></h2>
+    <p>
+      Posted on Thu 01 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+
+          &#8226; Tagged with
+              <a href="/tag/waf.html">waf</a>,              <a href="/tag/networksecurity.html">NetworkSecurity</a>,              <a href="/tag/machinelearning.html">MachineLearning</a>,              <a href="/tag/security.html">Security</a>
+        &#8226; 1 min read
+    </p>
+  </header>
+  <div>
+      <h2>Introduction</h2>
+<p>本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
+<img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/></p>
+<h2>Method</h2>
+<p>根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释</p>
+<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
+<p>SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
+</p>
+<div class="math">$$
+\begin{aligned}
+&amp;K(x, z) = \varphi(x)^\varphi(z)\\
+&amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …</div>
+        <br>
+        <a class="btn"
+           href="/tiresias.html#tiresias">
+          Continue reading
+        </a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="/rtmp.html#rtmp">协议分析与还原 RTMP协议</a></h2>
     <p>
       Posted on Tue 23 March 2021 in <a href="/category/protocol.html">Protocol</a>
 
-
+          &#8226; Tagged with
+              <a href="/tag/protocol.html">Protocol</a>,              <a href="/tag/security.html">Security</a>
         &#8226; 2 min read
     </p>
   </header>
@@ -154,7 +187,8 @@
     <p>
       Posted on Tue 09 March 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
-
+          &#8226; Tagged with
+              <a href="/tag/waf.html">waf</a>,              <a href="/tag/networksecurity.html">NetworkSecurity</a>,              <a href="/tag/machinelearning.html">MachineLearning</a>,              <a href="/tag/security.html">Security</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -386,39 +420,6 @@ Distinctive Image Features from Scale-Invariant Keypoints</a>)是一种检测局
           Continue reading
         </a>
   </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="/forensics_2_1.html#forensics_2_1">数字图像取证 - 基于相机属性的取证 1</a></h2>
-    <p>
-      Posted on Fri 03 July 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
-
-          &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
-        &#8226; 1 min read
-    </p>
-  </header>
-  <div>
-      <h2>CFA</h2>
-<p>在数字图像中，CFA是位于图像传感器之前的一组用于过滤色彩，收集色彩信息的镜片。由于数码相机传感器仅测量光线的明亮程度无法对色彩做出处理，通过CFA为每一个像素赋予其色彩。
-下图是Bayer Array CFA也是最常见的CFA, 使用该CFA导致了实际只有1/3的色彩信息能被cmos保存下来，另外的2/3只能利用插值算法进行填充得来的。那么不同的相机之间由于不同的cmos以及插值算法就会有不同的特征存在。
-<img alt="Bayer array" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Bayer_pattern_on_sensor.svg/220px-Bayer_pattern_on_sensor.svg.png"/></p>
-<p>对于一张Raw图像其每个像素点的RGB构造方式为
-</p>
-<div class="math">$$
-\begin{aligned}
-\tilde{R}(x, y) &amp;= S(x, y) &amp;if S(x, y) = r_{x, y} \\
-        &amp;= 0 &amp;otherwise\\
-\tilde{G}(x, y) &amp;= S(x, y) &amp;if S(x, y) = g_{x, y} \\
-        &amp;= 0 &amp;otherwise\\
-\tilde …</div>
-        <br>
-        <a class="btn"
-           href="/forensics_2_1.html#forensics_2_1">
-          Continue reading
-        </a>
-  </div>
 </article>
 
   <div class="pagination">
@@ -430,7 +431,7 @@ Distinctive Image Features from Scale-Invariant Keypoints</a>)是一种检测局
 
 
     <footer>
-<p>&copy; 2020 </p>
+<p>&copy; 2021 </p>
 <p>
 Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>

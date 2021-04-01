@@ -65,7 +65,7 @@
 <meta property="og:url" content=""/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
-  <title>R08UST's Blog &ndash; Tag IOS</title>
+  <title>R08UST's Blog &ndash; Tag Protocol</title>
 
 </head>
 <body class="light-theme">
@@ -118,37 +118,32 @@
 
 <article>
   <header>
-    <h2><a href="/ios_cccrypt.html#ios_cccrypt">IOS逆向 CCCrypt技巧</a></h2>
+    <h2><a href="/rtmp.html#rtmp">协议分析与还原 RTMP协议</a></h2>
     <p>
-      Posted on Tue 05 January 2021 in <a href="/category/softwaresecurity.html">SoftwareSecurity</a>
+      Posted on Tue 23 March 2021 in <a href="/category/protocol.html">Protocol</a>
 
           &#8226; Tagged with
-              <a href="/tag/ios.html">IOS</a>,              <a href="/tag/softwaresecurity.html">SoftwareSecurity</a>,              <a href="/tag/security.html">Security</a>
+              <a href="/tag/protocol.html">Protocol</a>,              <a href="/tag/security.html">Security</a>
         &#8226; 2 min read
     </p>
   </header>
   <div>
-      <h2>CCCrypt原型接口</h2>
-<p>由于IOS/OSX相对闭源, 故⼤多数算法都是使⽤ObejectiveC 封装的⼀套Crypto库. 该库拥有⼀套统⼀的调⽤ ⼊⼝ CCCrypt. 其具体定义如下</p>
-<div class="highlight"><pre><span></span><code><span class="n">CCCryptorStatus</span> <span class="n">CCCrypt</span><span class="p">(</span> <span class="n">CCOperation</span> <span class="n">op</span><span class="p">,</span> 
-<span class="n">CCAlgorithm</span> <span class="n">alg</span><span class="p">,</span> 
-<span class="n">CCOptions</span> <span class="k">options</span><span class="p">,</span> 
-<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="k">key</span><span class="p">,</span> 
-<span class="n">size_t</span> <span class="n">keyLength</span><span class="p">,</span> 
-<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">iv</span><span class="p">,</span> 
-<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">dataIn</span><span class="p">,</span> 
-<span class="n">size_t</span> <span class="n">dataInLength</span><span class="p">,</span> 
-<span class="n">void</span> <span class="o">*</span><span class="n">dataOut</span><span class="p">,</span>
-<span class="n">size_t</span> <span class="n">dataOutAvailable</span><span class="p">,</span> 
-<span class="n">size_t</span> <span class="o">*</span><span class="n">dataOutMoved</span><span class="p">)</span>
-
-<span class="o">#</span> <span class="err">参数意义</span>
-<span class="n">op</span><span class="err">：</span><span class="n">kCCEncrypt</span><span class="p">(</span><span class="err">加密</span><span class="p">)</span><span class="o">/</span> <span class="n">kCCDecrypt</span><span class="p">(</span><span class="err">解密</span><span class="p">)</span>
-<span class="n">alg</span><span class="err">：加密算法</span> 
-<span class="k">options</span><span class="err">：加密 …</span></code></pre></div>
+      <h2>introduction</h2>
+<p>RTMP协议全称为Adobe's Real Time Message Protocol(实时消息协议). 是一个建立在可靠网络链接上的双向消息多路复用的数据传输协议. 其设计用于传输视频, 音频以及数据消息</p>
+<h2>Definitions</h2>
+<p>这里对协议中一些特有的术语进行说明:
+    - Message stream ID: 每一条消息都有一个独立的ID, 用于标记其自身.
+    - Chunk: 一条消息的数据分片. 每条消息都会被拆分成为小的片段并在网络中发送. 每个Chunk保证其按照时间顺序, 端到端的进行发生以及重组.
+    - Chunk Stream: Chunk在网络通信中的逻辑通道.
+    - Chunk stream ID: 每片Chunk的ID, 用于标记其自身属于那条Message. 
+    - AMF(Action message Format): 一种用于序列化ActionScript(其Flash产品开发的一种基于ECMAScript的面向对象编程语言, 但现在Flash已被废弃, 并且现在RTMP协议也多用来单纯传输音视频文件, 不再传输FLASH的SWF文件)的Object Graph的二进制兼容格式, 其拥有2中版本, AMF0以及AMF3. </p>
+<h2>Overview</h2>
+<p><img alt="Overview" src="https://www.globaldots.com/hubfs/Imported_Blog_Media/RTMPPacket.png"/></p>
+<p>上图为RTMP协议的概览, 其上半部分被称为Chunk Stream(包括TimeStamp部分), 下半部分则为Message. </p>
+<h2>Chunk …</h2>
         <br>
         <a class="btn"
-           href="/ios_cccrypt.html#ios_cccrypt">
+           href="/rtmp.html#rtmp">
           Continue reading
         </a>
   </div>

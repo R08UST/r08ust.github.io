@@ -56,27 +56,27 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="重采样 多数的图像篡改都需要如下步骤：裁剪缩放, 旋转以及拉伸. 上述的操作都需要对图像重采样才可以. 经过这种重采样是基本不可见的，但是这里介绍一种特殊的相关性计算算法. 假设具有\(m\)个采样点的1-D离散采样信号\(f(x, y)\), 如图(a). 对其进行重采样时, 无论基于系数\(\frac{p}{q}\)将其重采样至n个样本时都需要经过以下三个步骤: 上采样: 新建一个有\(pm\)个采样的信号\(f_u(x)\), 其中\(f_u(px) = f(x), x = 1, 2, ..., m, 反之 $f_u(x) = 0\). 如图(b) 插值: 一个低通过滤卷积信号\(f_i(x) = f_i(x) = f_u(x …" />
-<meta name="keywords" content="Book, Forensics, Security, ComputerVision">
+<meta name="description" content="Introduction 本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示 Method 根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释 自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 $$ \begin{aligned} &amp;K(x, z) = \varphi(x)^\varphi(z)\\ &amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …" />
+<meta name="keywords" content="waf, NetworkSecurity, MachineLearning, Security">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
-<meta property="og:title" content="数字图像取证 - 基于像素的取证 1"/>
-<meta property="og:description" content="重采样 多数的图像篡改都需要如下步骤：裁剪缩放, 旋转以及拉伸. 上述的操作都需要对图像重采样才可以. 经过这种重采样是基本不可见的，但是这里介绍一种特殊的相关性计算算法. 假设具有\(m\)个采样点的1-D离散采样信号\(f(x, y)\), 如图(a). 对其进行重采样时, 无论基于系数\(\frac{p}{q}\)将其重采样至n个样本时都需要经过以下三个步骤: 上采样: 新建一个有\(pm\)个采样的信号\(f_u(x)\), 其中\(f_u(px) = f(x), x = 1, 2, ..., m, 反之 $f_u(x) = 0\). 如图(b) 插值: 一个低通过滤卷积信号\(f_i(x) = f_i(x) = f_u(x …"/>
+<meta property="og:title" content="论文笔记 An adaptive system for detecting malicious queries in web attacks"/>
+<meta property="og:description" content="Introduction 本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示 Method 根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释 自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 $$ \begin{aligned} &amp;K(x, z) = \varphi(x)^\varphi(z)\\ &amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="/forensics_3_1.html"/>
+<meta property="og:url" content="/tiresias.html"/>
 <meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2020-11-03 00:00:00+08:00"/>
+<meta property="article:published_time" content="2021-04-01 00:00:00+08:00"/>
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="/author/r08ust.html">
-<meta property="article:section" content="Digital Image Forensics"/>
-<meta property="article:tag" content="Book"/>
-<meta property="article:tag" content="Forensics"/>
+<meta property="article:section" content="AIForSecurity"/>
+<meta property="article:tag" content="waf"/>
+<meta property="article:tag" content="NetworkSecurity"/>
+<meta property="article:tag" content="MachineLearning"/>
 <meta property="article:tag" content="Security"/>
-<meta property="article:tag" content="ComputerVision"/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
-  <title>R08UST's Blog &ndash; 数字图像取证 - 基于像素的取证 1</title>
+  <title>R08UST's Blog &ndash; 论文笔记 An adaptive system for detecting malicious queries in web attacks</title>
 
 </head>
 <body class="light-theme">
@@ -128,9 +128,9 @@
 <article class="single">
   <header>
       
-    <h1 id="forensics_3_1">数字图像取证 - 基于像素的取证 1</h1>
+    <h1 id="tiresias">论文笔记 An adaptive system for detecting malicious queries in web attacks</h1>
     <p>
-      Posted on Tue 03 November 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
+      Posted on Thu 01 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
         &#8226; 1 min read
     </p>
@@ -138,98 +138,66 @@
 
 
   <div>
-    <h2>重采样</h2>
-<p>多数的图像篡改都需要如下步骤：裁剪缩放, 旋转以及拉伸. 上述的操作都需要对图像重采样才可以. 经过这种重采样是基本不可见的，但是这里介绍一种特殊的相关性计算算法. 假设具有<span class="math">\(m\)</span>个采样点的1-D离散采样信号<span class="math">\(f(x, y)\)</span>, 如图(a). 对其进行重采样时, 无论基于系数<span class="math">\(\frac{p}{q}\)</span>将其重采样至n个样本时都需要经过以下三个步骤:</p>
-<ol>
-<li>上采样: 新建一个有<span class="math">\(pm\)</span>个采样的信号<span class="math">\(f_u(x)\)</span>, 其中<span class="math">\(f_u(px) = f(x), x = 1, 2, ..., m, 反之 $f_u(x) = 0\)</span>. 如图(b)</li>
-<li>插值: 一个低通过滤卷积信号<span class="math">\(f_i(x) = f_i(x) = f_u(x) * h(x)\)</span>. 如图(c)</li>
-<li>下采样: 新建一个有<span class="math">\(n\)</span>个采样的信号<span class="math">\(f_d(x)\)</span>, 其中<span class="math">\(f_d(x) = f_i(qx), t = 1, 2, ..., n\)</span>. 为后续书写简单, 令<span class="math">\(g(x)\equiv f_d(x)\)</span></li>
-</ol>
-<h2>插值矩阵</h2>
-<p>如果在第二步中（插值算法）使用的是线性的插值算法，那么重采样过程可以被抽象为<span class="math">\(g = A_{{p}/{q}}f\)</span>，其中<span class="math">\(A\)</span>就是插值矩阵，如果使用4/3的权重进行上采样插值那么A就表示为
-</p>
-<div class="math">$$
-A_{4/3} = 
-\begin{bmatrix}
-1 &amp; 0 &amp; 0 &amp; 0 &amp;\\
-0.25 &amp; 0.75 &amp; 0 &amp; 0 &amp;\\
-0 &amp; 0.5 &amp; 0.5 &amp; 0 &amp;\\
-0 &amp; 0 &amp; 0.75 &amp; 0.25 &amp;\\
-0 &amp; 0 &amp; 0 &amp; 1 &amp;\\
-  &amp;   &amp;   &amp;   &amp; \ddots
-\\
-\end{bmatrix}
-$$</div>
-<p>
-同理对于权重为2的上采样插值算法, 其矩阵组成形式如下
-</p>
-<div class="math">$$
-A_{4/3} = 
-\begin{bmatrix}
-1 &amp; 0 &amp; 0 &amp; \\
-0.5 &amp; 0.5 &amp; 0 &amp; \\
-0 &amp; 1 &amp; 0 &amp; \\
-0 &amp; 0.5 &amp; 0.5 &amp; \\
-0 &amp; 0 &amp;  1 &amp;\\
-  &amp;   &amp;    &amp; \ddots
-\\
-\end{bmatrix}
-$$</div>
-<p>
-对于重采样后的信号其值是相邻点的平均值<span class="math">\(g_{2i} = 0.5f_i + 0.5f_{i+1}\)</span>, 其中 <span class="math">\(i = 1, ..., m-1\)</span>, <span class="math">\(f\)</span>是原始信号, <span class="math">\(g\)</span>是重采样信号. 因为<span class="math">\(f_i = g_{2i - 1}, f_{i + 1} = g_{2i +1}\)</span>, 故<span class="math">\(g_{2i} = 0.5g_{2i - 1} + 0.5g_{2i + 1}\)</span>.</p>
-<h2>求解插值矩阵</h2>
-<p>假设其权重为<span class="math">\(p/q\)</span>, 插值算法则定义为
-</p>
-<div class="math">$$
-g_i \overset{?}{=} \sum^N_{k = -N} \alpha_k g_{i + k}
-$$</div>
-<p>
-其中<span class="math">\(\alpha_k\)</span>为标量权重(<span class="math">\(\alpha_0 = 0\)</span>). 上式又等价于
+    <h2>Introduction</h2>
+<p>本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
+<img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/></p>
+<h2>Method</h2>
+<p>根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释</p>
+<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
+<p>SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
 </p>
 <div class="math">$$
 \begin{aligned}
-g_i - \sum^N_{k = -N} \alpha_k g_{i + k} = 0 \\
-(a_i \cdot f) - \sum^N_{k = -N} \alpha_k (a_{i + k} \cdot f) = 0 \\
-(a_i - \sum^N_{k = -N} \alpha_k (a_{i + k}) \cdot f) = 0 \\
+&amp;K(x, z) = \varphi(x)^\varphi(z)\\
+&amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum^n_{i, j = 1}\alpha_i\alpha_j y_i y_j x_i^T x_j,\\
+&amp;st \space 0 \leq \alpha_i \leq C \space (i = 1, ..., n), \sum^n_{i = 1}\alpha_i\alpha_j = 0
 \end{aligned}
 $$</div>
-<p>
-其中<span class="math">\(a_i\)</span>是重采样矩阵<span class="math">\(A_{p/q}\)</span>的第<span class="math">\(i^{th}\)</span>行, <span class="math">\(f\)</span>是原始信号
-因为重采样信号的第<span class="math">\(i\)</span>个样本与其邻域线性相关. 那么CFA校验类似, 同样的可以使用EM算法对插值矩阵进行预测性.
-在E-step 利用
+<p>suspicion selection(SS): SS的方式为利用聚类算法寻找潜在的信息分类(informative queries). 其具体方法如下</p>
+<ol>
+<li>
+<p>模型训练完成的情况下, 落入的间隔内的数据被称为Q. Q将会根据其核距离来排序
+<div class="math">$$
+f(x) = \sum^n_{i=1} \alpha_i y_iK(x_i, x) + b
+$$</div>
+</p>
+</li>
+<li>
+<p>将最小的核距离定义为模糊空间的下边界. <span class="math">\(f_{lower} = \displaystyle\min_{x\in Q}\)</span>. 将最大的核距离定义为模糊边界的上边界. <span class="math">\(f_{upper} = \displaystyle\max_{x\in Q}\)</span>. </p>
+</li>
+<li>
+<p>聚类算法使用K-medoids. 将K-medoids的中心定义为suspicion, 即最容易误分类的样本. K-medoids公式亦与传统公式无异
+<div class="math">$$
+\begin{aligned}
+&amp;E = \displaystyle\sum^k_{j = 1}\sum_{x \in C_j}|\varphi(x) - \varphi(M_j)|\\
+&amp;|\varphi(x) - \varphi(M_j)| = \sqrt{K(x, x) + K(M_j, M_j) - 2k(x, M_j)}
+\end{aligned}
+$$</div>
+</p>
+</li>
+</ol>
+<p>exemplary selection(ES): ES用于表达典型的恶意样本. 虽然SS对样本可以进行分类, 但其误检率较高, 利用ES来进一步确认其分类. ES基于kernel farthest first(KFF)这一贪婪启发算法来确定典型样本. 令未达标的数据未U, 达标过的数据未L. 最远距离定义为L中的数据y到U中的一个数据x的距离之和的最大值. 公式如下
 </p>
 <div class="math">$$
-r_1(i) = g_i - \sum^N_{k = -N} \alpha_k g_{i + k}
+\displaystyle\argmax_{x \in U}(\sum_{x \in L} |\varphi(x) - \varphi(y)|)
 $$</div>
-<p>
-求解似然函数
-</p>
-<div class="math">$$
-\omega_1(i) = P_r(\alpha | r_1(x, y)) = \frac{e^{-r^2_1(i)/\mu}}{e^{-r^2_1(i)/\mu} + 1/\sigma}
-$$</div>
-<p>
-在M-step最小化
-</p>
-<div class="math">$$
-E(\alpha) = \sum_i\omega(i)(g_i - \sum^N_{k = -N}\alpha_k g_{i + k})
-$$</div>
-<p>
-最后令梯度为0, 得到
-</p>
-<div class="math">$$
-\alpha = (G^TWG)^{-1}G^TWg
-$$</div>
-<p>
-如果 <span class="math">\(N = 2, g = (g_3, g_4, g_5, ...)^T\)</span>, <span class="math">\(W\)</span>为权重矩阵的对角矩阵, 矩阵G为
-</p>
-<div class="math">$$
-\begin{bmatrix}
-g_1 &amp; g_2 &amp; g_4 &amp; g_5 \\
-g_2 &amp; g_3 &amp; g_5 &amp; g_6 \\
-g_3 &amp; g_4 &amp; g_6 &amp; g_7 \\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
-\end{bmatrix}
-$$</div>
+<p><img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/7-Figure4-1.png"/></p>
+<p>数据预处理: </p>
+<ol>
+<li>提取Get请求</li>
+<li>数据清洗: 仅保留response在200-300字节的的请求</li>
+<li>数据标准化: 将ascii, unescaping字符转换为小写, 并删除长度小于4的请求</li>
+<li>按照RFC2616过滤不安全的字符</li>
+<li>利用2Gram对数据再次分割. </li>
+<li>特征压缩: 卡方校验, 信息增益(info gain, 选择头800), DF(document Frequency), top selection(首选, 选择150, 200, 300, 500, 800, 1100, 1500 and 2000), PCA(principal component analysis, 主成分分析法, 选择top 80), RP(random Projection, 随机投影)以及reservation quantities(选择10, 20, 30, 40, 60, 80, 150 and 300)</li>
+<li></li>
+</ol>
+<h2>Experimental</h2>
+<p>实验在32GRam以及Intel 2.93GhzCpu上进行, 使用Weka和Libsvm实现baseline以及Meta Svm. 数据为内部数据并未开源. </p>
+<p>MetaSvm使用RBF核, 参数为<span class="math">\((C,\gamma) = (0.05, 2)\)</span>, 基于网格搜索的交叉验证来进行验证. 对自适应功能验证的结果如下(主要与SvmAL对比)</p>
+<p><img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/11-Figure5-1.png"/></p>
+<p>与传统框架对比, 数据基于CSIC2010, 结果如下</p>
+<p><img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/13-Table5-1.png"/></p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -295,20 +263,17 @@ $$</div>
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="/tag/book.html">Book</a>
-      <a href="/tag/forensics.html">Forensics</a>
+      <a href="/tag/waf.html">waf</a>
+      <a href="/tag/networksecurity.html">NetworkSecurity</a>
+      <a href="/tag/machinelearning.html">MachineLearning</a>
       <a href="/tag/security.html">Security</a>
-      <a href="/tag/computervision.html">ComputerVision</a>
     </p>
   </div>
 
 
   <div class="neighbors">
-    <a class="btn float-left" href="/forensics_2_3.html" title="数字图像取证 - 基于相机属性的取证 3">
+    <a class="btn float-left" href="/rtmp.html" title="协议分析与还原 RTMP协议">
       <i class="fa fa-angle-left"></i> Previous Post
-    </a>
-    <a class="btn float-right" href="/ios_cccrypt.html" title="IOS逆向 CCCrypt技巧">
-      Next Post <i class="fa fa-angle-right"></i>
     </a>
   </div>
 

@@ -57,7 +57,7 @@
 
 <meta name="author" content="R08UST" />
 <meta name="description" content="Introduction Waf(web application firewall)一般通过规则过滤/触发的异常的Web请求. 通过安全研究员对已知攻击特征的提取来构成并拓展特征库. 但基于特征的Waf难以对0Day漏洞进行检测. 故本文提出了一种Encoder-Decoder RNN架构的无监督学习方案对0Day漏洞进行检测. 本文的核心思想在与将0Day的检测问题转换为翻译质量评定的问题. 简单的来讲即通过训练一个翻译器来将正常web请求A再次翻译为A&#39;. 而当异常的web请求B翻译为B&#39;时, 由于神经网络对B的特征拟合较差故B&#39;的翻译质量也会较差. 以此来判定B是一个异常的web请求 Method 对于Waf吞吐量的是十分重要的, 完全基于AI检测的waf器吞吐量是一个重大缺陷, 故本文采用waf旁路架构, 基于已有的waf框架过滤异常请求. 神经网络本身不进行过滤处理, 仅用于检测0Day漏洞, 并结合安全人员将已发现的漏洞编写成规则添加进规则库. 下图为系统的架构图 可以看出整个系统架构分为两个部分(实际是三个部分, 即传统的waf框架自身的运行在图中被省略, 当流量未触发waf规则时, 其会被放行). 在offline periodic retrain部分中, 其分为四个阶段数据积累, 词汇表构建(vocabulary), 词汇解析(token parser)以及训练. 其主要功能就是词汇表构建和训练. 以保证能对新出现的请求进行正常识别. 在online detection部分中, 其分为六个阶段请求过滤(在图中未体现), 词汇解析, 翻译, 异常检测以及人工调查. 一条请求经过上述六个阶段后 …" />
-<meta name="keywords" content="">
+<meta name="keywords" content="waf, NetworkSecurity, MachineLearning, Security">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
@@ -70,6 +70,10 @@
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="/author/r08ust.html">
 <meta property="article:section" content="AIForSecurity"/>
+<meta property="article:tag" content="waf"/>
+<meta property="article:tag" content="NetworkSecurity"/>
+<meta property="article:tag" content="MachineLearning"/>
+<meta property="article:tag" content="Security"/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
   <title>R08UST's Blog &ndash; 论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</title>
@@ -181,6 +185,10 @@
   </div>
   <div class="tag-cloud">
     <p>
+      <a href="/tag/waf.html">waf</a>
+      <a href="/tag/networksecurity.html">NetworkSecurity</a>
+      <a href="/tag/machinelearning.html">MachineLearning</a>
+      <a href="/tag/security.html">Security</a>
     </p>
   </div>
 
@@ -199,7 +207,7 @@
 </article>
 
     <footer>
-<p>&copy; 2020 </p>
+<p>&copy; 2021 </p>
 <p>
 Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>

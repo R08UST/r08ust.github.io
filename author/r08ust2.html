@@ -118,6 +118,39 @@
 
 <article>
   <header>
+    <h2><a href="/forensics_2_1.html#forensics_2_1">数字图像取证 - 基于相机属性的取证 1</a></h2>
+    <p>
+      Posted on Fri 03 July 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
+
+          &#8226; Tagged with
+              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
+        &#8226; 1 min read
+    </p>
+  </header>
+  <div>
+      <h2>CFA</h2>
+<p>在数字图像中，CFA是位于图像传感器之前的一组用于过滤色彩，收集色彩信息的镜片。由于数码相机传感器仅测量光线的明亮程度无法对色彩做出处理，通过CFA为每一个像素赋予其色彩。
+下图是Bayer Array CFA也是最常见的CFA, 使用该CFA导致了实际只有1/3的色彩信息能被cmos保存下来，另外的2/3只能利用插值算法进行填充得来的。那么不同的相机之间由于不同的cmos以及插值算法就会有不同的特征存在。
+<img alt="Bayer array" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Bayer_pattern_on_sensor.svg/220px-Bayer_pattern_on_sensor.svg.png"/></p>
+<p>对于一张Raw图像其每个像素点的RGB构造方式为
+</p>
+<div class="math">$$
+\begin{aligned}
+\tilde{R}(x, y) &amp;= S(x, y) &amp;if S(x, y) = r_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\tilde{G}(x, y) &amp;= S(x, y) &amp;if S(x, y) = g_{x, y} \\
+        &amp;= 0 &amp;otherwise\\
+\tilde …</div>
+        <br>
+        <a class="btn"
+           href="/forensics_2_1.html#forensics_2_1">
+          Continue reading
+        </a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="/forensics_1_3.html#forensics_1_3">数字图像取证 - 基于文件格式的取证 3</a></h2>
     <p>
       Posted on Mon 15 June 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
@@ -355,7 +388,7 @@ d …</div>
 
 
     <footer>
-<p>&copy; 2020 </p>
+<p>&copy; 2021 </p>
 <p>
 Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>

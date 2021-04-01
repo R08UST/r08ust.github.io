@@ -1,5 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - AIForSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/aiforsecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-03-09T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</title><link href="/zerowall.html" rel="alternate"></link><published>2021-03-09T00:00:00+08:00</published><updated>2021-03-09T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-03-09:/zerowall.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - AIForSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/aiforsecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-04-01T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>论文笔记 An adaptive system for detecting malicious queries in web attacks</title><link href="/tiresias.html" rel="alternate"></link><published>2021-04-01T00:00:00+08:00</published><updated>2021-04-01T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-04-01:/tiresias.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
+&lt;img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/&gt;&lt;/p&gt;
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释&lt;/p&gt;
+&lt;p&gt;自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. &lt;/p&gt;
+&lt;p&gt;SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\begin{aligned}
+&amp;amp;K(x, z) = \varphi(x)^\varphi(z)\\
+&amp;amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …&lt;/div&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
+&lt;img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/&gt;&lt;/p&gt;
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释&lt;/p&gt;
+&lt;p&gt;自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. &lt;/p&gt;
+&lt;p&gt;SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\begin{aligned}
+&amp;amp;K(x, z) = \varphi(x)^\varphi(z)\\
+&amp;amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum^n_{i, j = 1}\alpha_i\alpha_j y_i y_j x_i^T x_j,\\
+&amp;amp;st \space 0 \leq \alpha_i \leq C \space (i = 1, ..., n), \sum^n_{i = 1}\alpha_i\alpha_j = 0
+\end{aligned}
+$$&lt;/div&gt;
+&lt;p&gt;suspicion selection(SS): SS的方式为利用聚类算法寻找潜在的信息分类(informative queries). 其具体方法如下&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;模型训练完成的情况下, 落入的间隔内的数据被称为Q. Q将会根据其核距离来排序
+&lt;div class="math"&gt;$$
+f(x) = \sum^n_{i=1} \alpha_i y_iK(x_i, x) + b
+$$&lt;/div&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将最小的核距离定义为模糊空间的下边界. &lt;span class="math"&gt;\(f_{lower} = \displaystyle\min_{x\in Q}\)&lt;/span&gt;. 将最大的核距离定义为模糊边界的上边界. &lt;span class="math"&gt;\(f_{upper} = \displaystyle\max_{x\in Q}\)&lt;/span&gt;. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;聚类算法使用K-medoids. 将K-medoids的中心定义为suspicion, 即最容易误分类的样本. K-medoids公式亦与传统公式无异
+&lt;div class="math"&gt;$$
+\begin{aligned}
+&amp;amp;E = \displaystyle\sum^k_{j = 1}\sum_{x \in C_j}|\varphi(x) - \varphi(M_j)|\\
+&amp;amp;|\varphi(x) - \varphi(M_j)| = \sqrt{K(x, x) + K(M_j, M_j) - 2k(x, M_j)}
+\end{aligned}
+$$&lt;/div&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;exemplary selection(ES): ES用于表达典型的恶意样本. 虽然SS对样本可以进行分类, 但其误检率较高, 利用ES来进一步确认其分类. ES基于kernel farthest first(KFF)这一贪婪启发算法来确定典型样本. 令未达标的数据未U, 达标过的数据未L. 最远距离定义为L中的数据y到U中的一个数据x的距离之和的最大值. 公式如下
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\displaystyle\argmax_{x \in U}(\sum_{x \in L} |\varphi(x) - \varphi(y)|)
+$$&lt;/div&gt;
+&lt;p&gt;&lt;img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/7-Figure4-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;数据预处理: &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;提取Get请求&lt;/li&gt;
+&lt;li&gt;数据清洗: 仅保留response在200-300字节的的请求&lt;/li&gt;
+&lt;li&gt;数据标准化: 将ascii, unescaping字符转换为小写, 并删除长度小于4的请求&lt;/li&gt;
+&lt;li&gt;按照RFC2616过滤不安全的字符&lt;/li&gt;
+&lt;li&gt;利用2Gram对数据再次分割. &lt;/li&gt;
+&lt;li&gt;特征压缩: 卡方校验, 信息增益(info gain, 选择头800), DF(document Frequency), top selection(首选, 选择150, 200, 300, 500, 800, 1100, 1500 and 2000), PCA(principal component analysis, 主成分分析法, 选择top 80), RP(random Projection, 随机投影)以及reservation quantities(选择10, 20, 30, 40, 60, 80, 150 and 300)&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Experimental&lt;/h2&gt;
+&lt;p&gt;实验在32GRam以及Intel 2.93GhzCpu上进行, 使用Weka和Libsvm实现baseline以及Meta Svm. 数据为内部数据并未开源. &lt;/p&gt;
+&lt;p&gt;MetaSvm使用RBF核, 参数为&lt;span class="math"&gt;\((C,\gamma) = (0.05, 2)\)&lt;/span&gt;, 基于网格搜索的交叉验证来进行验证. 对自适应功能验证的结果如下(主要与SvmAL对比)&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/11-Figure5-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;与传统框架对比, 数据基于CSIC2010, 结果如下&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/13-Table5-1.png"/&gt;&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="AIForSecurity"></category><category term="waf"></category><category term="NetworkSecurity"></category><category term="MachineLearning"></category><category term="Security"></category></entry><entry><title>论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</title><link href="/zerowall.html" rel="alternate"></link><published>2021-03-09T00:00:00+08:00</published><updated>2021-03-09T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-03-09:/zerowall.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Waf(web application firewall)一般通过规则过滤/触发的异常的Web请求. 通过安全研究员对已知攻击特征的提取来构成并拓展特征库. 但基于特征的Waf难以对0Day漏洞进行检测. 故本文提出了一种Encoder-Decoder RNN架构的无监督学习方案对0Day漏洞进行检测.
 本文的核心思想在与将0Day的检测问题转换为翻译质量评定的问题. 简单的来讲即通过训练一个翻译器来将正常web请求A再次翻译为A'. 而当异常的web请求B翻译为B'时, 由于神经网络对B的特征拟合较差故B'的翻译质量也会较差. 以此来判定B是一个异常的web请求&lt;/p&gt;
 &lt;h2&gt;Method&lt;/h2&gt;
@@ -50,4 +182,4 @@
 &lt;p&gt;&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/c01326f394883b0ad0df27870e7b84a427f2fb73/250px/9-Figure6-1.png"/&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;本文贡献在于将异常检测问题转换为机器翻译质量评测问题, 以及白名单机制减少无效推理过程(感觉这一步依然可以进行优化). 
-但也存在一些问题1. 无法防御数据投毒, 虽然文中作者解释waf会对这个进行处理, 但实际上waf不会对新类型数据进行过滤. 2. 相对来说数据量较少. 3. 文中没有提到对潜在的0day进行过滤, 虽然文中提出在大量正常样本的情况下, 少量的异常样本影响不大. 但正如前段时间爆出的qq邮箱会将某特定字段翻译为一段地址一样. 很难确定这一点没有影响. 很可能会导致一些漏报.  &lt;/p&gt;</content><category term="AIForSecurity"></category></entry></feed>
+但也存在一些问题1. 无法防御数据投毒, 虽然文中作者解释waf会对这个进行处理, 但实际上waf不会对新类型数据进行过滤. 2. 相对来说数据量较少. 3. 文中没有提到对潜在的0day进行过滤, 虽然文中提出在大量正常样本的情况下, 少量的异常样本影响不大. 但正如前段时间爆出的qq邮箱会将某特定字段翻译为一段地址一样. 很难确定这一点没有影响. 很可能会导致一些漏报.  &lt;/p&gt;</content><category term="AIForSecurity"></category><category term="waf"></category><category term="NetworkSecurity"></category><category term="MachineLearning"></category><category term="Security"></category></entry></feed>

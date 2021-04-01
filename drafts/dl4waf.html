@@ -57,7 +57,7 @@
 
 <meta name="author" content="R08UST" />
 <meta name="description" content="Introduction 在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. Anomaly-Based Web Attack Detection: A Deep Learning Approach 本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在&#34;?&#34; 标记之后 &#34;http:&#34; &#34;//&#34; host [ &#34;:&#34; port ] [ abs_path [ &#34;?&#34; query ]] 首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. 随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二 实验环节, 本文使用HTTP CISC数据集进行测试, 其结果如图三所示 结论 基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求 …" />
-<meta name="keywords" content="">
+<meta name="keywords" content="waf, NetworkSecurity, MachineLearning, Security">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
@@ -70,6 +70,10 @@
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="/author/r08ust.html">
 <meta property="article:section" content="AIForSecurity"/>
+<meta property="article:tag" content="waf"/>
+<meta property="article:tag" content="NetworkSecurity"/>
+<meta property="article:tag" content="MachineLearning"/>
+<meta property="article:tag" content="Security"/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
   <title>R08UST's Blog &ndash; 论文笔记集 DeepLearning for Web Attack Detection</title>
@@ -159,11 +163,31 @@
 <h2><a href="https://netman.aiops.org/~peidan/ANM2019/13.Security/ReadingLists/2017ICONIP_CNN.pdf">A Deep Learning Method to Detect WebAttacks Using a Specially Designed CNN</a></h2>
 <p>本文与Web Application Firewall using Character-level Convolutional Neural Network一文类似, 都使用CLCNN网络结构处理HTTP Request. 但细节上本文, 将URL Request进行了分词处理, 随后将经过词嵌入的各个词向量进行卷积以及拼接, 最后交由MLP进行输出处理. 见图六</p>
 <p><img alt="图六" src="https://media.springernature.com/lw785/springer-static/image/chp%3A10.1007%2F978-3-319-70139-4_84/MediaObjects/459893_1_En_84_Fig4_HTML.gif"/></p>
-<p>实验方面, 数据集任然采用十分常见的CSIC 2010数据集, 按照7:0.5:2.5的比例划分数据集. 最后的Accuracy达到了百分之96.49</p>
-<h2><a href=""></a></h2>
+<p>实验方面, 数据集仍然采用十分常见的CSIC 2010数据集, 按照7:0.5:2.5的比例划分数据集. 最后的Accuracy达到了百分之96.49</p>
+<h3>结论</h3>
+<p>本篇论文和上一篇论文基本一致, 区别为一个是Chararter Level 一个是World Level.</p>
+<h2><a href="https://arxiv.org/abs/1912.02549">Deep Anomaly Detection in Packet Payload</a></h2>
+<p>本文的主要目的是对网络数据包负载进行异常检测, 其核心观点是网络数据负载中的异常有两种模式long term 异常数据 以及 short term异常数据. 如下图七所示</p>
+<p><img alt="图七" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/4-Figure1-1.png"/></p>
+<p>针对这一特点, 作者设计了一种负载异常检测框架, 其由2部分组成: 一个用于提取特征的滑动窗口. 一个有LSTM + CNN + MLP的检测器. 框架结构如下图八所示</p>
+<p><img alt="图八" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/7-Figure2-1.png"/></p>
+<p>下面对流程结构中的一些关键点进行解释
+Data Preprocessing: 实际就是将网络中的bit利用网络协议进行解析, 以便于准确的提取Payload段中的内容</p>
+<p>BlockSequence Construction: 文中说使用滑动窗口, 实际上就是ngram. 作者将ngram提取出的结构, 分为高频率的字段, 和低频率的字段. 对于低频率的字段且不符合字典(特征库)的字段直接丢弃(文中详细描述并未提及, 仅在Introduction中提到filtrate by dictionary). 对于高频率字段也会经过字典选择.   实际上字典储存了数据集中所有字段的频率, 通过人工选择频率界限.</p>
+<p>Block Embedding: 即word embedding. 其基于<a href="https://www.cs.toronto.edu/~hinton/absps/nipsLRE.pdf">inear relational embedding</a>进行词嵌入.</p>
+<p>模型方面: 基于LSTM(全输出模式) + CNN + MLP进行输出. 见下图九</p>
+<p><img alt="图九" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/11-Figure5-1.png"/></p>
+<p>实验方面: 本文在三个数据集上进行实验 <a href="https://www.isi.csic.es/dataset/">CSIC 2010</a>, <a href="https://www.unb.ca/cic/datasets/ids-2017.
+html">CIDIS 2017</a>以及<a href="https://www.unb.ca/cic/datasets/ids.html">ISCX 2012</a>数据集. </p>
+<h3>结论</h3>
+<p>一篇基于有监督的异常检测, 辞藻华丽. 特征提取和模型方面比较传统. 比较有新意的地方在于, 采用全输出的LSTM结构作为二次特征提取器, 结合CNN三次提取特征. 但模型比较庞大, 估计处理时间会很长, 吞吐量难以保证. </p>
   </div>
   <div class="tag-cloud">
     <p>
+      <a href="/tag/waf.html">waf</a>
+      <a href="/tag/networksecurity.html">NetworkSecurity</a>
+      <a href="/tag/machinelearning.html">MachineLearning</a>
+      <a href="/tag/security.html">Security</a>
     </p>
   </div>
 
@@ -176,7 +200,7 @@
 </article>
 
     <footer>
-<p>&copy; 2020 </p>
+<p>&copy; 2021 </p>
 <p>
 Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>

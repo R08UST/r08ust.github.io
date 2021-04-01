@@ -118,11 +118,44 @@
 
 <article>
   <header>
+    <h2><a href="/tiresias.html#tiresias">论文笔记 An adaptive system for detecting malicious queries in web attacks</a></h2>
+    <p>
+      Posted on Thu 01 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+
+          &#8226; Tagged with
+              <a href="/tag/waf.html">waf</a>,              <a href="/tag/networksecurity.html">NetworkSecurity</a>,              <a href="/tag/machinelearning.html">MachineLearning</a>,              <a href="/tag/security.html">Security</a>
+        &#8226; 1 min read
+    </p>
+  </header>
+  <div>
+      <h2>Introduction</h2>
+<p>本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
+<img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/></p>
+<h2>Method</h2>
+<p>根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释</p>
+<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
+<p>SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
+</p>
+<div class="math">$$
+\begin{aligned}
+&amp;K(x, z) = \varphi(x)^\varphi(z)\\
+&amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …</div>
+        <br>
+        <a class="btn"
+           href="/tiresias.html#tiresias">
+          Continue reading
+        </a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="/zerowall.html#zerowall">论文笔记 ZeroWall: Detecting Zero-Day Web Attacks through Encoder-Decoder Recurrent Neural Networks</a></h2>
     <p>
       Posted on Tue 09 March 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
-
+          &#8226; Tagged with
+              <a href="/tag/waf.html">waf</a>,              <a href="/tag/networksecurity.html">NetworkSecurity</a>,              <a href="/tag/machinelearning.html">MachineLearning</a>,              <a href="/tag/security.html">Security</a>
         &#8226; 1 min read
     </p>
   </header>
@@ -150,7 +183,7 @@
 
 
     <footer>
-<p>&copy; 2020 </p>
+<p>&copy; 2021 </p>
 <p>
 Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>

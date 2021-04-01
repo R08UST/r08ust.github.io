@@ -270,4 +270,4 @@ Chuck Data: 有效载荷&lt;/p&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2&gt;结语&lt;/h2&gt;
-&lt;p&gt;本文档主要用于协议还原, RTMP协议的详细过程并未准确描述. Payload中的Control 类型亦为描述完整. 若有兴趣看完全部文档请参见&lt;a href="https://wwwimages2.adobe.com/content/dam/acom/en/devnet/rtmp/pdf/rtmp_specification_1.0.pdf"&gt;RTMP官方文档&lt;/a&gt;以及&lt;a href="https://www.adobe.com/content/dam/acom/en/devnet/flv/video_file_format_spec_v10.pdf"&gt;FLV官方文档&lt;/a&gt;.  FLV文档中细致描述了Payload Control的类型.&lt;/p&gt;</content><category term="Protocol"></category></entry></feed>
+&lt;p&gt;本文档主要用于协议还原, RTMP协议的详细过程并未准确描述. Payload中的Control 类型亦为描述完整. 若有兴趣看完全部文档请参见&lt;a href="https://wwwimages2.adobe.com/content/dam/acom/en/devnet/rtmp/pdf/rtmp_specification_1.0.pdf"&gt;RTMP官方文档&lt;/a&gt;以及&lt;a href="https://www.adobe.com/content/dam/acom/en/devnet/flv/video_file_format_spec_v10.pdf"&gt;FLV官方文档&lt;/a&gt;.  FLV文档中细致描述了Payload Control的类型.&lt;/p&gt;</content><category term="Protocol"></category><category term="Protocol"></category><category term="Security"></category></entry></feed>
