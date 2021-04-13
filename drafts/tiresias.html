@@ -56,15 +56,15 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="Introduction 本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示 Method 根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释 自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 $$ \begin{aligned} &amp;K(x, z) = \varphi(x)^\varphi(z)\\ &amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …" />
+<meta name="description" content="Unsupervised Anomaly Detection via Variational Auto-Encoderfor Seasonal KPIs in Web Applications 本文设计了一种针对KPI(key performance indicators, 监控指标)时间序列的异常检测模型Donut. 周期性KPI是其中一种典型的KPI，其特点表现为具有周期性, 见下图十二 该模型基于VAE模型, 来完成无监督的异常检测功能. 在训练阶段使用Modified ELBO以及 Missing data injection辅助训练. 检测阶段则使用MCMC Imputation进行异常检测. 最后本文还使用KDE对模型进行了可解释性研究. 模型框架如下图十三 Method VAE: VAE本身并不是一个序列模型, 故本文在KPI序列上首先利用一个滑动窗口来作为VAE的输入向量. 本文使用的VAE网络结构与标准的VAE结构一致. 但也存在一些微小的差异, 如方差向量\(\mu_x, \mu_z\)不再经过log处理(\(\mu_x, \mu_z\) 比较小, log会导致数值消失), 其隐藏层由全连接组成(便与可解释). VAE结构如下图十四所示 训练: 训练阶段采用SGVB去优化ELBO …" />
 <meta name="keywords" content="waf, NetworkSecurity, MachineLearning, Security">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
-<meta property="og:title" content="论文笔记 An adaptive system for detecting malicious queries in web attacks"/>
-<meta property="og:description" content="Introduction 本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示 Method 根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释 自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 $$ \begin{aligned} &amp;K(x, z) = \varphi(x)^\varphi(z)\\ &amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …"/>
+<meta property="og:title" content="论文笔记 Unsupervised Anomaly Detection via Variational Auto-Encoderfor Seasonal KPIs in Web Applications"/>
+<meta property="og:description" content="Unsupervised Anomaly Detection via Variational Auto-Encoderfor Seasonal KPIs in Web Applications 本文设计了一种针对KPI(key performance indicators, 监控指标)时间序列的异常检测模型Donut. 周期性KPI是其中一种典型的KPI，其特点表现为具有周期性, 见下图十二 该模型基于VAE模型, 来完成无监督的异常检测功能. 在训练阶段使用Modified ELBO以及 Missing data injection辅助训练. 检测阶段则使用MCMC Imputation进行异常检测. 最后本文还使用KDE对模型进行了可解释性研究. 模型框架如下图十三 Method VAE: VAE本身并不是一个序列模型, 故本文在KPI序列上首先利用一个滑动窗口来作为VAE的输入向量. 本文使用的VAE网络结构与标准的VAE结构一致. 但也存在一些微小的差异, 如方差向量\(\mu_x, \mu_z\)不再经过log处理(\(\mu_x, \mu_z\) 比较小, log会导致数值消失), 其隐藏层由全连接组成(便与可解释). VAE结构如下图十四所示 训练: 训练阶段采用SGVB去优化ELBO …"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="/tiresias.html"/>
+<meta property="og:url" content="/drafts/tiresias.html"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2021-04-01 00:00:00+08:00"/>
 <meta property="article:modified_time" content=""/>
@@ -76,7 +76,7 @@
 <meta property="article:tag" content="Security"/>
 <meta property="og:image" content="/images/profile/profile.jpg">
 
-  <title>R08UST's Blog &ndash; 论文笔记 An adaptive system for detecting malicious queries in web attacks</title>
+  <title>R08UST's Blog &ndash; 论文笔记 Unsupervised Anomaly Detection via Variational Auto-Encoderfor Seasonal KPIs in Web Applications</title>
 
 </head>
 <body class="light-theme">
@@ -128,7 +128,7 @@
 <article class="single">
   <header>
       
-    <h1 id="tiresias">论文笔记 An adaptive system for detecting malicious queries in web attacks</h1>
+    <h1 id="tiresias">论文笔记 Unsupervised Anomaly Detection via Variational Auto-Encoderfor Seasonal KPIs in Web Applications</h1>
     <p>
       Posted on Thu 01 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
@@ -138,66 +138,48 @@
 
 
   <div>
-    <h2>Introduction</h2>
-<p>本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
-<img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/></p>
-<h2>Method</h2>
-<p>根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释</p>
-<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
-<p>SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
-</p>
-<div class="math">$$
-\begin{aligned}
-&amp;K(x, z) = \varphi(x)^\varphi(z)\\
-&amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum^n_{i, j = 1}\alpha_i\alpha_j y_i y_j x_i^T x_j,\\
-&amp;st \space 0 \leq \alpha_i \leq C \space (i = 1, ..., n), \sum^n_{i = 1}\alpha_i\alpha_j = 0
-\end{aligned}
-$$</div>
-<p>suspicion selection(SS): SS的方式为利用聚类算法寻找潜在的信息分类(informative queries). 其具体方法如下</p>
+    <h2><a href="https://arxiv.org/abs/1802.03903">Unsupervised Anomaly Detection via Variational Auto-Encoderfor Seasonal KPIs in Web Applications</a></h2>
+<p>本文设计了一种针对KPI(key performance indicators, 监控指标)时间序列的异常检测模型Donut. 周期性KPI是其中一种典型的KPI，其特点表现为具有周期性, 见下图十二
+<img alt="图十二" src="https://d3i71xaburhd42.cloudfront.net/ca04f6fb87815426e1bec8f7fc0dcbbaf9f35814/2-Figure1-1.png"/></p>
+<p>该模型基于VAE模型, 来完成无监督的异常检测功能. 在训练阶段使用Modified ELBO以及 Missing data injection辅助训练. 检测阶段则使用MCMC Imputation进行异常检测. 最后本文还使用KDE对模型进行了可解释性研究. 模型框架如下图十三
+<img alt="图十三" src="https://d3i71xaburhd42.cloudfront.net/ca04f6fb87815426e1bec8f7fc0dcbbaf9f35814/3-Figure3-1.png"/></p>
+<h3>Method</h3>
 <ol>
 <li>
-<p>模型训练完成的情况下, 落入的间隔内的数据被称为Q. Q将会根据其核距离来排序
-<div class="math">$$
-f(x) = \sum^n_{i=1} \alpha_i y_iK(x_i, x) + b
-$$</div>
-</p>
+<p>VAE: VAE本身并不是一个序列模型, 故本文在KPI序列上首先利用一个滑动窗口来作为VAE的输入向量. 本文使用的VAE网络结构与标准的VAE结构一致. 但也存在一些微小的差异, 如方差向量<span class="math">\(\mu_x, \mu_z\)</span>不再经过log处理(<span class="math">\(\mu_x, \mu_z\)</span> 比较小, log会导致数值消失), 其隐藏层由全连接组成(便与可解释). VAE结构如下图十四所示
+    <img alt="图十四" src="https://d3i71xaburhd42.cloudfront.net/ca04f6fb87815426e1bec8f7fc0dcbbaf9f35814/3-Figure4-1.png"/></p>
 </li>
 <li>
-<p>将最小的核距离定义为模糊空间的下边界. <span class="math">\(f_{lower} = \displaystyle\min_{x\in Q}\)</span>. 将最大的核距离定义为模糊边界的上边界. <span class="math">\(f_{upper} = \displaystyle\max_{x\in Q}\)</span>. </p>
+<p>训练: 训练阶段采用SGVB去优化ELBO(evidence lower bound), ELBO公式如下
+    <div class="math">$$
+    \begin{aligned}
+    \log p_{\theta}(\mathbf{x}) &amp; \geq \log p_{\theta}(\mathbf{x})-\mathrm{KL}\left[q_{\phi}(\mathbf{z} \mid \mathbf{x}) \| p_{\theta}(\mathbf{z} \mid \mathbf{x})\right] \\
+    &amp;=\mathcal{L}(\mathbf{x}) \\
+    &amp;=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} \mid \mathbf{x})}\left[\log p_{\theta}(\mathbf{x})+\log p_{\theta}(\mathbf{z} \mid \mathbf{x})-\log q_{\phi}(\mathbf{z} \mid \mathbf{x})\right] \\
+    &amp;=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} \mid \mathbf{x})}\left[\log p_{\theta}(\mathbf{x}, \mathbf{z})-\log q_{\phi}(\mathbf{z} \mid \mathbf{x})\right] \\
+    &amp;=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} \mid \mathbf{x})}\left[\log p_{\theta}(\mathbf{x} \mid \mathbf{z})+\log p_{\theta}(\mathbf{z})-\log q_{\phi}(\mathbf{z} \mid \mathbf{x})\right]
+    \end{aligned}
+    $$</div>
+</p>
+<p>但本文采用一种近似的方法, 即蒙塔卡罗积分去近似上式的期望, 已完成训练
+<div class="math">$$
+\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} \mid \mathbf{x})}[f(\mathbf{z})] \approx \frac{1}{L} \sum_{l=1}^{L} f\left(\mathbf{z}^{(l)}\right)
+$$</div>
+</p>
+<p>同时本文修改<span class="math">\(z\)</span>为<span class="math">\(\mathbf{z}(\boldsymbol{\xi})=\boldsymbol{\mu}_{\mathbf{z}}+\boldsymbol{\xi} \cdot \boldsymbol{\sigma}_{\mathbf{z}}\)</span>, 以运用梯度下降进行训练, 并将窗口x打乱去更更好的进行梯度下降.</p>
+<p>对于已存在异常标记的KPI序列, 通常是利用一个合成的值进行替换, 但可能会影响性能. 故本文直接将缺失点修改为0. 并利用修改后的ELBO来排除异常以及缺失点的影响.
+<div class="math">$$
+\widetilde{\mathcal{L}}(\mathbf{x})=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\sum_{w=1}^{W} \alpha_{w} \log p_{\theta}\left(x_{w} | \mathbf{z}\right)+\beta \log p_{\theta}(\mathbf{z})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right]
+$$</div>
+</p>
+<p>最后在训练阶段还引入缺失数据注入功能, 通过一个参数<span class="math">\(\lambda\)</span>, 将随机的正常点设置为0. 来将其模拟为缺失点. 以增却ELBO的效果.</p>
 </li>
 <li>
-<p>聚类算法使用K-medoids. 将K-medoids的中心定义为suspicion, 即最容易误分类的样本. K-medoids公式亦与传统公式无异
-<div class="math">$$
-\begin{aligned}
-&amp;E = \displaystyle\sum^k_{j = 1}\sum_{x \in C_j}|\varphi(x) - \varphi(M_j)|\\
-&amp;|\varphi(x) - \varphi(M_j)| = \sqrt{K(x, x) + K(M_j, M_j) - 2k(x, M_j)}
-\end{aligned}
-$$</div>
-</p>
+<p>检测: 检测阶段基于蒙特卡洛方法来计算重建概率<span class="math">\(p_{\theta}(\mathbf{x})=\mathbb {E}_{\boldsymbol {q}_{\phi}(\mathbf {z} | \mathbf {x})}\left [\log p_{\theta}(\mathbf {x} | \mathbf {z})\right]\)</span>. MCMC的方法如下图十四所示
+    <img alt="图十四" src="https://d3i71xaburhd42.cloudfront.net/ca04f6fb87815426e1bec8f7fc0dcbbaf9f35814/5-Figure5-1.png"/></p>
 </li>
 </ol>
-<p>exemplary selection(ES): ES用于表达典型的恶意样本. 虽然SS对样本可以进行分类, 但其误检率较高, 利用ES来进一步确认其分类. ES基于kernel farthest first(KFF)这一贪婪启发算法来确定典型样本. 令未达标的数据未U, 达标过的数据未L. 最远距离定义为L中的数据y到U中的一个数据x的距离之和的最大值. 公式如下
-</p>
-<div class="math">$$
-\displaystyle\argmax_{x \in U}(\sum_{x \in L} |\varphi(x) - \varphi(y)|)
-$$</div>
-<p><img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/7-Figure4-1.png"/></p>
-<p>数据预处理: </p>
-<ol>
-<li>提取Get请求</li>
-<li>数据清洗: 仅保留response在200-300字节的的请求</li>
-<li>数据标准化: 将ascii, unescaping字符转换为小写, 并删除长度小于4的请求</li>
-<li>按照RFC2616过滤不安全的字符</li>
-<li>利用2Gram对数据再次分割. </li>
-<li>特征压缩: 卡方校验, 信息增益(info gain, 选择头800), DF(document Frequency), top selection(首选, 选择150, 200, 300, 500, 800, 1100, 1500 and 2000), PCA(principal component analysis, 主成分分析法, 选择top 80), RP(random Projection, 随机投影)以及reservation quantities(选择10, 20, 30, 40, 60, 80, 150 and 300)</li>
-<li></li>
-</ol>
-<h2>Experimental</h2>
-<p>实验在32GRam以及Intel 2.93GhzCpu上进行, 使用Weka和Libsvm实现baseline以及Meta Svm. 数据为内部数据并未开源. </p>
-<p>MetaSvm使用RBF核, 参数为<span class="math">\((C,\gamma) = (0.05, 2)\)</span>, 基于网格搜索的交叉验证来进行验证. 对自适应功能验证的结果如下(主要与SvmAL对比)</p>
-<p><img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/11-Figure5-1.png"/></p>
-<p>与传统框架对比, 数据基于CSIC2010, 结果如下</p>
-<p><img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/13-Table5-1.png"/></p>
+<h3>实验</h3>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -272,9 +254,6 @@ $$</div>
 
 
   <div class="neighbors">
-    <a class="btn float-left" href="/rtmp.html" title="协议分析与还原 RTMP协议">
-      <i class="fa fa-angle-left"></i> Previous Post
-    </a>
   </div>
 
 

@@ -1,21 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - AIForSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/aiforsecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-04-01T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>论文笔记 An adaptive system for detecting malicious queries in web attacks</title><link href="/tiresias.html" rel="alternate"></link><published>2021-04-01T00:00:00+08:00</published><updated>2021-04-01T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-04-01:/tiresias.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>R08UST's Blog - AIForSecurity</title><link href="/" rel="alternate"></link><link href="/feeds/aiforsecurity.atom.xml" rel="self"></link><id>/</id><updated>2021-04-13T00:00:00+08:00</updated><subtitle>Security &amp; AI Developer</subtitle><entry><title>论文笔记集 DeepLearning for Web Attack Detection</title><link href="/dl4wad.html" rel="alternate"></link><published>2021-04-13T00:00:00+08:00</published><updated>2021-04-13T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-04-13:/dl4wad.html</id><summary type="html">&lt;p&gt;在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. &lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://www.semanticscholar.org/paper/Anomaly-Based-Web-Attack-Detection%3A-A-Deep-Learning-Liang-Zhao/4a05171f31fee07b8d0a04dc77baca0abb908756"&gt;Anomaly-Based Web Attack Detection: A Deep Learning Approach&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在"?" 标记之后&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;"http:" "//" host [ ":" port ] [ abs_path [ "?" query ]]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. &lt;/p&gt;
+&lt;p&gt;&lt;img alt="图一" src="/images/AIForSecurity/tokenExample.jpg"/&gt;&lt;/p&gt;
+&lt;p&gt;随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/4a05171f31fee07b8d0a04dc77baca0abb908756/2-Figure1-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;实验环节, 本文使用&lt;a href="https://www.isi.csic.es/dataset/"&gt;HTTP CISC数据集&lt;/a&gt;进行测试, 其结果如图三所示&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/4a05171f31fee07b8d0a04dc77baca0abb908756/5-Table4-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;结论&lt;/h3&gt;
+&lt;p&gt;基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求, 在网络攻击中POST等其他提交数据的请求同样是十分危险的 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. &lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://www.semanticscholar.org/paper/Anomaly-Based-Web-Attack-Detection%3A-A-Deep-Learning-Liang-Zhao/4a05171f31fee07b8d0a04dc77baca0abb908756"&gt;Anomaly-Based Web Attack Detection: A Deep Learning Approach&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在"?" 标记之后&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;"http:" "//" host [ ":" port ] [ abs_path [ "?" query ]]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. &lt;/p&gt;
+&lt;p&gt;&lt;img alt="图一" src="/images/AIForSecurity/tokenExample.jpg"/&gt;&lt;/p&gt;
+&lt;p&gt;随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/4a05171f31fee07b8d0a04dc77baca0abb908756/2-Figure1-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;实验环节, 本文使用&lt;a href="https://www.isi.csic.es/dataset/"&gt;HTTP CISC数据集&lt;/a&gt;进行测试, 其结果如图三所示&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/4a05171f31fee07b8d0a04dc77baca0abb908756/5-Table4-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;结论&lt;/h3&gt;
+&lt;p&gt;基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求, 在网络攻击中POST等其他提交数据的请求同样是十分危险的. 实验环节, 仅在一个较小的数据集上进行了处理,同时实验细节的讲述也比较含糊.
+当然本文也提出了一些比较有意思的观点: 本文认为将一个URL请求视为时间序列, 字符的顺序位置都会对异常检测有所帮助, 比如"id=1/&lt;em&gt;union&lt;/em&gt;/union/&lt;em&gt;select&lt;/em&gt;/select+1,2,3/*i" 很明显是一个sql注入, 因为ID一般都接受一个数字符号. 但对于这一点作者并未详细论证, 直接使用了RNN对这一"特征"进行了统一建模. 如果对这一点进行深入研究, 将其作为辅助特征再次插入特征集合, 应该会有很好的效果&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://iyatomi-lab.info/sites/default/files/user/CSPA2018%20Proceedings_ito.pdf"&gt;Web Application Firewall using Character-level Convolutional Neural Network&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文基于CLCNN(Character Level CNN)对异常的HTTP请求进行识别. 首先将原始的HTTP请求使用URL Decode, 随后将解码后的URL请求用0填充指1000bytes的长度/裁剪至1000. 随后利用词嵌入将其表示为128维的向量, 最后利用一维卷积和全连接输出其异常概率. 见图四&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/36e309d7f8112c5d9ee619ad0e93d74ca6c97412/2-Figure2-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;实验环节, 本文使用&lt;a href="https://www.isi.csic.es/dataset/"&gt;HTTP CISC数据集&lt;/a&gt;进行测试, 其结果如图五所示&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图五" src="https://d3i71xaburhd42.cloudfront.net/36e309d7f8112c5d9ee619ad0e93d74ca6c97412/4-TableIII-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;结论&lt;/h3&gt;
+&lt;p&gt;与上一篇文章相同基于有监督的机器学习对异常请求进行处理, 其主要问题也与上一篇问题类似. 相对而言这篇论文比较重要的一点是每条请求使用该模型处理只需要2.4ms. 处理速度对于Wad这一问题是很重要的, 但其他文章都很少提及这一点.&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://netman.aiops.org/~peidan/ANM2019/13.Security/ReadingLists/2017ICONIP_CNN.pdf"&gt;A Deep Learning Method to Detect WebAttacks Using a Specially Designed CNN&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文与Web Application Firewall using Character-level Convolutional Neural Network一文类似, 都使用CLCNN网络结构处理HTTP Request. 但细节上本文, 将URL Request进行了分词处理, 随后将经过词嵌入的各个词向量进行卷积以及拼接, 最后交由MLP进行输出处理. 见图六&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图六" src="https://media.springernature.com/lw785/springer-static/image/chp%3A10.1007%2F978-3-319-70139-4_84/MediaObjects/459893_1_En_84_Fig4_HTML.gif"/&gt;&lt;/p&gt;
+&lt;p&gt;实验方面, 数据集仍然采用十分常见的CSIC 2010数据集, 按照7:0.5:2.5的比例划分数据集. 最后的Accuracy达到了百分之96.49&lt;/p&gt;
+&lt;h3&gt;结论&lt;/h3&gt;
+&lt;p&gt;本篇论文和上一篇论文基本一致, 区别为一个是Chararter Level 一个是World Level.&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://arxiv.org/abs/1912.02549"&gt;Deep Anomaly Detection in Packet Payload&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文的主要目的是对网络数据包负载进行异常检测, 其核心观点是网络数据负载中的异常有两种模式long term 异常数据 以及 short term异常数据. 如下图七所示&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图七" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/4-Figure1-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;针对这一特点, 作者设计了一种负载异常检测框架, 其由2部分组成: 一个用于提取特征的滑动窗口. 一个有LSTM + CNN + MLP的检测器. 框架结构如下图八所示&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图八" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/7-Figure2-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;下面对流程结构中的一些关键点进行解释
+Data Preprocessing: 实际就是将网络中的bit利用网络协议进行解析, 以便于准确的提取Payload段中的内容&lt;/p&gt;
+&lt;p&gt;BlockSequence Construction: 文中说使用滑动窗口, 实际上就是ngram. 作者将ngram提取出的结构, 分为高频率的字段, 和低频率的字段. 对于低频率的字段且不符合字典(特征库)的字段直接丢弃(文中详细描述并未提及, 仅在Introduction中提到filtrate by dictionary). 对于高频率字段也会经过字典选择.   实际上字典储存了数据集中所有字段的频率, 通过人工选择频率界限.&lt;/p&gt;
+&lt;p&gt;Block Embedding: 即word embedding. 其基于&lt;a href="https://www.cs.toronto.edu/~hinton/absps/nipsLRE.pdf"&gt;inear relational embedding&lt;/a&gt;进行词嵌入.&lt;/p&gt;
+&lt;p&gt;模型方面: 基于LSTM(全输出模式) + CNN + MLP进行输出. 见下图九&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图九" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/11-Figure5-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;实验方面: 本文在三个数据集上进行实验 &lt;a href="https://www.isi.csic.es/dataset/"&gt;CSIC 2010&lt;/a&gt;, &lt;a href="https://www.unb.ca/cic/datasets/ids-2017.
+html"&gt;CIDIS 2017&lt;/a&gt;以及&lt;a href="https://www.unb.ca/cic/datasets/ids.html"&gt;ISCX 2012&lt;/a&gt;数据集. &lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;一篇基于有监督的异常检测, 辞藻华丽. 特征提取和模型方面比较传统. 比较有新意的地方在于, 采用全输出的LSTM结构作为二次特征提取器, 结合CNN三次提取特征. 但模型比较庞大, 估计处理时间会很长, 吞吐量难以保证. &lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://www.ijcai.org/Proceedings/2019/656"&gt;Locate-Then-Detect: Real-time Web Attack Detection via Attention-based Deep Neural Networks&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文设计了一种名为LTD(locate then detect)的基于Attention机制的系统来检测网络攻击, 同时也基于Detection机制来定位(解释)网络攻击的敏感区域. 该系统分为两个子模块, 用于定位可疑区域的PLN(payload locating network), 用于进行分类的PCN(payload classification network). 通过PLN的过滤, LTD减少了82.6%的计算成本, 使得对于每个请求仅需5ms处理时间. 整体结构见下图十&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图十" src="https://d3i71xaburhd42.cloudfront.net/7bde3e694ac45abdeb02d933fafdf86d4e67d997/3-Figure1-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;Method&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;PLN: PLN作为第一阶段的神经网络, 与其他神经网络一样其输入需要经过特殊处理. PLN本质上就是个简易的Detection模型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;词嵌入, 尽管作者将这一阶段称为网络请求嵌入, 但其本质上仍然为将长度为L的请求嵌入为L*X维度的向量&lt;/li&gt;
+&lt;li&gt;特征提取, 利用Xception模型提取特征, 即CNN提取特征&lt;/li&gt;
+&lt;li&gt;候选区域, 两个1*m(m = embedding size, 以保证语义完整性)的CNN, 一个用于回归(输出bounding box), 一个用于分类(输出类别). 于检测模型相同, PLN会输出p个Anchors. 并设置Anchor大小大于3, 范围在 [0, L]之间并且Anchor内的数据不含有太多的0(padding).
+训练PLN和训练Detection模型基本一致, 如IoU小于0.2的bounding box作为负样本, 如 负样本与正正样本比例为3 : 1, 如PLN的训练公式为
+&lt;div class="math"&gt;$$
+\begin{aligned}
+L\left(l_{i}, p o s_{i}, p_{i}, p o s_{i}^{*}\right) &amp;amp; = \frac{1}{N_{cls}} \sum_{i} L_{c l s}\left(l_{i}, p_{i}\right) \\
+&amp;amp;+ \lambda \frac{1}{N_{r e g}} \sum_{i} l_{i} L_{r e g}\left(p o s_{i}, pos_{i}^{*}\right)\\
+\end{aligned}
+$$&lt;/div&gt;
+其中&lt;span class="math"&gt;\(\lambda\)&lt;/span&gt;为1 ,i表示训练集中第i个anchor, 当&lt;span class="math"&gt;\(l_i\)&lt;/span&gt;为ground truth时为1, 否则为0. &lt;span class="math"&gt;\({pos}_i, {pos}_i^*\)&lt;/span&gt; 分别表示ground truth和预测的值. &lt;span class="math"&gt;\(L_{cls}\)&lt;/span&gt;为log损失, &lt;span class="math"&gt;\(L_reg\)&lt;/span&gt;为平滑L1损失, 其公式如下
+&lt;div class="math"&gt;$$
+{L_{1}}(x)=\left\{\begin{array}{ll}0.5 x^{2} &amp;amp; \text { if }|x|&amp;lt;1 \\ |x|-0.5 &amp;amp; \text { otherwise }\end{array}\right.
+$$&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PCN: 经过PLN确定可疑区域后, PCN将会对可以区域进行分类检测. PCN基于Text CNN结构: 5层CNN结构 + overtime max pooling. 其损失函数设计如下
+    &lt;div class="math"&gt;$$
+    L_{P C N}=-\frac{1}{N} \sum_{i}^{N} \sum_{j}^{K} y_{i j} \log \left(p_{i j}\right)+\lambda\|\mathbf{W}\|,
+    $$&lt;/div&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;网络攻击标注: PLN模型的训练需要大量的标注数据, 作者使用&lt;a href="http://pralab.diee.unica.it/sites/default/files/Corona_ICC2009.pdf"&gt;HMM-WEB&lt;/a&gt;模型进行自动标注&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Experiments&lt;/h3&gt;
+&lt;p&gt;实验在CSIC数据集以及物理网络中提取的数据集. 并于传统Waf, &lt;a href="https://github.com/client9/libinjection"&gt;libinjection&lt;/a&gt;以及HMM-WEB进行了比较. 其结果如下图十一
+&lt;img alt="图十一" src="https://d3i71xaburhd42.cloudfront.net/7bde3e694ac45abdeb02d933fafdf86d4e67d997/6-Table3-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;本文开创性的将Object Deteciton 和 异常检测结合在一起. 但标题中提及的Attention based于比较熟知attention并不相同, 实际上是指这种先定位后检测的过程. 将系统的"注意力"集中到可以的区域上. 本文最大的问题应该在使用HMM-WEB提供标注上, 不确定会有多大的影响.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="AIForSecurity"></category><category term="waf"></category><category term="NetworkSecurity"></category><category term="MachineLearning"></category><category term="Security"></category></entry><entry><title>论文笔记集 Statistical Learning for Web Attack Detection</title><link href="/sl4wad.html" rel="alternate"></link><published>2021-04-10T00:00:00+08:00</published><updated>2021-04-10T00:00:00+08:00</updated><author><name>R08UST</name></author><id>tag:None,2021-04-10:/sl4wad.html</id><summary type="html">&lt;p&gt;上一文种主要介绍一些基于深度学习的网络攻击检测论文, 这里则主要介绍一些基于传统机器学习(统计学习)的论文.&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://link.springer.com/article/10.1007/s11432-017-9288-4"&gt;An adaptive system for detecting malicious queries in web attacks&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
 &lt;img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/&gt;&lt;/p&gt;
-&lt;h2&gt;Method&lt;/h2&gt;
+&lt;h3&gt;Method&lt;/h3&gt;
 &lt;p&gt;根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释&lt;/p&gt;
-&lt;p&gt;自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. &lt;/p&gt;
+&lt;p&gt;自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进 行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. &lt;/p&gt;
 &lt;p&gt;SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
 &lt;/p&gt;
 &lt;div class="math"&gt;$$
 \begin{aligned}
-&amp;amp;K(x, z) = \varphi(x)^\varphi(z)\\
-&amp;amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …&lt;/div&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&amp;amp;K(x, z) = \varphi …&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一文种主要介绍一些基于深度学习的网络攻击检测论文, 这里则主要介绍一些基于传统机器学习(统计学习)的论文.&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://link.springer.com/article/10.1007/s11432-017-9288-4"&gt;An adaptive system for detecting malicious queries in web attacks&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
 &lt;img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/&gt;&lt;/p&gt;
-&lt;h2&gt;Method&lt;/h2&gt;
+&lt;h3&gt;Method&lt;/h3&gt;
 &lt;p&gt;根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释&lt;/p&gt;
-&lt;p&gt;自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. &lt;/p&gt;
+&lt;p&gt;自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进 行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. &lt;/p&gt;
 &lt;p&gt;SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
 &lt;/p&gt;
 &lt;div class="math"&gt;$$
@@ -56,20 +213,120 @@ $$&lt;/div&gt;
 &lt;p&gt;&lt;img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/7-Figure4-1.png"/&gt;&lt;/p&gt;
 &lt;p&gt;数据预处理: &lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;提取Get请求&lt;/li&gt;
-&lt;li&gt;数据清洗: 仅保留response在200-300字节的的请求&lt;/li&gt;
-&lt;li&gt;数据标准化: 将ascii, unescaping字符转换为小写, 并删除长度小于4的请求&lt;/li&gt;
-&lt;li&gt;按照RFC2616过滤不安全的字符&lt;/li&gt;
-&lt;li&gt;利用2Gram对数据再次分割. &lt;/li&gt;
-&lt;li&gt;特征压缩: 卡方校验, 信息增益(info gain, 选择头800), DF(document Frequency), top selection(首选, 选择150, 200, 300, 500, 800, 1100, 1500 and 2000), PCA(principal component analysis, 主成分分析法, 选择top 80), RP(random Projection, 随机投影)以及reservation quantities(选择10, 20, 30, 40, 60, 80, 150 and 300)&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;提取Get请求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据清洗: 仅保留response在200-300字节的的请求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据标准化: 将ascii, unescaping字符转换为小写, 并删除长度小于4的请求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;按照RFC2616过滤不安全的字符&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;利用2Gram对数据再次分割.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;特征压缩: 卡方校验, 信息增益(info gain, 选择头800), DF(document Frequency), top selection(首选, 选择150, 200, 300, 500, 800, 1100, 1500 and 2000), PCA(principal component analysis, 主成分分析法, 选择top 80), RP(random Projection, 随机投影)以及reservation quantities(选择10, 20, 30, 40, 60, 80, 150 and 300)&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Experimental&lt;/h2&gt;
+&lt;h3&gt;Experimental&lt;/h3&gt;
 &lt;p&gt;实验在32GRam以及Intel 2.93GhzCpu上进行, 使用Weka和Libsvm实现baseline以及Meta Svm. 数据为内部数据并未开源. &lt;/p&gt;
 &lt;p&gt;MetaSvm使用RBF核, 参数为&lt;span class="math"&gt;\((C,\gamma) = (0.05, 2)\)&lt;/span&gt;, 基于网格搜索的交叉验证来进行验证. 对自适应功能验证的结果如下(主要与SvmAL对比)&lt;/p&gt;
-&lt;p&gt;&lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/11-Figure5-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;; &lt;img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/11-Figure5-1.png"/&gt;&lt;/p&gt;
 &lt;p&gt;与传统框架对比, 数据基于CSIC2010, 结果如下&lt;/p&gt;
-&lt;p&gt;&lt;img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/13-Table5-1.png"/&gt;&lt;/p&gt;
+&lt;p&gt;; &lt;img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/13-Table5-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;本片文中创新型的提出了SS以及ES机制来辅助SVM, 解决其对新样本的识别能力. 在深度学习大行其道的今天, 基于统计学习的模型比较少见, 且效果也相对平庸 但作者提出的SS以及ES机制对在线学习也许有一定帮助.&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://academiccommons.columbia.edu/doi/10.7916/D8Z325FD/download"&gt;Anomalous Payload-based Network Intrusion Detection&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;为了构建一个自动化的, 通用的, 增量更新的, 高准确率的, 放模仿攻击的, 高吞吐的异常检测系统. 本文提出了一种基于language Independent(语言独立的)的统计模型并结合Ngram特征提取算法的入侵检测模型.  模型十分简单甚至没有用到复杂的统计模型或神经网络, 其主要用一系列的统计特征提取算法构成. 下面对细节进行说明:&lt;/p&gt;
+&lt;h3&gt;Method&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;基于长度条件的Ngram 负载模型(Length conditioned ngram payload model)&lt;/p&gt;
+&lt;p&gt;利用 1gram算法将payload进行拆分, 随后统计各个字符出现的频率, 最后计算其均值以及标准差. 标题中的长度条件是指对不同长度的报文进行分别计算. 训练阶段更具这一方法可以构建出&lt;span class="math"&gt;\(M_i, j\)&lt;/span&gt;个payload模型. 在验证阶段, 同理计算出该报文的频率, 均值以及方差在于&lt;span class="math"&gt;\(M_i, j\)&lt;/span&gt;进行对比. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;简化马氏距离(simplified Mahalanobis distance)&lt;/p&gt;
+&lt;p&gt;对比&lt;span class="math"&gt;\(M_i, j\)&lt;/span&gt;于新报文阶段便采用马氏距离进行计算, 计算结果越高新报文异常的概率则越大
+&lt;div class="math"&gt;$$
+d^2(x, \bar{y}) = (x - \bar{y})^T C^{-1}(x - \bar{y})
+$$&lt;/div&gt;
+其中&lt;span class="math"&gt;\(x\)&lt;/span&gt;是新请求, &lt;span class="math"&gt;\(\bar{y}\)&lt;/span&gt;是平均后的训练集模型. &lt;span class="math"&gt;\(C^{-1}\)&lt;/span&gt;为协方差矩阵的逆,即&lt;span class="math"&gt;\(C_{i, j} = Cov(y_i, y_j)\)&lt;/span&gt;其中&lt;span class="math"&gt;\(y_i, y_j\)&lt;/span&gt;是训练集中的第i/j个向量.
+为了加速计算, 简化的马氏距离算法为
+&lt;div class="math"&gt;$$
+d(x, \bar{y}) = \sum^{n-1}_{i=0}(|x_i - \bar{y_i}|/(\bar{\sigma_i})+ \alpha)
+$$&lt;/div&gt;
+其中n为出现字符的总数. &lt;span class="math"&gt;\(\sigma\)&lt;/span&gt;为标准差, &lt;span class="math"&gt;\(\alpha\)&lt;/span&gt;为平滑系数. &lt;span class="math"&gt;\(\alpha\)&lt;/span&gt;越高, 样本的置信度越低, 但更能表现真实的数据分布&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;增量学习&lt;/p&gt;
+&lt;p&gt;本文结合增量学习来处理新的数据样本, 同时对于过时的数据, 本文也提出了一种衰减参数来控制过时的数据. 
+对于一字符的平均频率&lt;span class="math"&gt;\(\bar{x} = \sum^N_{i = 1}x_i/N\)&lt;/span&gt;, 对于已经存储的均值, 通过一下方法进行更新&lt;span class="math"&gt;\(\bar{x} = \frac{\bar{x}\times N + x_{N + 1}}{N + 1} = \bar{x} + \frac{x_{N + 1} - \bar{x}}{N + 1}\)&lt;/span&gt;
+由于标准差是方差的平方根, 又可以将方差利用期望进行改写, 即&lt;span class="math"&gt;\(Var(X) = E(X - EX)^2 = E(X)^2 - (EX)^2\)&lt;/span&gt;. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;利用聚类减少模型尺寸&lt;/p&gt;
+&lt;p&gt;模型可能存在两个问题, 一是总体模型过大, 类似的模型过多. 二是针对部分个体模型其较稀疏. 为了解决这些问题本文使用简化的马氏距离计算模型之间的相似度. 对于稀疏的模型, 则从相似的模型中"借"数据, 或者提高平滑系数. 对于不稀疏的模型, 则定义一个threshold t 来决定是否进行模型合并. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;无监督学习&lt;/p&gt;
+&lt;p&gt;基于马氏距离的检测方法, 同样可以用于无监督学习. 因为异常的样本在网络中比较少, 那么对整体的影响也相对较少. 并且在训练集中, 若存在异常样本, 这些样本也会如同异常点(outliers)一般用于被辨别出来.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Z-String&lt;/p&gt;
+&lt;p&gt;ZString是指将字符序按照其频率再次排列. 作者认为这个特征可以有效地检测蠕虫. 即拥有相似ZString特征的网址, 受到蠕虫攻击的概率是相同的. Zstring的效果如下图五所示:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图五" src="https://d3i71xaburhd42.cloudfront.net/3e175de1ce9dd2615d34d3c7f982acb8b3b9f3a5/11-Figure4-1.png"/&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;实验阶段: 本文使用&lt;a href="https://www.ll.mit.edu/r-d/datasets/1999-darpa-intrusion-detection-evaluation-dataset"&gt;DARPA1999 IDS&lt;/a&gt;数据集进行实验, 实验效果如下图六所示:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图六" src="https://d3i71xaburhd42.cloudfront.net/3e175de1ce9dd2615d34d3c7f982acb8b3b9f3a5/14-Figure6-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;尽管本文完成时间比较早, 并且其检测效果也相对较差. 但本文使用无学习的策略, 进行检测对无网络攻击这一高吞吐需求的任务中是很有意义的. 利用传统的无学习的策略做无监督学习, 利用深度学习进行特征提取或许是一个一个解决方法.&lt;/p&gt;
+&lt;h2&gt;&lt;a href="http://pralab.diee.unica.it/sites/default/files/Ariu_COSE2011.pdf"&gt;HMMPayl: an Intrusion Detection System based onHidden Markov Models&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;本文设计了一种名为HMMPayl的基于隐马尔可夫模型的入侵检测系统. 如下图七所示&lt;/p&gt;
+&lt;p&gt;&lt;img alt="图七" src="https://d3i71xaburhd42.cloudfront.net/480205cdc0b039764478a27b8accdcabe1e1e108/5-Figure3-1.png"/&gt;&lt;/p&gt;
+&lt;h3&gt;Method&lt;/h3&gt;
+&lt;p&gt;该模型分为三个阶段:
+1. 特征提取. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;HMM模型处理序列数据具有先天优势&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;但随着序列长度的提升&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;由于前后向算法的缘故导致序列内计算相关性程度会下降&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;从实验效果触发&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;即越长的序列越容易分类为威胁&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt; &lt;span class="err"&gt;其次当各个序列长度类似时&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;其效果最好&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;故为解决上述问题&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;特征提取算法设计为$&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;L&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;其中&lt;/span&gt;&lt;span class="n"&gt;L为负载长度&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n为滑动窗口大小&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;简单来讲就是使用&lt;/span&gt;&lt;span class="n"&gt;Ngram&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;实验中作者设置&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
+
+&lt;span class="err"&gt;使用&lt;/span&gt;&lt;span class="n"&gt;Ngram对长序列切片后&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;会产生许多冗余数据&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;故还需要对数据进行序列抽样&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sequence&lt;/span&gt; &lt;span class="n"&gt;sampling&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt; &lt;span class="err"&gt;因为第&lt;/span&gt;&lt;span class="n"&gt;t个序列的最后n&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;个&lt;/span&gt;&lt;span class="n"&gt;bytes是t&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;序列的&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;个&lt;/span&gt;&lt;span class="n"&gt;bytes的开头&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;作者假设并并通过实验得到在&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="err"&gt;个序列内的数据都是类似的&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;见下图八&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;故作者从这&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="err"&gt;个序列中随机抽样&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;作为一长段序列的特征传递给下一阶段&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="err"&gt;并且作者认为这种随机抽样的方法对欺骗攻击十分有效&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+
+&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="err"&gt;图八&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;d3i71xaburhd42&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cloudfront&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;480205&lt;/span&gt;&lt;span class="n"&gt;cdc0b039764478a27b8accdcabe1e1e108&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Figure7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;png&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;模式分析. &lt;/p&gt;
+&lt;p&gt;模式分析即HMM模型的过程, 对于每个payload P HMM计算O(Ngram输出的集合)中的每个序列出现的概率即:
+&lt;div class="math"&gt;$$
+p_{j}=P\left(o_{j} \mid \lambda\right), j=1, \ldots, N
+$$&lt;/div&gt;
+HMM的原理以及过程这里不再赘述. 
+最后综合整体的概率公式为
+&lt;div class="math"&gt;$$
+P(O \mid \lambda)=\frac{1}{N} \sum_{j=1}^{N} p_{j}=\frac{1}{N} \sum_{j=1}^{N} P\left(o_{j} \mid \lambda\right)
+$$&lt;/div&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分类阶段&lt;/p&gt;
+&lt;p&gt;本文使用Baum-Welch算法去计算HMM中的参数(即进行推理). 并且本文出于统计原因(降低误检率), 计算原因(逃离局部最优解)以及表示原因(单一的分类器无法准确的表达分类平面)采用了多分类系统结构进行分类. 结构上如图七所示. 多分类系统有两种综合结果输出的方式: 分类器混合(按照最大概率, 最小概率, 平均或几何平均)以及分类器选择(理想成绩选择器, ideal Score Selector, 公式如下)&lt;/p&gt;
+&lt;p&gt;
+&lt;div class="math"&gt;$$
+p_{j}=P\left(o_{j} \mid \lambda\right), j=1, \ldots, Ns_{i}^{*}=\left\{\begin{array}{ll}
+\max \left\{s_{i j}\right\} &amp;amp; \text { 当 } x_{i} \text { 为正常数据 } \\
+\min \left\{s_{i j}\right\} &amp;amp; \text { 当 } x_{i} \text { 为威胁数据 }
+\end{array}\right.
+$$&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;实验中使用分类器混合方式进行结果综合输出.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;本文的实验十分的详实, 对于每一个参数的选择都进行了大量的实验以确定最优的解. 同时也对每一个报文的成立时间进行了计算. 0.02ms一个请求. 个人认为本文在数据处理这一节的探讨十分有意义, 因为通常Ngram设置为2, 3这些小数, 但对网络数据负载大的N会更能体现区段之间的关联性. 本文通过实验表明了N=5 - 10 对于网络负载是一个合适的值.&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",

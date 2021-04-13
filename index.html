@@ -118,31 +118,64 @@
 
 <article>
   <header>
-    <h2><a href="/tiresias.html#tiresias">论文笔记 An adaptive system for detecting malicious queries in web attacks</a></h2>
+    <h2><a href="/dl4wad.html#dl4wad">论文笔记集 DeepLearning for Web Attack Detection</a></h2>
     <p>
-      Posted on Thu 01 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+      Posted on Tue 13 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
           &#8226; Tagged with
               <a href="/tag/waf.html">waf</a>,              <a href="/tag/networksecurity.html">NetworkSecurity</a>,              <a href="/tag/machinelearning.html">MachineLearning</a>,              <a href="/tag/security.html">Security</a>
-        &#8226; 1 min read
+        &#8226; 2 min read
     </p>
   </header>
   <div>
-      <h2>Introduction</h2>
+      <p>在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. </p>
+<h2><a href="https://www.semanticscholar.org/paper/Anomaly-Based-Web-Attack-Detection%3A-A-Deep-Learning-Liang-Zhao/4a05171f31fee07b8d0a04dc77baca0abb908756">Anomaly-Based Web Attack Detection: A Deep Learning Approach</a></h2>
+<p>本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在"?" 标记之后</p>
+<div class="highlight"><pre><span></span><code><span class="err">"http:" "//" host [ ":" port ] [ abs_path [ "?" query ]]</span>
+</code></pre></div>
+<p>首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. </p>
+<p><img alt="图一" src="/images/AIForSecurity/tokenExample.jpg"/></p>
+<p>随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二</p>
+<p><img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/4a05171f31fee07b8d0a04dc77baca0abb908756/2-Figure1-1.png"/></p>
+<p>实验环节, 本文使用<a href="https://www.isi.csic.es/dataset/">HTTP CISC数据集</a>进行测试, 其结果如图三所示</p>
+<p><img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/4a05171f31fee07b8d0a04dc77baca0abb908756/5-Table4-1.png"/></p>
+<h3>结论</h3>
+<p>基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求, 在网络攻击中POST等其他提交数据的请求同样是十分危险的 …</p>
+        <br>
+        <a class="btn"
+           href="/dl4wad.html#dl4wad">
+          Continue reading
+        </a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="/sl4wad.html#sl4wad">论文笔记集 Statistical Learning for Web Attack Detection</a></h2>
+    <p>
+      Posted on Sat 10 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+
+          &#8226; Tagged with
+              <a href="/tag/waf.html">waf</a>,              <a href="/tag/networksecurity.html">NetworkSecurity</a>,              <a href="/tag/machinelearning.html">MachineLearning</a>,              <a href="/tag/security.html">Security</a>
+        &#8226; 2 min read
+    </p>
+  </header>
+  <div>
+      <p>上一文种主要介绍一些基于深度学习的网络攻击检测论文, 这里则主要介绍一些基于传统机器学习(统计学习)的论文.</p>
+<h2><a href="https://link.springer.com/article/10.1007/s11432-017-9288-4">An adaptive system for detecting malicious queries in web attacks</a></h2>
 <p>本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
 <img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/></p>
-<h2>Method</h2>
+<h3>Method</h3>
 <p>根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释</p>
-<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
+<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进 行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
 <p>SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
 </p>
 <div class="math">$$
 \begin{aligned}
-&amp;K(x, z) = \varphi(x)^\varphi(z)\\
-&amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum …</div>
+&amp;K(x, z) = \varphi …</div>
         <br>
         <a class="btn"
-           href="/tiresias.html#tiresias">
+           href="/sl4wad.html#sl4wad">
           Continue reading
         </a>
   </div>
@@ -389,34 +422,6 @@ Distinctive Image Features from Scale-Invariant Keypoints</a>)是一种检测局
         <br>
         <a class="btn"
            href="/forensics_2_3.html#forensics_2_3">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="/forensics_2_2.html#forensics_2_2">数字图像取证 - 基于相机属性的取证 2</a></h2>
-    <p>
-      Posted on Sat 15 August 2020 in <a href="/category/digital-image-forensics.html">Digital Image Forensics</a>
-
-          &#8226; Tagged with
-              <a href="/tag/book.html">Book</a>,              <a href="/tag/forensics.html">Forensics</a>,              <a href="/tag/security.html">Security</a>,              <a href="/tag/computervision.html">ComputerVision</a>
-        &#8226; 1 min read
-    </p>
-  </header>
-  <div>
-      <h2>CA</h2>
-<p>理想状态下光线透过滤镜聚焦到传感器上，传感器将光子转储为颜色信息并保存。然而实际上不存在一种滤镜能够完美的将所有波长的光聚焦于传感器上，从而导致导致高光区域与低光区域出现带有颜色的边缘。这一现象被称为CA或色差或紫边（摄影）。由于相机以及镜头的不同，篡改图像的过程中，就会出现色差问题不一致的问题，那么利用这一特性就可以校验图像是否被篡改。首先介绍一下为何会出现色差现象
-有折射定律: 1. 折射光线位于入射面内. 2. <span class="math">\(n\sin I = n' \sin I'\)</span> 
-注: <span class="math">\(I\)</span>表示入射角, <span class="math">\(I'\)</span> 表示折射角,n表示折射率. 以及短波（蓝色）折射率高，长波（红色）折射率低. 
-根据折射定律由于不同的波长在同一种介质中的折射率不同就会出现如下的情况
-<img alt="ref_wave" src="https://pic2.zhimg.com/80/v2-3523ecf46e9a1445f775aae4229851b1_720w.jpg"/></p>
-<h2>建模CA向量</h2>
-<p>根据折射定律<span class="math">\(nsin(\theta) = n_r\sin(\theta_r)\)</span> 以及 <span class="math">\(nsin(\theta) = n_b\sin(\theta_b)\)</span>得出<span class="math">\(n_r …</span></p>
-        <br>
-        <a class="btn"
-           href="/forensics_2_2.html#forensics_2_2">
           Continue reading
         </a>
   </div>

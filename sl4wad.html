@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/github.min.css">
+
+    <script src="/theme/tipuesearch/jquery.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch.min.js"></script>
+    <script src="/theme/tipuesearch/tipuesearch_set.min.js"></script>
+    <script src="/tipuesearch_content.js"></script>
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="R08UST's Blog Atom">
+
+
+    <link rel="shortcut icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/profile/Favicon.ico" type="image/x-icon">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8EL1GE1H84"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8EL1GE1H84');
+</script>
+<!-- End of Global site tag (gtag.js) - Google Analytics -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333">
+
+<meta name="author" content="R08UST" />
+<meta name="description" content="上一文种主要介绍一些基于深度学习的网络攻击检测论文, 这里则主要介绍一些基于传统机器学习(统计学习)的论文. An adaptive system for detecting malicious queries in web attacks 本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示 Method 根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释 自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进 行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 $$ \begin{aligned} &amp;K(x, z) = \varphi …" />
+<meta name="keywords" content="waf, NetworkSecurity, MachineLearning, Security">
+
+
+<meta property="og:site_name" content="R08UST's Blog"/>
+<meta property="og:title" content="论文笔记集 Statistical Learning for Web Attack Detection"/>
+<meta property="og:description" content="上一文种主要介绍一些基于深度学习的网络攻击检测论文, 这里则主要介绍一些基于传统机器学习(统计学习)的论文. An adaptive system for detecting malicious queries in web attacks 本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示 Method 根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释 自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进 行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 $$ \begin{aligned} &amp;K(x, z) = \varphi …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/sl4wad.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2021-04-10 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/r08ust.html">
+<meta property="article:section" content="AIForSecurity"/>
+<meta property="article:tag" content="waf"/>
+<meta property="article:tag" content="NetworkSecurity"/>
+<meta property="article:tag" content="MachineLearning"/>
+<meta property="article:tag" content="Security"/>
+<meta property="og:image" content="/images/profile/profile.jpg">
+
+  <title>R08UST's Blog &ndash; 论文笔记集 Statistical Learning for Web Attack Detection</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="">
+        <img src="/images/profile/profile.jpg" alt="" title="">
+      </a>
+
+      <h1>
+        <a href=""></a>
+      </h1>
+
+<p>Security & AI Developer</p>
+        <form class="navbar-search" action="/search.html" role="search">
+          <input type="text" name="q" id="tipue_search_input" placeholder="Search...">
+        </form>
+
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/%E5%AE%B6%E7%90%AA-%E8%92%8B-171328175/" target="_blank">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a  class="sc-github" href="https://github.com/r08ust" target="_blank">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">Home</a>
+
+      <a href="/index.html">MainPage</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="/feeds/all.atom.xml">Atom</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="sl4wad">论文笔记集 Statistical Learning for Web Attack Detection</h1>
+    <p>
+      Posted on Sat 10 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+
+        &#8226; 2 min read
+    </p>
+  </header>
+
+
+  <div>
+    <p>上一文种主要介绍一些基于深度学习的网络攻击检测论文, 这里则主要介绍一些基于传统机器学习(统计学习)的论文.</p>
+<h2><a href="https://link.springer.com/article/10.1007/s11432-017-9288-4">An adaptive system for detecting malicious queries in web attacks</a></h2>
+<p>本文时一篇基于统计学习的网络攻击检测论文. 本文基于自适应学习策略以及利用SS(suspicion selection)和ES(exemplary selection)改进SVM算法来进行有监督的网络攻击检测任务. 本文的架构如下图一所示
+<img alt="图一" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/5-Figure3-1.png"/></p>
+<h3>Method</h3>
+<p>根据架构图, 本文的架构相对来说比较简单. 相对来说, 重点在于SS, ES以及对SVM的改进. 下面对一些术语以及方法进行解释</p>
+<p>自适应学习: 文中定义自适应学习为可以通过适应新型攻击的行为来检测最新的未知攻击. 对SVM而言, 在以确定间隔的情况下, 出现在间隔内的样本如何进 行正确检测策略. SVMAL一文给出了一个方法. 即简单的将间隔内的样本分类归属为离其最近的分类平面. </p>
+<p>SVM Hybrid: 如图所示, SVM Hybrid通过结合SS以及ES实现自适应学习策略. 其公式定义于传统的SVM无异 
+</p>
+<div class="math">$$
+\begin{aligned}
+&amp;K(x, z) = \varphi(x)^\varphi(z)\\
+&amp;max_\alpha \sum^n_{i = 1}\alpha_i - \frac{1}{2}\sum^n_{i, j = 1}\alpha_i\alpha_j y_i y_j x_i^T x_j,\\
+&amp;st \space 0 \leq \alpha_i \leq C \space (i = 1, ..., n), \sum^n_{i = 1}\alpha_i\alpha_j = 0
+\end{aligned}
+$$</div>
+<p>suspicion selection(SS): SS的方式为利用聚类算法寻找潜在的信息分类(informative queries). 其具体方法如下</p>
+<ol>
+<li>
+<p>模型训练完成的情况下, 落入的间隔内的数据被称为Q. Q将会根据其核距离来排序
+<div class="math">$$
+f(x) = \sum^n_{i=1} \alpha_i y_iK(x_i, x) + b
+$$</div>
+</p>
+</li>
+<li>
+<p>将最小的核距离定义为模糊空间的下边界. <span class="math">\(f_{lower} = \displaystyle\min_{x\in Q}\)</span>. 将最大的核距离定义为模糊边界的上边界. <span class="math">\(f_{upper} = \displaystyle\max_{x\in Q}\)</span>. </p>
+</li>
+<li>
+<p>聚类算法使用K-medoids. 将K-medoids的中心定义为suspicion, 即最容易误分类的样本. K-medoids公式亦与传统公式无异
+<div class="math">$$
+\begin{aligned}
+&amp;E = \displaystyle\sum^k_{j = 1}\sum_{x \in C_j}|\varphi(x) - \varphi(M_j)|\\
+&amp;|\varphi(x) - \varphi(M_j)| = \sqrt{K(x, x) + K(M_j, M_j) - 2k(x, M_j)}
+\end{aligned}
+$$</div>
+</p>
+</li>
+</ol>
+<p>exemplary selection(ES): ES用于表达典型的恶意样本. 虽然SS对样本可以进行分类, 但其误检率较高, 利用ES来进一步确认其分类. ES基于kernel farthest first(KFF)这一贪婪启发算法来确定典型样本. 令未达标的数据未U, 达标过的数据未L. 最远距离定义为L中的数据y到U中的一个数据x的距离之和的最大值. 公式如下
+</p>
+<div class="math">$$
+\displaystyle\argmax_{x \in U}(\sum_{x \in L} |\varphi(x) - \varphi(y)|)
+$$</div>
+<p><img alt="图二" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/7-Figure4-1.png"/></p>
+<p>数据预处理: </p>
+<ol>
+<li>
+<p>提取Get请求</p>
+</li>
+<li>
+<p>数据清洗: 仅保留response在200-300字节的的请求</p>
+</li>
+<li>
+<p>数据标准化: 将ascii, unescaping字符转换为小写, 并删除长度小于4的请求</p>
+</li>
+<li>
+<p>按照RFC2616过滤不安全的字符</p>
+</li>
+<li>
+<p>利用2Gram对数据再次分割.</p>
+</li>
+<li>
+<p>特征压缩: 卡方校验, 信息增益(info gain, 选择头800), DF(document Frequency), top selection(首选, 选择150, 200, 300, 500, 800, 1100, 1500 and 2000), PCA(principal component analysis, 主成分分析法, 选择top 80), RP(random Projection, 随机投影)以及reservation quantities(选择10, 20, 30, 40, 60, 80, 150 and 300)</p>
+</li>
+</ol>
+<h3>Experimental</h3>
+<p>实验在32GRam以及Intel 2.93GhzCpu上进行, 使用Weka和Libsvm实现baseline以及Meta Svm. 数据为内部数据并未开源. </p>
+<p>MetaSvm使用RBF核, 参数为<span class="math">\((C,\gamma) = (0.05, 2)\)</span>, 基于网格搜索的交叉验证来进行验证. 对自适应功能验证的结果如下(主要与SvmAL对比)</p>
+<p>; <img alt="图三" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/11-Figure5-1.png"/></p>
+<p>与传统框架对比, 数据基于CSIC2010, 结果如下</p>
+<p>; <img alt="图四" src="https://d3i71xaburhd42.cloudfront.net/f656da626ddfb680de849df328b3cd6c5506237f/13-Table5-1.png"/></p>
+<h3>Conclusion</h3>
+<p>本片文中创新型的提出了SS以及ES机制来辅助SVM, 解决其对新样本的识别能力. 在深度学习大行其道的今天, 基于统计学习的模型比较少见, 且效果也相对平庸 但作者提出的SS以及ES机制对在线学习也许有一定帮助.</p>
+<h2><a href="https://academiccommons.columbia.edu/doi/10.7916/D8Z325FD/download">Anomalous Payload-based Network Intrusion Detection</a></h2>
+<p>为了构建一个自动化的, 通用的, 增量更新的, 高准确率的, 放模仿攻击的, 高吞吐的异常检测系统. 本文提出了一种基于language Independent(语言独立的)的统计模型并结合Ngram特征提取算法的入侵检测模型.  模型十分简单甚至没有用到复杂的统计模型或神经网络, 其主要用一系列的统计特征提取算法构成. 下面对细节进行说明:</p>
+<h3>Method</h3>
+<ol>
+<li>
+<p>基于长度条件的Ngram 负载模型(Length conditioned ngram payload model)</p>
+<p>利用 1gram算法将payload进行拆分, 随后统计各个字符出现的频率, 最后计算其均值以及标准差. 标题中的长度条件是指对不同长度的报文进行分别计算. 训练阶段更具这一方法可以构建出<span class="math">\(M_i, j\)</span>个payload模型. 在验证阶段, 同理计算出该报文的频率, 均值以及方差在于<span class="math">\(M_i, j\)</span>进行对比. </p>
+</li>
+<li>
+<p>简化马氏距离(simplified Mahalanobis distance)</p>
+<p>对比<span class="math">\(M_i, j\)</span>于新报文阶段便采用马氏距离进行计算, 计算结果越高新报文异常的概率则越大
+<div class="math">$$
+d^2(x, \bar{y}) = (x - \bar{y})^T C^{-1}(x - \bar{y})
+$$</div>
+其中<span class="math">\(x\)</span>是新请求, <span class="math">\(\bar{y}\)</span>是平均后的训练集模型. <span class="math">\(C^{-1}\)</span>为协方差矩阵的逆,即<span class="math">\(C_{i, j} = Cov(y_i, y_j)\)</span>其中<span class="math">\(y_i, y_j\)</span>是训练集中的第i/j个向量.
+为了加速计算, 简化的马氏距离算法为
+<div class="math">$$
+d(x, \bar{y}) = \sum^{n-1}_{i=0}(|x_i - \bar{y_i}|/(\bar{\sigma_i})+ \alpha)
+$$</div>
+其中n为出现字符的总数. <span class="math">\(\sigma\)</span>为标准差, <span class="math">\(\alpha\)</span>为平滑系数. <span class="math">\(\alpha\)</span>越高, 样本的置信度越低, 但更能表现真实的数据分布</p>
+</li>
+<li>
+<p>增量学习</p>
+<p>本文结合增量学习来处理新的数据样本, 同时对于过时的数据, 本文也提出了一种衰减参数来控制过时的数据. 
+对于一字符的平均频率<span class="math">\(\bar{x} = \sum^N_{i = 1}x_i/N\)</span>, 对于已经存储的均值, 通过一下方法进行更新<span class="math">\(\bar{x} = \frac{\bar{x}\times N + x_{N + 1}}{N + 1} = \bar{x} + \frac{x_{N + 1} - \bar{x}}{N + 1}\)</span>
+由于标准差是方差的平方根, 又可以将方差利用期望进行改写, 即<span class="math">\(Var(X) = E(X - EX)^2 = E(X)^2 - (EX)^2\)</span>. </p>
+</li>
+<li>
+<p>利用聚类减少模型尺寸</p>
+<p>模型可能存在两个问题, 一是总体模型过大, 类似的模型过多. 二是针对部分个体模型其较稀疏. 为了解决这些问题本文使用简化的马氏距离计算模型之间的相似度. 对于稀疏的模型, 则从相似的模型中"借"数据, 或者提高平滑系数. 对于不稀疏的模型, 则定义一个threshold t 来决定是否进行模型合并. </p>
+</li>
+<li>
+<p>无监督学习</p>
+<p>基于马氏距离的检测方法, 同样可以用于无监督学习. 因为异常的样本在网络中比较少, 那么对整体的影响也相对较少. 并且在训练集中, 若存在异常样本, 这些样本也会如同异常点(outliers)一般用于被辨别出来.</p>
+</li>
+<li>
+<p>Z-String</p>
+<p>ZString是指将字符序按照其频率再次排列. 作者认为这个特征可以有效地检测蠕虫. 即拥有相似ZString特征的网址, 受到蠕虫攻击的概率是相同的. Zstring的效果如下图五所示:</p>
+<p><img alt="图五" src="https://d3i71xaburhd42.cloudfront.net/3e175de1ce9dd2615d34d3c7f982acb8b3b9f3a5/11-Figure4-1.png"/></p>
+</li>
+</ol>
+<p>实验阶段: 本文使用<a href="https://www.ll.mit.edu/r-d/datasets/1999-darpa-intrusion-detection-evaluation-dataset">DARPA1999 IDS</a>数据集进行实验, 实验效果如下图六所示:</p>
+<p><img alt="图六" src="https://d3i71xaburhd42.cloudfront.net/3e175de1ce9dd2615d34d3c7f982acb8b3b9f3a5/14-Figure6-1.png"/></p>
+<h3>Conclusion</h3>
+<p>尽管本文完成时间比较早, 并且其检测效果也相对较差. 但本文使用无学习的策略, 进行检测对无网络攻击这一高吞吐需求的任务中是很有意义的. 利用传统的无学习的策略做无监督学习, 利用深度学习进行特征提取或许是一个一个解决方法.</p>
+<h2><a href="http://pralab.diee.unica.it/sites/default/files/Ariu_COSE2011.pdf">HMMPayl: an Intrusion Detection System based onHidden Markov Models</a></h2>
+<p>本文设计了一种名为HMMPayl的基于隐马尔可夫模型的入侵检测系统. 如下图七所示</p>
+<p><img alt="图七" src="https://d3i71xaburhd42.cloudfront.net/480205cdc0b039764478a27b8accdcabe1e1e108/5-Figure3-1.png"/></p>
+<h3>Method</h3>
+<p>该模型分为三个阶段:
+1. 特征提取. </p>
+<div class="highlight"><pre><span></span><code><span class="n">HMM模型处理序列数据具有先天优势</span><span class="p">,</span> <span class="err">但随着序列长度的提升</span><span class="p">,</span> <span class="err">由于前后向算法的缘故导致序列内计算相关性程度会下降</span><span class="p">(</span><span class="err">从实验效果触发</span><span class="p">,</span> <span class="err">即越长的序列越容易分类为威胁</span><span class="p">).</span> <span class="err">其次当各个序列长度类似时</span><span class="p">,</span> <span class="err">其效果最好</span><span class="p">.</span> <span class="err">故为解决上述问题</span><span class="p">,</span> <span class="err">特征提取算法设计为$</span> <span class="n">N</span> <span class="o">=</span> <span class="n">L</span> <span class="o">-</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="err">$</span><span class="p">,</span> <span class="err">其中</span><span class="n">L为负载长度</span><span class="p">,</span> <span class="n">n为滑动窗口大小</span><span class="p">.</span> <span class="err">简单来讲就是使用</span><span class="n">Ngram</span><span class="p">.</span> <span class="err">实验中作者设置</span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="err">使用</span><span class="n">Ngram对长序列切片后</span><span class="p">,</span> <span class="err">会产生许多冗余数据</span><span class="p">,</span> <span class="err">故还需要对数据进行序列抽样</span><span class="p">(</span><span class="n">sequence</span> <span class="n">sampling</span><span class="p">).</span> <span class="err">因为第</span><span class="n">t个序列的最后n</span><span class="o">-</span><span class="mi">1</span><span class="err">个</span><span class="n">bytes是t</span><span class="o">+</span><span class="mi">1</span><span class="err">序列的</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="err">个</span><span class="n">bytes的开头</span><span class="p">.</span> <span class="err">作者假设并并通过实验得到在</span><span class="mi">10</span><span class="err">个序列内的数据都是类似的</span><span class="p">.</span> <span class="err">见下图八</span><span class="p">.</span> <span class="err">故作者从这</span><span class="mi">10</span><span class="err">个序列中随机抽样</span><span class="p">,</span> <span class="err">作为一长段序列的特征传递给下一阶段</span><span class="p">.</span> <span class="err">并且作者认为这种随机抽样的方法对欺骗攻击十分有效</span><span class="p">.</span>
+
+<span class="o">!</span><span class="p">[</span><span class="err">图八</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">d3i71xaburhd42</span><span class="p">.</span><span class="n">cloudfront</span><span class="p">.</span><span class="n">net</span><span class="o">/</span><span class="mi">480205</span><span class="n">cdc0b039764478a27b8accdcabe1e1e108</span><span class="o">/</span><span class="mi">16</span><span class="o">-</span><span class="n">Figure7</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="n">png</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>
+<p>模式分析. </p>
+<p>模式分析即HMM模型的过程, 对于每个payload P HMM计算O(Ngram输出的集合)中的每个序列出现的概率即:
+<div class="math">$$
+p_{j}=P\left(o_{j} \mid \lambda\right), j=1, \ldots, N
+$$</div>
+HMM的原理以及过程这里不再赘述. 
+最后综合整体的概率公式为
+<div class="math">$$
+P(O \mid \lambda)=\frac{1}{N} \sum_{j=1}^{N} p_{j}=\frac{1}{N} \sum_{j=1}^{N} P\left(o_{j} \mid \lambda\right)
+$$</div>
+</p>
+</li>
+<li>
+<p>分类阶段</p>
+<p>本文使用Baum-Welch算法去计算HMM中的参数(即进行推理). 并且本文出于统计原因(降低误检率), 计算原因(逃离局部最优解)以及表示原因(单一的分类器无法准确的表达分类平面)采用了多分类系统结构进行分类. 结构上如图七所示. 多分类系统有两种综合结果输出的方式: 分类器混合(按照最大概率, 最小概率, 平均或几何平均)以及分类器选择(理想成绩选择器, ideal Score Selector, 公式如下)</p>
+<p>
+<div class="math">$$
+p_{j}=P\left(o_{j} \mid \lambda\right), j=1, \ldots, Ns_{i}^{*}=\left\{\begin{array}{ll}
+\max \left\{s_{i j}\right\} &amp; \text { 当 } x_{i} \text { 为正常数据 } \\
+\min \left\{s_{i j}\right\} &amp; \text { 当 } x_{i} \text { 为威胁数据 }
+\end{array}\right.
+$$</div>
+</p>
+<p>实验中使用分类器混合方式进行结果综合输出.</p>
+</li>
+</ol>
+<h3>Conclusion</h3>
+<p>本文的实验十分的详实, 对于每一个参数的选择都进行了大量的实验以确定最优的解. 同时也对每一个报文的成立时间进行了计算. 0.02ms一个请求. 个人认为本文在数据处理这一节的探讨十分有意义, 因为通常Ngram设置为2, 3这些小数, 但对网络数据负载大的N会更能体现区段之间的关联性. 本文通过实验表明了N=5 - 10 对于网络负载是一个合适的值.</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/waf.html">waf</a>
+      <a href="/tag/networksecurity.html">NetworkSecurity</a>
+      <a href="/tag/machinelearning.html">MachineLearning</a>
+      <a href="/tag/security.html">Security</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="/rtmp.html" title="协议分析与还原 RTMP协议">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
+    <a class="btn float-right" href="/dl4wad.html" title="论文笔记集 DeepLearning for Web Attack Detection">
+      Next Post <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; 2021 </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " R08UST's Blog ",
+  "url" : "",
+  "image": "/images/profile/profile.jpg",
+  "description": ""
+}
+</script>
+
+    <script>
+      $(document).ready(function() {
+        $('#tipue_search_input').tipuesearch();
+      });
+    </script>
+
+</body>
+</html>

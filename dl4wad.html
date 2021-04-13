@@ -56,17 +56,17 @@
     <meta name="msapplication-TileColor" content="#333">
 
 <meta name="author" content="R08UST" />
-<meta name="description" content="Introduction 在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. Anomaly-Based Web Attack Detection: A Deep Learning Approach 本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在&#34;?&#34; 标记之后 &#34;http:&#34; &#34;//&#34; host [ &#34;:&#34; port ] [ abs_path [ &#34;?&#34; query ]] 首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. 随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二 实验环节, 本文使用HTTP CISC数据集进行测试, 其结果如图三所示 结论 基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求 …" />
+<meta name="description" content="在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. Anomaly-Based Web Attack Detection: A Deep Learning Approach 本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在&#34;?&#34; 标记之后 &#34;http:&#34; &#34;//&#34; host [ &#34;:&#34; port ] [ abs_path [ &#34;?&#34; query ]] 首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. 随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二 实验环节, 本文使用HTTP CISC数据集进行测试, 其结果如图三所示 结论 基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求, 在网络攻击中POST等其他提交数据的请求同样是十分危险的 …" />
 <meta name="keywords" content="waf, NetworkSecurity, MachineLearning, Security">
 
 
 <meta property="og:site_name" content="R08UST's Blog"/>
 <meta property="og:title" content="论文笔记集 DeepLearning for Web Attack Detection"/>
-<meta property="og:description" content="Introduction 在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. Anomaly-Based Web Attack Detection: A Deep Learning Approach 本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在&#34;?&#34; 标记之后 &#34;http:&#34; &#34;//&#34; host [ &#34;:&#34; port ] [ abs_path [ &#34;?&#34; query ]] 首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. 随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二 实验环节, 本文使用HTTP CISC数据集进行测试, 其结果如图三所示 结论 基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求 …"/>
+<meta property="og:description" content="在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. Anomaly-Based Web Attack Detection: A Deep Learning Approach 本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在&#34;?&#34; 标记之后 &#34;http:&#34; &#34;//&#34; host [ &#34;:&#34; port ] [ abs_path [ &#34;?&#34; query ]] 首先将一组URL经过序列化后分为两个部分: URL本身(图中表示为全部URL, 但按照文章所表述的URL Path 应该不含query部分)以及Query部分, 见图1. 随后将两组数据经过分词之后分别传入两个RNN结构(两层的GRU或LSTM)的神经网络以及计算其异常概率, 最后将所有的输出汇总(文中并未给出使用何种方式汇总两组RNN给出的多组异常概率)并输出给一MLP层作为最终的异常概率. 见图二 实验环节, 本文使用HTTP CISC数据集进行测试, 其结果如图三所示 结论 基于有监督的异常检测的泛化性是一个比较严重的问题, 而且本文因为工作量的较大原因仅处理了HTTP GET的请求, 在网络攻击中POST等其他提交数据的请求同样是十分危险的 …"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="/drafts/dl4waf.html"/>
+<meta property="og:url" content="/dl4wad.html"/>
 <meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2021-03-20 00:00:00+08:00"/>
+<meta property="article:published_time" content="2021-04-13 00:00:00+08:00"/>
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="/author/r08ust.html">
 <meta property="article:section" content="AIForSecurity"/>
@@ -128,18 +128,17 @@
 <article class="single">
   <header>
       
-    <h1 id="dl4waf">论文笔记集 DeepLearning for Web Attack Detection</h1>
+    <h1 id="dl4wad">论文笔记集 DeepLearning for Web Attack Detection</h1>
     <p>
-      Posted on Sat 20 March 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
+      Posted on Tue 13 April 2021 in <a href="/category/aiforsecurity.html">AIForSecurity</a>
 
-        &#8226; 1 min read
+        &#8226; 2 min read
     </p>
   </header>
 
 
   <div>
-    <h2>Introduction</h2>
-<p>在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. </p>
+    <p>在zeroWall一文中, 已经简单介绍了利用机器学习辅助Waf的方法. 实际上zeroWall一文所述的领域即网络攻击检测(web attack dection). 这里简述一些阅读过的但整体方法不够有启发性或实验不够solid的论文. </p>
 <h2><a href="https://www.semanticscholar.org/paper/Anomaly-Based-Web-Attack-Detection%3A-A-Deep-Learning-Liang-Zhao/4a05171f31fee07b8d0a04dc77baca0abb908756">Anomaly-Based Web Attack Detection: A Deep Learning Approach</a></h2>
 <p>本文认为一组URL可以规范化为如下形式, 即abs_path表示资源地址, 而query总是跟在"?" 标记之后</p>
 <div class="highlight"><pre><span></span><code><span class="err">"http:" "//" host [ ":" port ] [ abs_path [ "?" query ]]</span>
@@ -179,8 +178,111 @@ Data Preprocessing: 实际就是将网络中的bit利用网络协议进行解析
 <p><img alt="图九" src="https://d3i71xaburhd42.cloudfront.net/29ae60c4065a29c85a436a5a3ddabb50a87eb811/11-Figure5-1.png"/></p>
 <p>实验方面: 本文在三个数据集上进行实验 <a href="https://www.isi.csic.es/dataset/">CSIC 2010</a>, <a href="https://www.unb.ca/cic/datasets/ids-2017.
 html">CIDIS 2017</a>以及<a href="https://www.unb.ca/cic/datasets/ids.html">ISCX 2012</a>数据集. </p>
-<h3>结论</h3>
+<h3>Conclusion</h3>
 <p>一篇基于有监督的异常检测, 辞藻华丽. 特征提取和模型方面比较传统. 比较有新意的地方在于, 采用全输出的LSTM结构作为二次特征提取器, 结合CNN三次提取特征. 但模型比较庞大, 估计处理时间会很长, 吞吐量难以保证. </p>
+<h2><a href="https://www.ijcai.org/Proceedings/2019/656">Locate-Then-Detect: Real-time Web Attack Detection via Attention-based Deep Neural Networks</a></h2>
+<p>本文设计了一种名为LTD(locate then detect)的基于Attention机制的系统来检测网络攻击, 同时也基于Detection机制来定位(解释)网络攻击的敏感区域. 该系统分为两个子模块, 用于定位可疑区域的PLN(payload locating network), 用于进行分类的PCN(payload classification network). 通过PLN的过滤, LTD减少了82.6%的计算成本, 使得对于每个请求仅需5ms处理时间. 整体结构见下图十</p>
+<p><img alt="图十" src="https://d3i71xaburhd42.cloudfront.net/7bde3e694ac45abdeb02d933fafdf86d4e67d997/3-Figure1-1.png"/></p>
+<h3>Method</h3>
+<ol>
+<li>
+<p>PLN: PLN作为第一阶段的神经网络, 与其他神经网络一样其输入需要经过特殊处理. PLN本质上就是个简易的Detection模型</p>
+<ul>
+<li>词嵌入, 尽管作者将这一阶段称为网络请求嵌入, 但其本质上仍然为将长度为L的请求嵌入为L*X维度的向量</li>
+<li>特征提取, 利用Xception模型提取特征, 即CNN提取特征</li>
+<li>候选区域, 两个1*m(m = embedding size, 以保证语义完整性)的CNN, 一个用于回归(输出bounding box), 一个用于分类(输出类别). 于检测模型相同, PLN会输出p个Anchors. 并设置Anchor大小大于3, 范围在 [0, L]之间并且Anchor内的数据不含有太多的0(padding).
+训练PLN和训练Detection模型基本一致, 如IoU小于0.2的bounding box作为负样本, 如 负样本与正正样本比例为3 : 1, 如PLN的训练公式为
+<div class="math">$$
+\begin{aligned}
+L\left(l_{i}, p o s_{i}, p_{i}, p o s_{i}^{*}\right) &amp; = \frac{1}{N_{cls}} \sum_{i} L_{c l s}\left(l_{i}, p_{i}\right) \\
+&amp;+ \lambda \frac{1}{N_{r e g}} \sum_{i} l_{i} L_{r e g}\left(p o s_{i}, pos_{i}^{*}\right)\\
+\end{aligned}
+$$</div>
+其中<span class="math">\(\lambda\)</span>为1 ,i表示训练集中第i个anchor, 当<span class="math">\(l_i\)</span>为ground truth时为1, 否则为0. <span class="math">\({pos}_i, {pos}_i^*\)</span> 分别表示ground truth和预测的值. <span class="math">\(L_{cls}\)</span>为log损失, <span class="math">\(L_reg\)</span>为平滑L1损失, 其公式如下
+<div class="math">$$
+{L_{1}}(x)=\left\{\begin{array}{ll}0.5 x^{2} &amp; \text { if }|x|&lt;1 \\ |x|-0.5 &amp; \text { otherwise }\end{array}\right.
+$$</div>
+</li>
+</ul>
+</li>
+<li>
+<p>PCN: 经过PLN确定可疑区域后, PCN将会对可以区域进行分类检测. PCN基于Text CNN结构: 5层CNN结构 + overtime max pooling. 其损失函数设计如下
+    <div class="math">$$
+    L_{P C N}=-\frac{1}{N} \sum_{i}^{N} \sum_{j}^{K} y_{i j} \log \left(p_{i j}\right)+\lambda\|\mathbf{W}\|,
+    $$</div>
+</p>
+</li>
+<li>
+<p>网络攻击标注: PLN模型的训练需要大量的标注数据, 作者使用<a href="http://pralab.diee.unica.it/sites/default/files/Corona_ICC2009.pdf">HMM-WEB</a>模型进行自动标注</p>
+</li>
+</ol>
+<h3>Experiments</h3>
+<p>实验在CSIC数据集以及物理网络中提取的数据集. 并于传统Waf, <a href="https://github.com/client9/libinjection">libinjection</a>以及HMM-WEB进行了比较. 其结果如下图十一
+<img alt="图十一" src="https://d3i71xaburhd42.cloudfront.net/7bde3e694ac45abdeb02d933fafdf86d4e67d997/6-Table3-1.png"/></p>
+<h3>Conclusion</h3>
+<p>本文开创性的将Object Deteciton 和 异常检测结合在一起. 但标题中提及的Attention based于比较熟知attention并不相同, 实际上是指这种先定位后检测的过程. 将系统的"注意力"集中到可以的区域上. 本文最大的问题应该在使用HMM-WEB提供标注上, 不确定会有多大的影响.</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
   </div>
   <div class="tag-cloud">
     <p>
@@ -193,6 +295,9 @@ html">CIDIS 2017</a>以及<a href="https://www.unb.ca/cic/datasets/ids.html">ISC
 
 
   <div class="neighbors">
+    <a class="btn float-left" href="/sl4wad.html" title="论文笔记集 Statistical Learning for Web Attack Detection">
+      <i class="fa fa-angle-left"></i> Previous Post
+    </a>
   </div>
 
 
